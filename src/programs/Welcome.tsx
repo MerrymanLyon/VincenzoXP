@@ -1,7 +1,10 @@
 import React from 'react'
-import Image from 'next/image'
 
-export default function Welcome() {
+interface WelcomeProps {
+    id?: number;
+}
+
+export default function Welcome({ id }: WelcomeProps) {
     return (
         <div style={{
             display: "flex",
@@ -43,7 +46,7 @@ export default function Welcome() {
                     <li><strong>APAC Expansion</strong> Taipei Regional Office Opening</li>
                 </ul>
 
-                <h3 style={{ borderBottom: "1px solid #CBD5E1", paddingBottom: "4px", color="#0A246A" }}>
+                <h3 style={{ borderBottom: "1px solid #CBD5E1", paddingBottom: "4px", color: "#0A246A" }}>
                     EXECUTIVE SUMMARY
                 </h3>
                 <p style={{ lineHeight: "1.5", fontSize: "14px" }}>
