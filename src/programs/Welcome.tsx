@@ -15,10 +15,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import userprofile from "../../assets/userprofile.jpg";
-import userprofile2 from "../../assets/userprofile2.jpg";
-import ebc1 from "../../assets/ebc1.webp";
-import ebc2 from "../../assets/ebc2.webp";
+import userprofile from "../../assets/IMG_0520.jpeg";
+import userprofile2 from "../../assets/IMG_0520.jpeg";
+import ebc1 from "../../assets/IMG_0520.jpeg";
+import ebc2 from "../../assets/IMG_0520.jpeg";
+
 
 const INTRO = `Hi, I'm Vincenzo Reina, a Senior Brand & GTM Strategist. I specialize in building high-impact Go-To-Market strategies for Deeptech startups. I translate complex B2B deeptech products into high-impact market narratives without the corporate fluff.`;
 
