@@ -5,7 +5,6 @@ import outlook from "../../assets/outlook_large.png";
 import gallery from "../../assets/folder_image.png";
 import pdf from "../../assets/pdf.png";
 import cmd from "../../assets/cmd.png";
-import users from "../../assets/users.png";
 import butterfly from "../../assets/butterfly.png";
 import { AppDirectory } from "@/appData";
 import store from "@/redux/store";
@@ -15,11 +14,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import userprofile from "../../assets/IMG_0520.jpeg";
-import userprofile2 from "../../assets/IMG_0520.jpeg";
-import ebc1 from "../../assets/IMG_0520.jpeg";
-import ebc2 from "../../assets/IMG_0520.jpeg";
-
 
 const INTRO = `Hi, I'm Vincenzo Reina, a Senior Brand & GTM Strategist. I specialize in building high-impact Go-To-Market strategies for Deeptech startups. I translate complex B2B deeptech products into high-impact market narratives without the corporate fluff.`;
 
@@ -30,7 +24,6 @@ const INTERESTS = `Beyond strategy, I am a multi-instrumentalist. I picked up th
 const INTERESTS2 = `I thrive on diverse cultural exploration. My initiatives range from shooting a photo reportage in Tibet in 2025 to organizing cultural events in my hometown, Mazara del Vallo, and performing in various musical projects. This relentless curiosity to explore new horizons defines my mindset: a creative, lateral-thinking approach that consistently proves effective in overcoming complex personal and professional challenges.`;
 
 const INTERESTS3 = `My learning process is continuous. I read extensively across American and European fiction. On the technical front, I absorb new tech daily through specialized academies, podcasts, and continuous, hands-on experimentation with AI tools to keep my stack and strategies razor-sharp.`;
-
 
 interface props {
   id: number;
@@ -126,28 +119,28 @@ const Welcome = ({ id }: props) => {
             <div className={styles.pic_col}>
               <Image
                 alt="profile_pic"
-                src={userprofile.src}
+                src="/IMG_0530.jpeg"
                 width={200}
                 height={200}
                 className={styles.profile_pic}
               />
               <Image
                 alt="profile_pic"
-                src={userprofile2.src}
+                src="/IMG_0532.jpeg"
                 width={200}
                 height={200}
                 className={styles.profile_pic}
               />
               <Image
                 alt="profile_pic"
-                src={ebc1.src}
+                src="/IMG_0533.jpeg"
                 width={200}
                 height={200}
                 className={styles.profile_pic}
               />
               <Image
                 alt="profile_pic"
-                src={ebc2.src}
+                src="/IMG_0536.jpeg"
                 width={200}
                 height={200}
                 className={styles.profile_pic}
