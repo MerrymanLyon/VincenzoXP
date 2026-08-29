@@ -7,13 +7,13 @@ export default function Welcome() {
         <div>
           <h1 style={{ fontSize: "22px", margin: "0 0 4px 0", color: "#0A246A" }}>VINCENZO REINA</h1>
           <h3 style={{ fontSize: "14px", margin: 0, color: "#4A5568", fontWeight: "bold" }}>
-            Senior Brand & GTM Strategist
+            Senior Brand &amp; GTM Strategist
           </h3>
         </div>
       </div>
 
       <p style={{ fontStyle: "italic", background: "#F1F5F9", padding: "10px", borderLeft: "4px solid #0A246A", margin: "0 0 20px 0" }}>
-        "I build high-impact GTM strategies for Deeptech startups. No corporate fluff, just dev-centric growth."
+        &quot;I build high-impact GTM strategies for Deeptech startups. No corporate fluff, just dev-centric growth.&quot;
       </p>
 
       <h4 style={{ borderBottom: "1px solid #CBD5E1", paddingBottom: "4px", color: "#0A246A" }}>
@@ -39,7 +39,7 @@ export default function Welcome() {
         EXECUTIVE SUMMARY
       </h4>
       <p style={{ fontSize: "12px", lineHeight: "1.5" }}>
-        Senior Brand & GTM Strategist with experience steering Go-To-Market strategies, international product launches, and corporate communications for high-growth tech companies and enterprise clients. Proven track record in translating complex B2B deeptech products into high-impact market narratives.
+        Senior Brand &amp; GTM Strategist with experience steering Go-To-Market strategies, international product launches, and corporate communications for high-growth tech companies and enterprise clients. Proven track record in translating complex B2B deeptech products into high-impact market narratives.
       </p>
     </div>
   );
