@@ -24,11 +24,12 @@ const INTRO = `Hi, I'm Vincenzo Reina, a Senior Brand & GTM Strategist. I specia
 
 const WHYSITE = `The main reason I chose an interactive OS interface over a standard corporate portfolio is to bridge the gap between underground hacker culture and high-level enterprise positioning. It perfectly aligns with my dev-centric approach to marketing.`;
 
-const INTERESTS = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`;
+const INTERESTS = `Beyond strategy, I am a multi-instrumentalist. I picked up the guitar at eight and subsequently learned to play the drums, piano, and clarinet entirely by ear. I am also deeply passionate about cinema—specifically Italian neorealism—and I frequently paint scenes I capture through my camera lens.`;
 
-const INTERESTS2 = `Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+const INTERESTS2 = `I thrive on diverse cultural exploration. My initiatives range from shooting a photo reportage in Tibet in 2025 to organizing cultural events in my hometown, Mazara del Vallo, and performing in various musical projects. This relentless curiosity to explore new horizons defines my mindset: a creative, lateral-thinking approach that consistently proves effective in overcoming complex personal and professional challenges.`;
 
-const INTERESTS3 = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas vitae scelerisque.`;
+const INTERESTS3 = `My learning process is continuous. I read extensively across American and European fiction. On the technical front, I absorb new tech daily through specialized academies, podcasts, and continuous, hands-on experimentation with AI tools to keep my stack and strategies razor-sharp.`;
+
 
 interface props {
   id: number;
