@@ -1,5 +1,4 @@
 import styles from "./StartMenu.module.css";
-import userprofile from "../../../assets/IMG_0520.jpeg";
 import folder from "../../assets/folder_plain.png";
 import StartMenuItem from "components/StartMenuItem/StartMenuItem";
 import recentdoc from "../../assets/recentdoc.png";
@@ -16,7 +15,6 @@ import github from "../../assets/github.png";
 import linkedin from "../../assets/linkedin.png";
 import cmd from "../../assets/cmd.png";
 import paint from "../../assets/paint.png";
-import msn from "../../assets/msn.png";
 import pdf from "../../assets/pdf.png";
 import arrow from "../../assets/all-programs.ico";
 import logoff from "../../assets/logoff.png";
@@ -44,24 +42,25 @@ const StartMenu = ({ menuControl }: StartMenuProps) => {
 
   const handleOpenLinkedin = () => {
     window.open(
-      "https://www.linkedin.com/in/poh-wei-pin-7b9061183/",
+      "https://www.linkedin.com/in/vincenzoreina/",
       "_blank",
       "noreferrer"
     );
   };
-  //const currTabID = useSelector((state: RootState) => state.tab.id);
+
   const handleRunApp = (e: number) => {
     menuControl(false);
     const newTab = { ...AppDirectory.get(e), id: uuidv4() };
     store.dispatch(addTab(newTab));
   };
+
   return (
     <div className={styles.startmenu}>
       <hr className={styles.whitehr} />
       <div className={styles.menutopbar}>
         <Image
           alt="userprofile"
-          src={userprofile.src}
+          src="/IMG_0520.jpeg"
           width={55}
           height={55}
           style={{
@@ -71,6 +70,7 @@ const StartMenu = ({ menuControl }: StartMenuProps) => {
             borderColor: "rgba(222, 222, 222, 0.8)",
             boxShadow: "0 0 3px 3px rgba(0, 0, 0, 0.2)",
             margin: "0 5px 0 5px",
+            objectFit: "cover",
           }}
         />
         <p
@@ -81,7 +81,7 @@ const StartMenu = ({ menuControl }: StartMenuProps) => {
             textShadow: "1px 1px #000000",
           }}
         >
-          Wei Pin&apos;s PC
+          Vincenzo&apos;s PC
         </p>
       </div>
       <hr className={styles.orangehr} />
