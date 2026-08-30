@@ -267,15 +267,9 @@ export const WorkData = [
       { src: "/IMG_0587.png", height: 800, width: 1200 },
       { src: "/IMG_0589.png", height: 800, width: 1200 },
     ],
-    overview: `Spearheaded the global Go-To-Market and brand launch strategy for Photon—Exein's groundbreaking preemptive runtime security agent. The strategic core centered on positioning a new class of AI-driven security agents designed to protect any Linux device operating directly at the kernel level.
+    overview: `Spearheaded the global Go-To-Market strategy for Photon, Exein's preemptive runtime security agent designed to safeguard Linux devices directly at the kernel level. Leading up to RSA Conference 2026 in California, I orchestrated an integrated campaign translating complex kernel-level technology, Physical AI, and agentic risk into actionable value propositions across digital and physical funnels.
 
-To introduce Photon at the RSA Conference 2026 in California, I led an integrated omnichannel campaign designed to translate deep kernel-level innovation, Physical AI, and agentic risk into high-impact value propositions across all physical and digital sales funnels.
-
-Key Responsibilities & Highlights:
-• Strategic Positioning & Messaging: Built the end-to-end messaging ecosystem, aligning brand identity, product narrative, and AI positioning across physical and digital sales funnels.
-• Agency & Creative Oversight: Coordinated international creative agencies, overseeing high-end asset creation and maintaining narrative consistency across global touchpoints.
-• RSA Conference 2026 Execution: Managed physical and digital brand activation at one of the world's most competitive cybersecurity summits, driving maximum visibility and stakeholder engagement.
-• Global Roadshow Alignment: Executed marketing touchpoints spanning three continents in a single month, reinforcing Exein's global leadership in decentralized embedded security.`,
+The execution encompassed building the end-to-end messaging narrative, directing international creative agencies, and managing brand activation at RSA. This launch was part of an intensive global roadshow spanning three continents in a single month, reinforcing Exein's position in decentralized embedded security.`,
   },
   {
     id: 1,
@@ -373,7 +367,7 @@ Key Responsibilities & Highlights:
     title: "EG1311",
     date: "Aug - Nov 2021",
     gitURL: "",
-    techstack: [TechIcon.CPP, TechIcon.ARDUINO, TechIcon.AUTOCAD],
+    techstack: [TechIcon.CPP, TechIcon.AUTOCAD],
     gallery: [eg_1, eg_2, eg_3, eg_4, eg_5, eg_6],
     overview: `My team and I built a robot vehicle powered using Arduino and 4 DC motors.`,
   },
