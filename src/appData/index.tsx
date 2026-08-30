@@ -276,7 +276,12 @@ export const WorkData = [
     date: "B2X Project",
     gitURL: "",
     techstack: [TechIcon.FIGMA, TechIcon.TYPESCRIPT, TechIcon.NEXTJS],
-    gallery: [hfg_1, hfg_2, hfg_3],
+    gallery: [
+      { src: "/IMG_0581.png", height: 800, width: 1200 },
+      { src: "/IMG_0579.png", height: 800, width: 1200 },
+      { src: "/IMG_0577.png", height: 800, width: 1200 },
+      { src: "/IMG_0574.png", height: 800, width: 1200 },
+    ],
     overview: `High-end brand alignment and luxury digital positioning for Bulgari Hotels & Resorts. Translated Bulgari's iconic heritage into a modular, immersive digital experience that balances global brand consistency with the unique local soul of each luxury property.`,
   },
   {
