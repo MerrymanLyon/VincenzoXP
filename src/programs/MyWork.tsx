@@ -29,6 +29,10 @@ const brandLogos = [
   "/fiocchi.png",
   "/free.png",
   "/mellin.png",
+  "/IMG_0560.png",
+  "/IMG_0558.png",
+  "/IMG_0564.png",
+  "/IMG_0563.png",
 ];
 
 const MyWork = ({ id }: Props) => {
