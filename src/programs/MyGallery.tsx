@@ -10,9 +10,10 @@ const MyGallery = () => {
     PhotoCollection[0]
   );
 
-  const getImgSrc = (photo: GalleryImage): string => {
+  const getImgSrc = (photo: GalleryImage): any => {
+    if (!photo || !photo.img) return "";
     if (typeof photo.img === "string") return photo.img;
-    return (photo.img as any)?.src || (photo.img as string);
+    return (photo.img as any).src || photo.img;
   };
 
   return (
@@ -71,7 +72,7 @@ const MyGallery = () => {
             </p>
           </div>
 
-          {/* Griglia Anteprime non stretchate */}
+          {/* Griglia Anteprime */}
           <div className={styles.thumbnail_container}>
             {PhotoCollection.map((photo: GalleryImage) => (
               <div

@@ -129,7 +129,7 @@ export default function Home() {
                 ) : tab.program === App.WELCOME ? (
                   <Welcome id={tab.id} />
                 ) : tab.program === App.MYGALLERY ? (
-                  <MyGallery id={tab.id} />
+                  <MyGallery/>
                 ) : tab.program === App.ERROR ? (
                   <p>{tab.message}</p>
                 ) : tab.program === App.INFO ? (
