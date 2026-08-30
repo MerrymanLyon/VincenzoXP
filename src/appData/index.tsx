@@ -280,7 +280,12 @@ export const WorkData = [
     date: "Mashfrog Group Project",
     gitURL: "",
     techstack: [TechIcon.TYPESCRIPT, TechIcon.FIGMA, TechIcon.NEXTJS],
-    gallery: [ee2026_1, ee2026_2, ee2026_3],
+    gallery: [
+      { src: "/IMG_0555.png", height: 800, width: 1200 },
+      { src: "/IMG_0553.png", height: 800, width: 1200 },
+      { src: "/IMG_0551.png", height: 800, width: 1200 },
+      { src: "/IMG_0549.png", height: 800, width: 1200 },
+    ],
     overview: `Enterprise communication and digital positioning strategy for Alia Servizi Ambientali. Translated complex public service workflows into clear corporate narratives, executing multi-channel digital touchpoints to elevate user onboarding and public engagement.`,
   },
   {
