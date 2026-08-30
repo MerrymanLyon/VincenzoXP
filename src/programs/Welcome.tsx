@@ -17,7 +17,7 @@ import Image from "next/image";
 
 const INTRO = `Hi, I'm Vincenzo Reina, a Senior Brand & GTM Strategist. I specialize in building high-impact Go-To-Market strategies for Deeptech startups. I translate complex B2B deeptech products into high-impact market narratives without the corporate fluff.`;
 
-const WHYSITE = `The main reason I chose an interactive OS interface over a standard corporate portfolio is to bridge the gap between underground hacker culture and high-level enterprise positioning. It perfectly aligns with my dev-centric approach to marketing.`;
+const WHYSITE = `I’ve always approached personal branding through unconventional, high-concept narratives—from designing my CV as a Netflix-style streaming platform to structuring it as a fine-dining restaurant menu. Choosing an interactive Windows XP OS interface is a deliberate extension of this philosophy: it bridges the gap between underground hacker/dev culture and high-level enterprise positioning, perfectly aligning with my dev-centric approach to marketing.`;
 
 const INTERESTS = `Beyond strategy, I am a multi-instrumentalist. I picked up the guitar at eight and subsequently learned to play the drums, piano, and clarinet entirely by ear. I am also deeply passionate about cinema—specifically Italian neorealism—and I frequently paint scenes I capture through my camera lens.`;
 
@@ -151,7 +151,27 @@ const Welcome = ({ id }: props) => {
               <h3 className={styles.subtitle_header}>
                 Why an OS interface?
               </h3>
-              <p className={styles.subtitle}>{WHYSITE}</p>
+<p className={styles.subtitle}>
+  I’ve always approached personal branding through unconventional, high-concept narratives—from designing my CV as a{" "}
+  <a
+    href="https://www.linkedin.com/posts/vincenzo-reina_vincenzo-reina-copywriter-creativo-umano-activity-7196158740541149184-GrnC?utm_medium=ios_app&rcm=ACoAABzhqawBrPt_BX-BHZtYI5N331tMiXzOgtA&utm_source=social_share_send&utm_campaign=copy_link"
+    target="_blank"
+    rel="noreferrer"
+    style={{ color: "#2d71b8", textDecoration: "underline" }}
+  >
+    Netflix-style streaming platform
+  </a>{" "}
+  to structuring it as a{" "}
+  <a
+    href="./terrazzino-menu.pdf"
+    target="_blank"
+    rel="noreferrer"
+    style={{ color: "#2d71b8", textDecoration: "underline" }}
+  >
+    fine-dining restaurant menu
+  </a>
+  . Choosing an interactive Windows XP OS interface is a deliberate extension of this philosophy: it bridges the gap between underground hacker/dev culture and high-level enterprise positioning, perfectly aligning with my dev-centric approach to marketing.
+</p>
               <h3 className={styles.subtitle_header}>
                 Beyond Marketing
               </h3>
