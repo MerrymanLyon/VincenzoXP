@@ -66,7 +66,7 @@ export default function Home() {
           }}
         >
           <DesktopIcon
-  appID={0}
+  appID={1}
   doubleClick={() => handleRunApp(0)}
   title="My Computer"
   img={mycomputer}
