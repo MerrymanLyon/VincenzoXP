@@ -14,54 +14,8 @@ import cmd from "../../assets/cmd.png";
 import mycomputer from "../../assets/mycomputer.png";
 import gallery from "../../assets/folder_image.png";
 import outlook from "../../assets/outlook.png";
-import dsta from "../../assets/workaccordion/dsta.png";
-import gdsc from "../../assets/workaccordion/gdsc.png";
 import file from "../../assets/workaccordion/file.png";
 import emptyfile from "../../assets/workaccordion/emptyfile.png";
-import ee2026_1 from "../../assets/work/EE2026/ee2026_1.jpg";
-import ee2026_2 from "../../assets/work/EE2026/ee2026_2.jpg";
-import ee2026_3 from "../../assets/work/EE2026/ee2026_3.jpg";
-import ee2026_4 from "../../assets/work/EE2026/ee2026_4.jpg";
-import ee2026_5 from "../../assets/work/EE2026/ee2026_5.jpg";
-import ee2026_6 from "../../assets/work/EE2026/ee2026_6.jpg";
-import ee2026_7 from "../../assets/work/EE2026/ee2026_7.jpg";
-import dsta_1 from "../../assets/work/dsta/1.png";
-import dsta_2 from "../../assets/work/dsta/2.png";
-import dsta_3 from "../../assets/work/dsta/3.png";
-import dsta_4 from "../../assets/work/dsta/4.png";
-import dsta_5 from "../../assets/work/dsta/5.png";
-import dsta_6 from "../../assets/work/dsta/6.png";
-import dsta_7 from "../../assets/work/dsta/7.png";
-import dsta_8 from "../../assets/work/dsta/8.png";
-import hfg_1 from "../../assets/work/hfg/1.png";
-import hfg_2 from "../../assets/work/hfg/2.png";
-import hfg_3 from "../../assets/work/hfg/3.png";
-import hfg_5 from "../../assets/work/hfg/5.png";
-import hfg_6 from "../../assets/work/hfg/6.png";
-import hfg_7 from "../../assets/work/hfg/7.png";
-import eg_1 from "../../assets/work/eg1311/1.jpg";
-import eg_2 from "../../assets/work/eg1311/2.jpg";
-import eg_3 from "../../assets/work/eg1311/3.jpg";
-import eg_4 from "../../assets/work/eg1311/4.jpg";
-import eg_5 from "../../assets/work/eg1311/5.jpg";
-import eg_6 from "../../assets/work/eg1311/6.jpg";
-import cg1 from "../../assets/work/cg1111/1.jpg";
-import cg2 from "../../assets/work/cg1111/2.jpg";
-import cg3 from "../../assets/work/cg1111/3.jpg";
-import cg4 from "../../assets/work/cg1111/4.jpg";
-import cg5 from "../../assets/work/cg1111/5.jpg";
-import cg6 from "../../assets/work/cg1111/6.jpg";
-import cg1_2 from "../../assets/work/cg2111/1.jpg";
-import cg2_2 from "../../assets/work/cg2111/2.jpg";
-import cg3_2 from "../../assets/work/cg2111/3.jpg";
-import cg4_2 from "../../assets/work/cg2111/4.jpg";
-import cg5_2 from "../../assets/work/cg2111/5.jpg";
-import cg6_2 from "../../assets/work/cg2111/6.jpg";
-import cs2113_1 from "../../assets/work/cs2113/1.png";
-import cs2113_2 from "../../assets/work/cs2113/2.png";
-import sc_1 from "../../assets/work/supercanvas/1.png";
-import sc_2 from "../../assets/work/supercanvas/2.png";
-import sc_3 from "../../assets/work/supercanvas/3.png";
 import lul from "../../assets/work/lul.png";
 import butterfly from "../../assets/butterfly.png";
 import mr1 from "../../assets/mr1.jpg";
@@ -307,136 +261,6 @@ The execution encompassed building the end-to-end messaging narrative, directing
     ],
     overview: `Enterprise communication and digital positioning strategy for Alia Servizi Ambientali. Used provocative messaging and a split-screen visual concept to flip public perception around waste recycling, turning a highly technical brief into a memorable, high-impact campaign.`,
   },
-  {
-    id: 4,
-    title: "Audio Visual System BASYS3 FPGA",
-    date: "Oct - Nov 2022",
-    gitURL: "https://github.com/firwer/EE2026-FPGA-Project",
-    techstack: [TechIcon.VERILOG, TechIcon.PYTHON],
-    gallery: [
-      ee2026_5,
-      ee2026_1,
-      ee2026_2,
-      ee2026_3,
-      ee2026_4,
-      ee2026_6,
-      ee2026_7,
-    ],
-    overview: `In my EE2026 Digital Design Class, my partner and I collaborated on an Audio Visual System project that encompassed both individual and team components.`,
-  },
-  {
-    id: 5,
-    title: "MagnusStock - Java-Based CLI Inventory Management System",
-    date: "Feb 2023",
-    gitURL: "https://github.com/firwer/tp",
-    techstack: [TechIcon.JAVA],
-    gallery: [cs2113_1, cs2113_2],
-    overview: `As part of a collaborative course project, we have developed a Java-based CLI inventory management system.`,
-  },
-  {
-    id: 6,
-    title: "CG2111A - Alex Search & Rescue Lidar Robot Project",
-    date: "Feb 2023",
-    gitURL: "https://github.com/firwer/CG2111A-Alex-Lidar-Project",
-    techstack: [
-      TechIcon.CPP,
-      TechIcon.ROS,
-      TechIcon.ARDUINO,
-      TechIcon.RASPBERRYPI,
-    ],
-    gallery: [cg1_2, cg2_2, cg3_2, cg4_2, cg5_2, cg6_2],
-    overview: `We created a robot, named Alex, that is intended to be a “search and rescue” robot.`,
-  },
-  {
-    id: 7,
-    title: "CG1111A - mBot Vehicle Maze Navigator",
-    date: "Aug - Nov 2021",
-    gitURL: "",
-    techstack: [TechIcon.CPP, TechIcon.MBOT],
-    gallery: [cg6, cg1, cg2, cg3, cg4, cg5],
-    overview: `Our team and I built an mBot vehicle that is able to navigate through a maze.`,
-  },
-  {
-    id: 8,
-    title: "EG1311",
-    date: "Aug - Nov 2021",
-    gitURL: "",
-    techstack: [TechIcon.CPP, TechIcon.AUTOCAD],
-    gallery: [eg_1, eg_2, eg_3, eg_4, eg_5, eg_6],
-    overview: `My team and I built a robot vehicle powered using Arduino and 4 DC motors.`,
-  },
-
-  {
-    id: 9,
-    title: "GDSC Hack4Good 2023 - InclusionLab Web Platform",
-    date: "Feb 2023",
-    gitURL: "https://github.com/firwer/h4g-hackathon",
-    techstack: [
-      TechIcon.NODEJS,
-      TechIcon.NEXTJS,
-      TechIcon.GOOGLECLOUDFUNCTIONS,
-      TechIcon.FIREBASE,
-      TechIcon.TYPESCRIPT,
-      TechIcon.FIGMA,
-      TechIcon.CSS,
-      TechIcon.JAVASCRIPT,
-      TechIcon.HTML,
-    ],
-    gallery: [hfg_7, hfg_1, hfg_2, hfg_3, hfg_5, hfg_6],
-    overview: `InclusionLab aims to help companies to improve the accessibility of their websites.`,
-  },
-  {
-    id: 10,
-    title: "DSTA CodeEXP Hackathon 2022 - My Army Pal",
-    date: "Jun 2022",
-    gitURL: "https://github.com/firwer/dstahackathon",
-    techstack: [TechIcon.FLUTTER, TechIcon.FIREBASE],
-    gallery: [dsta_7, dsta_1, dsta_2, dsta_3, dsta_4, dsta_5, dsta_6, dsta_8],
-    overview: `MyArmyPal serves to be an all in one service for our service men.`,
-  },
-  {
-    id: 11,
-    title: "GDSC Mercy Relief CMS Portal",
-    date: "Sept 2022 - June 2023",
-    gitURL: "",
-    techstack: [
-      TechIcon.NEXTJS,
-      TechIcon.TYPESCRIPT,
-      TechIcon.MONGODB,
-      TechIcon.MATERIALUI,
-      TechIcon.CSS,
-    ],
-    gallery: [mr1, mr2],
-    overview: `I have worked as a frontend software developer for Google's Developer Student Club.`,
-  },
-  {
-    id: 12,
-    title: "Super Canvas Chrome Extension",
-    date: "Apr 2023 - Jul 2023",
-    gitURL: "https://github.com/firwer/supercanvas",
-    techstack: [
-      TechIcon.TYPESCRIPT,
-      TechIcon.WEBPACK,
-      TechIcon.MATERIALUI,
-      TechIcon.CSS,
-    ],
-    gallery: [sc_1, sc_2, sc_3],
-    overview: `Super Canvas is a Chrome Extension with over 200 active users.`,
-  },
-  {
-    id: 13,
-    title: "InternWiz - Startup Internship Portal (WIP)",
-    date: "May 2023 - Present",
-    gitURL: "https://github.com/firwer/internwiz",
-    techstack: [
-      TechIcon.NEXTJS,
-      TechIcon.TYPESCRIPT,
-      TechIcon.SUPABASE,
-      TechIcon.CHATGPT,
-    ],
-    gallery: [],
-    overview: `InternWiz is a carefully curated platform that offers a seamless experience.`,
-  },
 ] as WorkContent[];
 
 export const WorkAccordionContent = [
@@ -474,50 +298,50 @@ export const WorkAccordionContent = [
 export const PhotoCollection = [
   {
     id: 0,
-    title: "Photo 1",
-    location: "Location",
-    desc: "Description 1",
-    date: "Date",
-    img: { src: "/IMG_9675_Original.jpeg", height: 800, width: 1200 },
+    title: "Golden Gate",
+    location: "San Francisco",
+    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
+    date: "March 22nd 2026",
+    img: { src: "/DSC00287 Copy_Original.jpeg", height: 800, width: 1200 },
   },
   {
     id: 1,
-    title: "Photo 2",
-    location: "Location",
-    desc: "Description 2",
-    date: "Date",
+    title: "Venice Beach",
+    location: "Los Angeles",
+    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
+    date: "August 13th 2025",
     img: { src: "/IMG_5792 Copy_Original.jpeg", height: 800, width: 1200 },
   },
   {
     id: 2,
-    title: "Photo 3",
-    location: "Location",
-    desc: "Description 3",
-    date: "Date",
+    title: "Garzê 2",
+    location: "Garzê Tibetan Autonomous Prefecture",
+    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
+    date: "August 14th 2025",
     img: { src: "/IMG_0298.jpeg", height: 800, width: 1200 },
   },
   {
     id: 3,
-    title: "Photo 4",
-    location: "Location",
-    desc: "Description 4",
-    date: "Date",
+    title: "Garzê",
+    location: "Garzê Tibetan Autonomous Prefecture",
+    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
+    date: "August 14th 2025",
     img: { src: "/IMG_0272 Copy.jpeg", height: 800, width: 1200 },
   },
   {
     id: 4,
-    title: "Photo 5",
-    location: "Location",
-    desc: "Description 5",
-    date: "Date",
+    title: "Chongqing",
+    location: "Chongqing",
+    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
+    date: "August 21st 2025",
     img: { src: "/DSC01886.jpeg", height: 800, width: 1200 },
   },
   {
     id: 5,
-    title: "Photo 6",
-    location: "Location",
-    desc: "Description 6",
-    date: "Date",
-    img: { src: "/DSC00287 Copy_Original.jpeg", height: 800, width: 1200 },
+    title: "home",
+    location: "D̷̨̬̹̄̊͝ò̶̻̬̱̂̚n̷̡͎͉̂’̵̤̒̌t̵͉͉̾̀̒ ̸̯̮̤͛ö̵̬̰́p̷̦͊͜ͅé̶͕̫̎ń̶̨̙̅͛ͅ ̴̹̖̦́́I̷͖̳̓͜n̷̢͖̻̕ẗ̴͇̯́̉͐ȩ̷͉̽͑̐r̴̠͈̤̋͐ń̶͕̭̝̅̒e̶̹͚͠ẗ̸͕͘͝ ̴̧̨̱͝͝E̵̡͈̦̐͌x̵̧͓̠̚̕p̵͎̈̒̐l̴̜̐̈́͠o̶̸͉͎͒̍̈ę̵̝͍͌r̵̛̩̊",
+    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
+    date: "everyday",
+    img: { src: "/IMG_9675_Original.jpeg", height: 800, width: 1200 },
   },
 ] as GalleryImage[];
