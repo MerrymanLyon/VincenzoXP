@@ -3,8 +3,9 @@ import { StaticImageData } from "next/image";
 import Image from "next/image";
 import styles from "./Carousel.module.css";
 import Spinner from "components/Spinner/Spinner";
+
 interface Props {
-  images: StaticImageData[];
+  images: (StaticImageData | { src: string; height: number; width: number })[];
 }
 
 const Carousel = ({ images }: Props) => {
@@ -17,6 +18,7 @@ const Carousel = ({ images }: Props) => {
       setCurrentImage((prev) => prev - 1);
     }
   };
+
   const handleNextClick = () => {
     if (currentImage === images.length - 1) {
       setCurrentImage(0);
@@ -24,6 +26,7 @@ const Carousel = ({ images }: Props) => {
       setCurrentImage((prev) => prev + 1);
     }
   };
+
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoadingComplete = () => {
@@ -37,7 +40,16 @@ const Carousel = ({ images }: Props) => {
         <Image
           src={images[currentImage]}
           alt="carousel"
+          width={800}
+          height={500}
           onLoadingComplete={handleLoadingComplete}
+          style={{
+            maxHeight: "350px",
+            width: "auto",
+            objectFit: "contain",
+            margin: "0 auto",
+            display: "block",
+          }}
         />
       </div>
       <div className={styles.controls}>
