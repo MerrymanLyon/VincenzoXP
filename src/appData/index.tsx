@@ -515,8 +515,8 @@ export const PhotoCollection = [
   },
   {
     id: 5,
-    title: "home",
-    location: "don't open Internet Explorer",
+    title: "don't open Internet Explorer",
+    location: "home",
     desc: "Sony a6000 - 18-135mm f/3.5-5.6",
     date: "everyday",
     img: { src: "/IMG_9675_Original.jpeg", height: 800, width: 1200 },
