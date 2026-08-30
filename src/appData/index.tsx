@@ -14,6 +14,8 @@ import cmd from "../../assets/cmd.png";
 import mycomputer from "../../assets/mycomputer.png";
 import gallery from "../../assets/folder_image.png";
 import outlook from "../../assets/outlook.png";
+import dsta from "../../assets/workaccordion/dsta.png";
+import gdsc from "../../assets/workaccordion/gdsc.png";
 import file from "../../assets/workaccordion/file.png";
 import emptyfile from "../../assets/workaccordion/emptyfile.png";
 import ee2026_1 from "../../assets/work/EE2026/ee2026_1.jpg";
@@ -67,6 +69,12 @@ import mr2 from "../../assets/mr2.jpg";
 import mrIcon from "../../assets/mr_icon.png";
 import MS from "../../assets/work/MS.png";
 import MS2 from "../../assets/work/MS2.png";
+import col1 from "../../assets/gallery/0.webp";
+import col2 from "../../assets/gallery/1.webp";
+import col3 from "../../assets/gallery/2.webp";
+import col4 from "../../assets/gallery/3.webp";
+import col5 from "../../assets/gallery/4.webp";
+import col6 from "../../assets/gallery/5.webp";
 
 export const TechIcon = {
   REACT:
@@ -472,50 +480,50 @@ export const WorkAccordionContent = [
 export const PhotoCollection = [
   {
     id: 0,
-    title: "Golden Gate",
-    location: "San Francisco",
-    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
-    date: "March 22nd 2026",
-    img: { src: "/DSC00287 Copy_Original.jpeg", height: 800, width: 1200 },
+    title: "Rocky afternoon",
+    location: "Dingboche-Lobuche, Nepal",
+    desc: "Taken enroute to Everest Base Camp",
+    date: "31 December 2022",
+    img: col1,
   },
   {
     id: 1,
-    title: "Venice Beach",
-    location: "Los Angeles",
-    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
-    date: "August 13th 2025",
-    img: { src: "/IMG_5792 Copy_Original.jpeg", height: 800, width: 1200 },
+    title: "Himalayan Mountain",
+    location: "Lobuche-GorakShep, Nepal",
+    desc: "Icy morning",
+    date: "1 January 2023",
+    img: col2,
   },
   {
     id: 2,
-    title: "Garzê 2",
-    location: "Garzê Tibetan Autonomous Prefecture",
-    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
-    date: "August 14th 2025",
-    img: { src: "/IMG_0298.jpeg", height: 800, width: 1200 },
+    title: "Autumn Foliage",
+    location: "Kyoto, Japan",
+    desc: "Japanese Autumn Foliage in the Imperial Palace of Kyoto",
+    date: "23 November 2023",
+    img: col3,
   },
   {
     id: 3,
-    title: "Garzê",
-    location: "Garzê Tibetan Autonomous Prefecture",
-    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
-    date: "August 14th 2025",
-    img: { src: "/IMG_0272 Copy.jpeg", height: 800, width: 1200 },
+    title: "Japanese Symmetry",
+    location: "Kiyomizu Temple, Kyoto",
+    desc: "One of the most famous temples in Kyoto, Japan",
+    date: "22 November 2023",
+    img: col4,
   },
   {
     id: 4,
-    title: "Chongqing",
-    location: "Chongqing",
-    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
-    date: "August 21st 2025",
-    img: { src: "/DSC01886.jpeg", height: 800, width: 1200 },
+    title: "Australia Forest Trail",
+    location: "Aqueduct Road, Melbourne, Australia",
+    desc: "Bird eye view of the forest trail during winter",
+    date: "June 2022",
+    img: col5,
   },
   {
     id: 5,
-    title: "home",
-    location: "don't open Internet Explorer",
-    desc: "Sony a6000 - 18-135mm f/3.5-5.6",
-    date: "everyday",
-    img: { src: "/IMG_9675_Original.jpeg", height: 800, width: 1200 },
+    title: "Milky Wave",
+    location: "Waiao Beach, Yilan, Taiwan",
+    desc: "Surfing in the middle of a milky ocean",
+    date: "17 November 2022",
+    img: col6,
   },
 ] as GalleryImage[];
