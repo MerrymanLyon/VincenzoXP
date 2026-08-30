@@ -295,7 +295,6 @@ export const WorkData = [
       { src: "/IMG_0553.png", height: 800, width: 1200 },
       { src: "/IMG_0551.png", height: 800, width: 1200 },
       { src: "/IMG_0549.png", height: 800, width: 1200 },
-      { src: "/IMG_0560.png", height: 800, width: 1200 },
       { src: "/IMG_0558.png", height: 800, width: 1200 },
       { src: "/IMG_0564.png", height: 800, width: 1200 },
       { src: "/IMG_0563.png", height: 800, width: 1200 },
