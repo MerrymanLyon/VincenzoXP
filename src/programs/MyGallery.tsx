@@ -1,140 +1,111 @@
 import { GalleryAccordionTitles, PhotoCollection } from "@/appData";
-import { WorkContent, RootState, GalleryImage } from "@/types";
-import styles from "./MyGallery.module.css";
+import { GalleryImage } from "@/types";
 import WinAccordion from "components/WinAccordion/WinAccordion";
 import Image from "next/image";
-import accordionbtnd from "../../assets/workaccordion/accordionbtnd.png";
-import pictureicon from "../../assets/workaccordion/pictureicon.png";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import pictureshadow from "../../assets/pictureshadow.png";
-import GallerySliderIcon from "components/GallerySliderIcon/GallerySliderIcon";
-import sliderleft from "../../assets/slider_left.png";
-import sliderright from "../../assets/slider_right.png";
+import { useState } from "react";
+import styles from "./MyGallery.module.css";
 
-interface Props {
-  id: number;
-}
+const MyGallery = () => {
+  const [selectedPhoto, setSelectedPhoto] = useState<GalleryImage>(
+    PhotoCollection[0]
+  );
 
-const MyGallery = ({ id }: Props) => {
-  const [currDisplay, setCurrDisplay] = useState<GalleryImage>({
-    id: 0,
-    title: "",
-    desc: "",
-    location: "",
-    date: "",
-    img: pictureicon,
-  });
-
-  useEffect(() => {
-    setCurrDisplay(PhotoCollection[0]);
-  }, []);
-
-  const setDisplay = (id: number) => {
-    setCurrDisplay(PhotoCollection[id]);
-  };
-
-  const handlePreviousImage = () => {
-    if (currDisplay.id === 0) {
-      setCurrDisplay(PhotoCollection[PhotoCollection.length - 1]);
-      return;
-    }
-    setCurrDisplay(PhotoCollection[currDisplay.id - 1]);
-  };
-
-  const handleNextImage = () => {
-    if (currDisplay.id === PhotoCollection.length - 1) {
-      setCurrDisplay(PhotoCollection[0]);
-      return;
-    }
-    setCurrDisplay(PhotoCollection[currDisplay.id + 1]);
+  const getImgSrc = (photo: GalleryImage): string => {
+    if (typeof photo.img === "string") return photo.img;
+    return (photo.img as any)?.src || (photo.img as string);
   };
 
   return (
     <div className={styles.main}>
       <div className={styles.leftpanel}>
-        <div className={styles.accordion}>
-          <div className={styles.accordion_title}>
-            <div className={styles.title_group}>
-              <Image
-                alt="pictureicon"
-                src={pictureicon.src}
-                height={32}
-                width={32}
-              />
-              <p className={styles.title_text}>{"Picture Tasks"}</p>
-            </div>
-            <div>
-              <Image
-                alt="accordionbtnd"
-                src={accordionbtnd.src}
-                height={20}
-                width={20}
-              />
-            </div>
-          </div>
-          {GalleryAccordionTitles.map((title, index) => (
-            <WinAccordion key={index} title={title}>
-              {PhotoCollection.filter((f) => currDisplay.id === f.id).map(
-                (e, index) => {
-                  return (
-                    <div className={styles.image_detail} key={index}>
-                      <div style={{ fontWeight: "700" }}>{e.title}</div>
-                      <div>{e.desc}</div>
-                      <div>
-                        <div>Location: {e.location}</div>
-                        <div>Date: {e.date}</div>
-                      </div>
+        <div>
+          <div className={styles.accordion}>
+            {GalleryAccordionTitles.map((title: string, index: number) => (
+              <WinAccordion key={index} title={title}>
+                {PhotoCollection.map((photo: GalleryImage, idx: number) => (
+                  <div
+                    key={idx}
+                    className={styles.accordion_content_item}
+                    onClick={() => setSelectedPhoto(photo)}
+                  >
+                    <div className={styles.accordion_content_text}>
+                      <p>{photo.title}</p>
                     </div>
-                  );
-                }
-              )}
-            </WinAccordion>
-          ))}
+                  </div>
+                ))}
+              </WinAccordion>
+            ))}
+          </div>
         </div>
       </div>
       <div className={styles.rightpanel}>
-        <div className={styles.display_container}>
-          <Image
-            src={currDisplay.img}
-            alt={currDisplay.title}
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{ width: "95%", height: "90%", objectFit: "contain" }}
-          />
-          <div className={styles.control_container}>
-            <div className={styles.control_icon} onClick={handlePreviousImage}>
-              <Image src={sliderleft} alt="left control" height={25} />
-            </div>
-            <div className={styles.control_icon} onClick={handleNextImage}>
-              <Image src={sliderright} alt="right control" height={25} />
-            </div>
+        <div className={styles.body}>
+          {/* Immagine Principale */}
+          <div className={styles.image_container}>
+            <Image
+              src={getImgSrc(selectedPhoto)}
+              alt={selectedPhoto.title}
+              width={1200}
+              height={800}
+              style={{
+                maxHeight: "360px",
+                width: "auto",
+                objectFit: "contain",
+                margin: "0 auto",
+                display: "block",
+              }}
+            />
           </div>
-        </div>
-        <div className={styles.slider_container}>
-          <div className={styles.slider}>
-            {PhotoCollection.map((e) => (
-              <GallerySliderIcon
-                key={e.id}
-                img={e.img}
-                text={e.title}
-                showImage={() => setDisplay(e.id)}
-                sliderSelected={currDisplay.id === e.id}
-              />
+
+          {/* Dettagli della Foto */}
+          <div className={styles.details}>
+            <h4>{selectedPhoto.title}</h4>
+            <p>
+              <strong>Location:</strong> {selectedPhoto.location}
+            </p>
+            <p>
+              <strong>Description:</strong> {selectedPhoto.desc}
+            </p>
+            <p>
+              <strong>Date:</strong> {selectedPhoto.date}
+            </p>
+          </div>
+
+          {/* Griglia Anteprime non stretchate */}
+          <div className={styles.thumbnail_container}>
+            {PhotoCollection.map((photo: GalleryImage) => (
+              <div
+                key={photo.id}
+                className={`${styles.thumbnail} ${
+                  selectedPhoto.id === photo.id ? styles.active : ""
+                }`}
+                onClick={() => setSelectedPhoto(photo)}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  position: "relative",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  border:
+                    selectedPhoto.id === photo.id
+                      ? "2px solid #0055ea"
+                      : "1px solid #ccc",
+                }}
+              >
+                <Image
+                  src={getImgSrc(photo)}
+                  alt={photo.title}
+                  width={60}
+                  height={60}
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </div>
             ))}
           </div>
-          <Image
-            src={pictureshadow}
-            alt="Image background shadow"
-            width={100}
-            height={100}
-            style={{
-              position: "fixed",
-              bottom: -15,
-              right: 4,
-            }}
-          />
         </div>
       </div>
     </div>
