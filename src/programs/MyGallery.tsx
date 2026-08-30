@@ -41,7 +41,6 @@ const MyGallery = () => {
       </div>
       <div className={styles.rightpanel}>
         <div className={styles.body}>
-          {/* Immagine Principale */}
           <div className={styles.image_container}>
             <Image
               src={getImgSrc(selectedPhoto)}
@@ -58,7 +57,6 @@ const MyGallery = () => {
             />
           </div>
 
-          {/* Dettagli della Foto */}
           <div className={styles.details}>
             <h4>{selectedPhoto.title}</h4>
             <p>
@@ -72,7 +70,6 @@ const MyGallery = () => {
             </p>
           </div>
 
-          {/* Griglia Anteprime */}
           <div className={styles.thumbnail_container}>
             {PhotoCollection.map((photo: GalleryImage) => (
               <div
@@ -81,28 +78,12 @@ const MyGallery = () => {
                   selectedPhoto.id === photo.id ? styles.active : ""
                 }`}
                 onClick={() => setSelectedPhoto(photo)}
-                style={{
-                  width: "60px",
-                  height: "60px",
-                  position: "relative",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  border:
-                    selectedPhoto.id === photo.id
-                      ? "2px solid #0055ea"
-                      : "1px solid #ccc",
-                }}
               >
                 <Image
                   src={getImgSrc(photo)}
                   alt={photo.title}
                   width={60}
                   height={60}
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
-                  }}
                 />
               </div>
             ))}
