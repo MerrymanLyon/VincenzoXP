@@ -1,3 +1,5 @@
+// PERCORSO FILE: src/pages/index.tsx
+
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import StartBar from "components/StartBar/StartBar";
@@ -24,6 +26,7 @@ import MyWork from "@/programs/MyWork";
 import MsgBox from "components/MsgBox/MsgBox";
 import Welcome from "@/programs/Welcome";
 import MyGallery from "@/programs/MyGallery";
+
 export default function Home() {
   const Tabs = useSelector((state: RootState) => state.tab.tray);
   const currTabID = useSelector((state: RootState) => state.tab.id);
@@ -66,11 +69,11 @@ export default function Home() {
           }}
         >
           <DesktopIcon
-  appID={1}
-  doubleClick={() => handleRunApp(0)}
-  title="My Computer"
-  img={mycomputer}
-/>
+            appID={1}
+            doubleClick={() => handleRunApp(0)}
+            title="My Computer"
+            img={mycomputer}
+          />
           <DesktopIcon
             appID={2}
             doubleClick={() => void 0}
@@ -129,7 +132,7 @@ export default function Home() {
                 ) : tab.program === App.WELCOME ? (
                   <Welcome id={tab.id} />
                 ) : tab.program === App.MYGALLERY ? (
-                  <MyGallery/>
+                  <MyGallery id={tab.id} />
                 ) : tab.program === App.ERROR ? (
                   <p>{tab.message}</p>
                 ) : tab.program === App.INFO ? (
