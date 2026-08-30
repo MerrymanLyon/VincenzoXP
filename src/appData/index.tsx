@@ -257,6 +257,27 @@ export const GalleryAccordionTitles = ["Details"];
 
 export const WorkData = [
   {
+    id: 101,
+    title: "Exein Photon Launch & RSA Conference 2026 - Global GTM Strategy",
+    date: "Exein Project",
+    gitURL: "",
+    techstack: [TechIcon.FIGMA, TechIcon.NEXTJS, TechIcon.TYPESCRIPT],
+    gallery: [
+      { src: "/IMG_0585.png", height: 800, width: 1200 },
+      { src: "/IMG_0587.png", height: 800, width: 1200 },
+      { src: "/IMG_0589.png", height: 800, width: 1200 },
+    ],
+    overview: `Spearheaded the global Go-To-Market and brand launch strategy for Photon—Exein's groundbreaking preemptive runtime security agent. The strategic core centered on positioning a new class of AI-driven security agents designed to protect any Linux device operating directly at the kernel level.
+
+To introduce Photon at the RSA Conference 2026 in California, I led an integrated omnichannel campaign designed to translate deep kernel-level innovation, Physical AI, and agentic risk into high-impact value propositions across all physical and digital sales funnels.
+
+Key Responsibilities & Highlights:
+• Strategic Positioning & Messaging: Built the end-to-end messaging ecosystem, aligning brand identity, product narrative, and AI positioning across physical and digital sales funnels.
+• Agency & Creative Oversight: Coordinated international creative agencies, overseeing high-end asset creation and maintaining narrative consistency across global touchpoints.
+• RSA Conference 2026 Execution: Managed physical and digital brand activation at one of the world's most competitive cybersecurity summits, driving maximum visibility and stakeholder engagement.
+• Global Roadshow Alignment: Executed marketing touchpoints spanning three continents in a single month, reinforcing Exein's global leadership in decentralized embedded security.`,
+  },
+  {
     id: 1,
     title: "Goodi - E-Commerce Brand Launch & Growth",
     date: "B2X Project",
@@ -431,6 +452,13 @@ export const WorkData = [
 ] as WorkContent[];
 
 export const WorkAccordionContent = [
+  {
+    id: 101,
+    type: WorkType.HACKATHON,
+    icon: emptyfile,
+    title: "Photon Launch & RSA 2026",
+    content: WorkData[WorkData.findIndex((x) => x.id === 101)],
+  },
   {
     id: 1,
     type: WorkType.SCHOOL,
