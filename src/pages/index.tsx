@@ -66,11 +66,11 @@ export default function Home() {
           }}
         >
           <DesktopIcon
-            appID={1}
-            doubleClick={() => void 0}
-            title="My Computer"
-            img={mycomputer}
-          />
+  appID={0}
+  doubleClick={() => handleRunApp(0)}
+  title="My Computer"
+  img={mycomputer}
+/>
           <DesktopIcon
             appID={2}
             doubleClick={() => void 0}
