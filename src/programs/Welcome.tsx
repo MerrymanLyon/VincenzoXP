@@ -157,7 +157,7 @@ const Welcome = ({ id }: props) => {
     href="https://www.linkedin.com/posts/vincenzo-reina_vincenzo-reina-copywriter-creativo-umano-activity-7196158740541149184-GrnC?utm_medium=ios_app&rcm=ACoAABzhqawBrPt_BX-BHZtYI5N331tMiXzOgtA&utm_source=social_share_send&utm_campaign=copy_link"
     target="_blank"
     rel="noreferrer"
-    style={{ color: "#2d71b8", textDecoration: "underline" }}
+    style={{ color: "#ffffff", textDecoration: "underline" }}
   >
     Netflix-style streaming platform
   </a>{" "}
@@ -166,7 +166,7 @@ const Welcome = ({ id }: props) => {
     href="./terrazzino-menu.pdf"
     target="_blank"
     rel="noreferrer"
-    style={{ color: "#2d71b8", textDecoration: "underline" }}
+    style={{ color: "#ffffff", textDecoration: "underline" }}
   >
     fine-dining restaurant menu
   </a>
