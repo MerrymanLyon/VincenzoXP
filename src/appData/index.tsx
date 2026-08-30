@@ -247,7 +247,11 @@ export const AppDirectory: Map<number, Tab> = new Map([
   ],
 ]);
 
-export const WorkAccordionTitles = ["Exein", "Mashfrog Group", "B2X"];
+export const WorkAccordionTitles = [
+  WorkType.HACKATHON,
+  WorkType.PERSONAL,
+  WorkType.SCHOOL,
+];
 
 export const GalleryAccordionTitles = ["Details"];
 
@@ -294,7 +298,7 @@ export const WorkData = [
       ee2026_6,
       ee2026_7,
     ],
-    overview: `In my EE2026 Digital Design Class, my partner and I collaborated on an Audio Visual System project that encompassed both individual and team components.`,
+    overview: `In my EE2026 Digital Design Class, my partner and I collaborated on an Audio Visual System project that encompassed both individual and team components. Our team's contribution consisted of an interactive mouse-based drawing tool, complete with a canvas, color palette changer, rectangle drawing tool, and brush size selection. For my individual role, I developed a P-Mod OLED digital stopwatch timer with lap timing functionality and a whistle-based start/stop feature, powered by the Pmod MIC3. Our project was one of the top performing projects in our cohort.`,
   },
   {
     id: 5,
@@ -303,7 +307,7 @@ export const WorkData = [
     gitURL: "https://github.com/firwer/tp",
     techstack: [TechIcon.JAVA],
     gallery: [cs2113_1, cs2113_2],
-    overview: `As part of a collaborative course project, we have developed a Java-based CLI inventory management system called "Magnus Stock" that can perform CRUD operations on inventory items.`,
+    overview: `As part of a collaborative course project, we have developed a Java-based CLI inventory management system called "Magnus Stock" that can perform CRUD operations on inventory items, generate history reports, and read/write inventory data in CSV format.Throughout this project, we gained valuable experience in crafting comprehensive user and developer guides using Markdown, complemented by the inclusion of UML Diagrams for clarity. From the technical standpoint, our team demonstrated our ability to write clean, functional, and well-tested JUnit code that is able to handle exceptions and edge cases.`,
   },
   {
     id: 6,
@@ -317,7 +321,7 @@ export const WorkData = [
       TechIcon.RASPBERRYPI,
     ],
     gallery: [cg1_2, cg2_2, cg3_2, cg4_2, cg5_2, cg6_2],
-    overview: `We created a robot, named Alex, that is intended to be a “search and rescue” robot that can be piloted around remotely in an unknown environment.`,
+    overview: `We created a robot, named Alex, that is intended to be a “search and rescue” robot that can be piloted around remotely in an unknown environment. Its role is to serve as an “eye” of the user and provide real-time information on the environment to the user to allow him/her to navigate the whole terrain and draw a detailed map of the environment.\n The robot is equipped with a LIDAR device to map the said unknown environment. The user would then be able to send movement commands to Alex and receive environment information (the angle and distance to the nearest obstacle in any particular direction) back to the user.\n Through this project, I have learnt how to integrate Lidar, Arduino, Raspberry Pi and ROS into a single operational vehicle and most importantly, how to write baremetal code and deal with USART communication between our Compuer, Arduino and Raspberry Pi.`,
   },
   {
     id: 7,
@@ -326,7 +330,7 @@ export const WorkData = [
     gitURL: "",
     techstack: [TechIcon.CPP, TechIcon.MBOT],
     gallery: [cg6, cg1, cg2, cg3, cg4, cg5],
-    overview: `Our team and I built an mBot vehicle that is able to navigate through a maze and perform specific action based on the colour of the ground it is on.`,
+    overview: `Our team and I built an mBot vehicle that is able to navigate through a maze and perform specific action based on the colour of the ground it is on. The mBot is able to detect the colour of the ground using a colour sensor and move in different directions with the help of 2 IR sensor and 1 Ultrasonic sensor.`,
   },
   {
     id: 8,
@@ -335,8 +339,9 @@ export const WorkData = [
     gitURL: "",
     techstack: [TechIcon.CPP, TechIcon.ARDUINO, TechIcon.AUTOCAD],
     gallery: [eg_1, eg_2, eg_3, eg_4, eg_5, eg_6],
-    overview: `My team and I built a robot vehicle powered using Arduino and 4 DC motors.`,
+    overview: `My team and I built a robot vehicle powered using Arduino and 4 DC motors. Our vehicle is able to move through a series of incline ramps, stop at a designated point using proximity sensor and fire a ping-pong ball through a quick-release catapult that was built with a servo-motor.`,
   },
+
   {
     id: 9,
     title: "GDSC Hack4Good 2023 - InclusionLab Web Platform",
@@ -354,7 +359,7 @@ export const WorkData = [
       TechIcon.HTML,
     ],
     gallery: [hfg_7, hfg_1, hfg_2, hfg_3, hfg_5, hfg_6],
-    overview: `InclusionLab aims to help companies to improve the accessibility of their websites for persons with disabilities.`,
+    overview: `InclusionLab aims to help companies to improve the accessibility of their websites for persons with disabilities. We provide a platform where PWDs can conduct easy & clear accessibility testing and also an automated accessibility testing tool powered by Axe-Core to maximise testing outcome`,
   },
   {
     id: 10,
@@ -363,7 +368,7 @@ export const WorkData = [
     gitURL: "https://github.com/firwer/dstahackathon",
     techstack: [TechIcon.FLUTTER, TechIcon.FIREBASE],
     gallery: [dsta_7, dsta_1, dsta_2, dsta_3, dsta_4, dsta_5, dsta_6, dsta_8],
-    overview: `MyArmyPal serves to be an all in one service for our service men.`,
+    overview: `MyArmyPal serves to be an all in one service for our service men. It seeks to provide convenience and useful features just one tap away. Its main features include an IPPT Calculator, reservist checklist, customized IPPT training plan according to the user's current fitness level and a canteen order pick up service in all army camps.`,
   },
   {
     id: 11,
@@ -378,7 +383,7 @@ export const WorkData = [
       TechIcon.CSS,
     ],
     gallery: [mr1, mr2],
-    overview: `I have worked as a frontend software developer for Google's Developer Student Club.`,
+    overview: `I have worked as a frontend software developer for Google's Developer Student Club. Our team project aims to build a new CMS portal for Mercy Relief, a non-profit organization that supports disaster relief efforts worldwide. The newly revamped CMS portal aims to provide a more user-friendly interface for the Mercy Relief team to manage their global campaigns, press release articles, and donation drives. Some areas I have contributed but not limited to are the frontend development of the campaign creation page that consist of TinyMCE WYSIWYG editor, DragnDrop image upload, and API Integration with our backend.`,
   },
   {
     id: 12,
@@ -392,7 +397,7 @@ export const WorkData = [
       TechIcon.CSS,
     ],
     gallery: [sc_1, sc_2, sc_3],
-    overview: `Super Canvas is a Chrome Extension with over 200 active users, designed to improve the student experience and productivity on Canvas LMS.`,
+    overview: `Super Canvas is a Chrome Extension with over 200 active users, designed to improve the student experience and productivity on Canvas LMS. It provides valuable features like file preview, search, and instant download, along with an automatic deadline tracker for a better grasp of upcoming deadlines.`,
   },
   {
     id: 13,
@@ -406,28 +411,28 @@ export const WorkData = [
       TechIcon.CHATGPT,
     ],
     gallery: [],
-    overview: `InternWiz is a carefully curated platform that offers a seamless experience, enabling students to embark on their dream internship journey with ease.`,
+    overview: `InternWiz is a carefully curated platform that offers a seamless experience, enabling students to embark on their dream internship journey with ease. The platform features an infinitely scrolling dashboard that offers over 4000+ up-to-date startups. Users have the flexibility to refine their search based on parameters like startup size, industry, and funding stage. Users can conveniently add their preferred startups to your profile and when they are ready to apply, users can easily generate a personalized cold-email using generative AI. The email is tailored to details from the uploaded resume, as well as essential information such as the user's major, year of study, and preferred internship role.`,
   },
 ] as WorkContent[];
 
 export const WorkAccordionContent = [
   {
     id: 1,
-    type: "B2X",
+    type: WorkType.PERSONAL,
     icon: emptyfile,
     title: "Goodi",
     content: WorkData[WorkData.findIndex((x) => x.id === 1)],
   },
   {
     id: 2,
-    type: "B2X",
+    type: WorkType.PERSONAL,
     icon: emptyfile,
     title: "Bulgari Hotels & Resorts",
     content: WorkData[WorkData.findIndex((x) => x.id === 2)],
   },
   {
     id: 3,
-    type: "Mashfrog Group",
+    type: WorkType.HACKATHON,
     icon: emptyfile,
     title: "Alia Servizi Ambientali",
     content: WorkData[WorkData.findIndex((x) => x.id === 3)],
