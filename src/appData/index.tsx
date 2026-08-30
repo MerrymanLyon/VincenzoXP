@@ -263,7 +263,7 @@ export const WorkData = [
     gitURL: "",
     techstack: [TechIcon.NEXTJS, TechIcon.FIGMA, TechIcon.JAVASCRIPT],
     gallery: [dsta_1, dsta_2, dsta_3],
-    overview: `GTM Strategy & Brand Positioning for Goodi's direct-to-consumer e-commerce expansion. Developed a unified digital narrative, optimized the user conversion funnel, and launched performance marketing campaigns aimed at scaling brand awareness and customer retention.`,
+    overview: `GTM Strategy & Brand Positioning for Goodi's direct-to-consumer e-commerce expansion. Built like a well-composed bowl, each channel and content type served a precise role—from organic engagement to a paid media layer—to nourish the community and establish a fresh, distinctive tone of voice.`,
   },
   {
     id: 2,
@@ -272,7 +272,7 @@ export const WorkData = [
     gitURL: "",
     techstack: [TechIcon.FIGMA, TechIcon.TYPESCRIPT, TechIcon.NEXTJS],
     gallery: [hfg_1, hfg_2, hfg_3],
-    overview: `High-end brand alignment and luxury digital positioning for Bulgari Hotels & Resorts. Formulated content and digital strategies to align international online platforms with the ultra-luxury hospitality standard, optimizing multi-market customer engagement.`,
+    overview: `High-end brand alignment and luxury digital positioning for Bulgari Hotels & Resorts. Translated Bulgari's iconic heritage into a modular, immersive digital experience that balances global brand consistency with the unique local soul of each luxury property.`,
   },
   {
     id: 3,
@@ -286,7 +286,7 @@ export const WorkData = [
       { src: "/IMG_0551.png", height: 800, width: 1200 },
       { src: "/IMG_0549.png", height: 800, width: 1200 },
     ],
-    overview: `Enterprise communication and digital positioning strategy for Alia Servizi Ambientali. Translated complex public service workflows into clear corporate narratives, executing multi-channel digital touchpoints to elevate user onboarding and public engagement.`,
+    overview: `Enterprise communication and digital positioning strategy for Alia Servizi Ambientali. Used provocative messaging and a split-screen visual concept to flip public perception around waste recycling, turning a highly technical brief into a memorable, high-impact campaign.`,
   },
   {
     id: 4,
