@@ -42,7 +42,7 @@ const StartMenu = ({ menuControl }: StartMenuProps) => {
 
   const handleOpenLinkedin = () => {
     window.open(
-      "https://www.linkedin.com/in/vincenzoreina/",
+      "https://www.linkedin.com/in/vincenzo-reina/",
       "_blank",
       "noreferrer"
     );
