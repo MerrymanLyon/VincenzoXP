@@ -12,12 +12,24 @@ import Carousel from "components/Carousel/Carousel";
 import { useSelector } from "react-redux";
 import { setBackBtn } from "@/redux/tabSlice";
 import store from "@/redux/store";
+
 const loaderProp = ({ src }: any) => {
   return src;
 };
+
 interface Props {
   id: number;
 }
+
+const brandLogos = [
+  "/chicco.png",
+  "/coconino.png",
+  "/enel.png",
+  "/enelg.png",
+  "/fiocchi.png",
+  "/free.png",
+  "/mellin.png",
+];
 
 const MyWork = ({ id }: Props) => {
   const [currDisplay, setCurrDisplay] = useState<WorkContent>({
@@ -35,11 +47,13 @@ const MyWork = ({ id }: Props) => {
       state.tab.tray[state.tab.tray.findIndex((tab) => tab.id === id)]
         .backBtnActive
   );
+
   useEffect(() => {
     if (currDisplay.title !== "" && !backBtnActive) {
       store.dispatch(setBackBtn({ id: id, backBtnActive: true }));
     }
   }, [currDisplay]);
+
   useEffect(() => {
     if (!backBtnActive) {
       setCurrDisplay({
@@ -53,6 +67,7 @@ const MyWork = ({ id }: Props) => {
       });
     }
   }, [backBtnActive]);
+
   return (
     <div className={styles.main}>
       <div className={styles.leftpanel}>
@@ -94,17 +109,39 @@ const MyWork = ({ id }: Props) => {
               Begin Navigation by clicking on one of my projects on the left
               panel
             </h5>
-            <h5>These are some of the tech stacks I have experiences with!</h5>
-            <div className={styles.content_tech}>
-              {Object.values(TechIcon).map((badge) => (
-                <div key={badge} className={styles.tech_badge}>
+            <h5>
+              These are some of the brands and clients I have collaborated with!
+            </h5>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "15px",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+            >
+              {brandLogos.map((logo, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    backgroundColor: "#ffffff",
+                    padding: "10px 16px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image
-                    style={{ width: "100%", borderRadius: "20px" }}
-                    alt="tech"
-                    src={badge}
-                    width={50}
-                    height={35}
-                    loader={loaderProp}
+                    src={logo}
+                    alt="brand logo"
+                    width={100}
+                    height={45}
+                    style={{ objectFit: "contain" }}
                   />
                 </div>
               ))}
