@@ -3,48 +3,28 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: #ece9d8;
-  font-family: "Tahoma", sans-serif;
+  background-color: #050505;
+  font-family: 'Courier New', Courier, monospace;
   overflow: hidden;
   position: relative;
+  user-select: none;
 }
 
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 6px;
-  background: linear-gradient(180deg, #f0ede0 0%, #d8d2bd 100%);
-  border-bottom: 1px solid #999;
-}
-
-.addressBar {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  background: #fff;
-  border: 1px solid #7f9db9;
-  padding: 2px 6px;
-  font-size: 12px;
-}
-
-.addressInput {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-family: monospace;
-  color: #333;
-}
-
+/* Viewport principale con Scanlines e rumore visivo */
 .viewport {
   flex-grow: 1;
-  background-color: #000;
+  background-color: #020202;
   color: #00ff66;
   position: relative;
-  overflow: auto;
-  padding: 16px;
+  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Righe di scansione CRT */
 .scanlines {
   position: absolute;
   top: 0;
@@ -53,57 +33,138 @@
   height: 100%;
   background: linear-gradient(
     rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
+    rgba(0, 0, 0, 0.4) 50%
   );
   background-size: 100% 4px;
   pointer-events: none;
-  z-index: 10;
+  z-index: 20;
 }
 
-.glitchText {
+/* Flicker di flash dello schermo per ansia e stress */
+.flashOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 0, 0, 0.08);
+  pointer-events: none;
+  z-index: 15;
+  animation: alarmFlash 0.8s infinite alternate;
+}
+
+@keyframes alarmFlash {
+  0% { opacity: 0.2; background: rgba(255, 0, 0, 0.05); }
+  50% { opacity: 0.8; background: rgba(255, 0, 0, 0.18); }
+  100% { opacity: 0.1; background: rgba(0, 0, 0, 0.2); }
+}
+
+/* Sfondo Matrix Rain Text */
+.matrixRain {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  line-height: 12px;
+  color: rgba(0, 255, 102, 0.25);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.matrixColumn {
+  display: flex;
+  flex-direction: column;
+  word-break: break-all;
+  animation: fall 3s linear infinite;
+}
+
+.matrixColumn:nth-child(even) {
+  animation-duration: 2.1s;
+  color: rgba(0, 200, 255, 0.3);
+}
+
+.matrixColumn:nth-child(3n) {
+  animation-duration: 4.2s;
+  color: rgba(255, 0, 85, 0.3);
+}
+
+@keyframes fall {
+  0% { transform: translateY(-30%); }
+  100% { transform: translateY(30%); }
+}
+
+/* Muro di testo di distorsione e panico */
+.textWall {
   position: relative;
-  font-size: 20px;
-  font-weight: bold;
-  text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
-              -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
-               0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
-  animation: glitch 1.5s infinite;
+  z-index: 10;
+  text-align: center;
+  max-width: 90%;
 }
 
-@keyframes glitch {
-  0% {
-    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
-                -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
-                 0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-  14% {
-    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
-                -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
-                 0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-  15% {
-    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
-                 0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
-                -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-  49% {
-    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
-                 0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
-                -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-  50% {
-    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
-                 0.05em 0 0 rgba(0, 255, 0, 0.75),
-                 0 -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-  99% {
-    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
-                 0.05em 0 0 rgba(0, 255, 0, 0.75),
-                 0 -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-  100% {
-    text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75),
-                -0.025em -0.025em 0 rgba(0, 255, 0, 0.75),
-                -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
+.glitchHeader {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ff0055;
+  text-transform: uppercase;
+  text-shadow: 2px 0 #00ffff, -2px 0 #ff0000;
+  animation: glitchShake 0.2s infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes glitchShake {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(3px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+.subText {
+  font-size: 13px;
+  color: #00ffaa;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px rgba(0, 255, 170, 0.6);
+}
+
+.corruptedLorem {
+  font-size: 10px;
+  line-height: 14px;
+  color: #888;
+  opacity: 0.8;
+  max-height: 180px;
+  overflow: hidden;
+  text-align: justify;
+  font-family: monospace;
+  filter: blur(0.3px);
+  animation: textCorrupt 1.2s infinite alternate;
+}
+
+@keyframes textCorrupt {
+  0% { filter: blur(0.2px); skewX(0deg); }
+  50% { filter: blur(0.8px); skewX(1.5deg); color: #ff3366; }
+  100% { filter: blur(0.1px); skewX(-1deg); color: #00ff66; }
+}
+
+.warningBox {
+  margin-top: 25px;
+  border: 1px dashed #ff0055;
+  padding: 10px 15px;
+  background: rgba(255, 0, 85, 0.1);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  animation: pulseBox 0.5s infinite alternate;
+}
+
+@keyframes pulseBox {
+  0% { border-color: #ff0055; box-shadow: 0 0 5px #ff0055; }
+  100% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; }
 }
