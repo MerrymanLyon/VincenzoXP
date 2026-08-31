@@ -124,6 +124,30 @@ export const TechIcon = {
     "https://img.shields.io/badge/Supabase-1E2E3B?style=for-the-badge&logo=supabase&logoColor=white",
   CHATGPT:
     "https://img.shields.io/badge/chatGPT-74aa9c?logo=openai&logoColor=white",
+  CANVA:
+    "https://img.shields.io/badge/canva-%2300C4CC.svg?style=for-the-badge&logo=canva&logoColor=white",
+  ADOBE:
+    "https://img.shields.io/badge/adobe%20creative%20cloud-%23DA1F26.svg?style=for-the-badge&logo=adobecreativecloud&logoColor=white",
+  HUBSPOT:
+    "https://img.shields.io/badge/hubspot-%23FF7A59.svg?style=for-the-badge&logo=hubspot&logoColor=white",
+  SALESFORCE:
+    "https://img.shields.io/badge/salesforce-%2300A1E0.svg?style=for-the-badge&logo=salesforce&logoColor=white",
+  MAGNOLIA:
+    "https://img.shields.io/badge/magnolia%20cms-%23D40000.svg?style=for-the-badge&logoColor=white",
+  HOOTSUITE:
+    "https://img.shields.io/badge/hootsuite-%23141414.svg?style=for-the-badge&logo=hootsuite&logoColor=white",
+  MAILCHIMP:
+    "https://img.shields.io/badge/mailchimp-%23FFE01B.svg?style=for-the-badge&logo=mailchimp&logoColor=black",
+  NOTION:
+    "https://img.shields.io/badge/notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white",
+  ASANA:
+    "https://img.shields.io/badge/asana-%23273347.svg?style=for-the-badge&logo=asana&logoColor=white",
+  B2X:
+    "https://img.shields.io/badge/B2X%20e--commerce-%230B1D3A.svg?style=for-the-badge",
+  GOOGLE_SUITE:
+    "https://img.shields.io/badge/google%20workspace-%234285F4.svg?style=for-the-badge&logo=googleworkspace&logoColor=white",
+  MICROSOFT_SUITE:
+    "https://img.shields.io/badge/microsoft%20365-%23EA4300.svg?style=for-the-badge&logo=microsoft365&logoColor=white",
 };
 
 export const AppDirectory: Map<number, Tab> = new Map([
@@ -255,7 +279,13 @@ export const WorkData = [
     title: "Exein Photon Launch & RSA Conference 2026 - Global GTM Strategy",
     date: "Exein Project",
     gitURL: "",
-    techstack: [TechIcon.FIGMA, TechIcon.NEXTJS, TechIcon.TYPESCRIPT],
+    techstack: [
+      TechIcon.NOTION,
+      TechIcon.ASANA,
+      TechIcon.HUBSPOT,
+      TechIcon.FIGMA,
+      TechIcon.GOOGLE_SUITE,
+    ],
     gallery: [
       { src: "/IMG_0585.png", height: 800, width: 1200 },
       { src: "/IMG_0587.png", height: 800, width: 1200 },
@@ -270,7 +300,14 @@ The execution encompassed building the end-to-end messaging narrative, directing
     title: "Enel, Enel X & Enel X Way - Global Brand & Communication Strategy",
     date: "Mashfrog Group Project",
     gitURL: "",
-    techstack: [TechIcon.FIGMA, TechIcon.TYPESCRIPT, TechIcon.NEXTJS],
+    techstack: [
+      TechIcon.MICROSOFT_SUITE,
+      TechIcon.ADOBE,
+      TechIcon.HTML,
+      TechIcon.SALESFORCE,
+      TechIcon.HOOTSUITE,
+      TechIcon.CANVA,
+    ],
     gallery: [
       { src: "/IMG_0613.jpeg", height: 800, width: 1200 },
       { src: "/IMG_0612.jpeg", height: 800, width: 1200 },
@@ -285,7 +322,12 @@ The scope encompassed institutional communication data analysis, multi-channel e
     title: "Goodi - E-Commerce Brand Launch & Growth",
     date: "B2X Project",
     gitURL: "",
-    techstack: [TechIcon.NEXTJS, TechIcon.FIGMA, TechIcon.JAVASCRIPT],
+    techstack: [
+      TechIcon.HOOTSUITE,
+      TechIcon.MICROSOFT_SUITE,
+      TechIcon.ADOBE,
+      TechIcon.B2X,
+    ],
     gallery: [
       { src: "/image.png", height: 800, width: 1200 },
       { src: "/IMG_0570.png", height: 800, width: 1200 },
@@ -299,7 +341,11 @@ The scope encompassed institutional communication data analysis, multi-channel e
     title: "Bulgari Hotels & Resorts - Digital Luxury Experience",
     date: "B2X Project",
     gitURL: "",
-    techstack: [TechIcon.FIGMA, TechIcon.TYPESCRIPT, TechIcon.NEXTJS],
+    techstack: [
+      TechIcon.MICROSOFT_SUITE,
+      TechIcon.ADOBE,
+      TechIcon.MAGNOLIA,
+    ],
     gallery: [
       { src: "/IMG_0581.png", height: 800, width: 1200 },
       { src: "/IMG_0579.png", height: 800, width: 1200 },
@@ -313,7 +359,10 @@ The scope encompassed institutional communication data analysis, multi-channel e
     title: "Alia Servizi Ambientali - Digital Transformation & Corporate Campaign",
     date: "Mashfrog Group Project",
     gitURL: "",
-    techstack: [TechIcon.TYPESCRIPT, TechIcon.FIGMA, TechIcon.NEXTJS],
+    techstack: [
+      TechIcon.MICROSOFT_SUITE,
+      TechIcon.ADOBE,
+    ],
     gallery: [
       { src: "/IMG_0555.png", height: 800, width: 1200 },
       { src: "/IMG_0553.png", height: 800, width: 1200 },
