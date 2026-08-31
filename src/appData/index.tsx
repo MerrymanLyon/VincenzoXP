@@ -266,6 +266,21 @@ export const WorkData = [
 The execution encompassed building the end-to-end messaging narrative, directing international creative agencies, and managing brand activation at RSA. This launch was part of an intensive global roadshow spanning three continents in a single month, reinforcing Exein's position in decentralized embedded security.`,
   },
   {
+    id: 102,
+    title: "Enel, Enel X & Enel X Way - Global Brand & Communication Strategy",
+    date: "Mashfrog Group Project",
+    gitURL: "",
+    techstack: [TechIcon.FIGMA, TechIcon.TYPESCRIPT, TechIcon.NEXTJS],
+    gallery: [
+      { src: "/IMG_0613.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0612.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0615.jpeg", height: 800, width: 1200 },
+    ],
+    overview: `Embedded as a Strategic Communication Consultant alongside Enel's Global Content Strategy team, I managed communication strategies across Enel Group, Enel X, and Enel X Way. 
+
+The scope encompassed institutional communication data analysis, multi-channel editorial planning across group brands, and leading the international market launch of Enel X Way across European and American markets. I drove digital and multimedia content strategies positioning both commodity and non-commodity offerings, bridging high-level corporate narratives with localized GTM execution across B2B, B2C, and B2G segments. Additionally, I managed strategic global partnership communications, including high-visibility platforms such as Enel's motorsport activations.`,
+  },
+  {
     id: 1,
     title: "Goodi - E-Commerce Brand Launch & Growth",
     date: "B2X Project",
@@ -448,6 +463,13 @@ export const WorkAccordionContent = [
     content: WorkData[WorkData.findIndex((x) => x.id === 101)],
   },
   {
+    id: 102,
+    type: WorkType.PERSONAL,
+    icon: emptyfile,
+    title: "Enel & Enel X Way",
+    content: WorkData[WorkData.findIndex((x) => x.id === 102)],
+  },
+  {
     id: 1,
     type: WorkType.SCHOOL,
     icon: emptyfile,
@@ -469,8 +491,6 @@ export const WorkAccordionContent = [
     content: WorkData[WorkData.findIndex((x) => x.id === 3)],
   },
 ] as WorkFile[];
-
-// PERCORSO FILE: src/appData/index.ts
 
 export const PhotoCollection = [
   {
