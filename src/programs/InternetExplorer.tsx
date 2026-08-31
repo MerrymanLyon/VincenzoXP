@@ -8,8 +8,8 @@ interface Props {
 interface GlitchImage {
   id: number;
   src: string;
-  top: number; // in pixel
-  left: number; // in pixel
+  top: number;
+  left: number;
   size: number;
   rotation: number;
 }
@@ -51,7 +51,7 @@ const InternetExplorer = ({ id }: Props) => {
   const [warningText, setWarningText] = useState(WARNING_TEXTS[0]);
   const [techStream, setTechStream] = useState(DEEP_TECH_TERMS[0]);
 
-  // Stato per le immagini spawnate su tutto lo schermo
+  // Stato per salvare le immagini spawnate sul desktop
   const [spawnedImages, setSpawnedImages] = useState<GlitchImage[]>([]);
 
   useEffect(() => {
@@ -70,23 +70,23 @@ const InternetExplorer = ({ id }: Props) => {
     return () => clearInterval(textInterval);
   }, []);
 
-  // Gestore click per spawnare immagini su tutto il desktop
+  // Gestore click sul pulsante KILL
   const handleKillClick = () => {
     const randomSrc =
       KILL_IMAGES[Math.floor(Math.random() * KILL_IMAGES.length)];
 
-    // Genera dimensione immagine tra 100px e 260px
-    const randomSize = Math.floor(Math.random() * 160) + 100;
+    // Dimensione casuale tra 120px e 260px
+    const randomSize = Math.floor(Math.random() * 140) + 120;
 
-    // Calcola coordinate pixel relative a tutta la finestra del browser (Desktop)
+    // Coordinate casuali su tutto lo schermo (Desktop)
     const screenWidth = typeof window !== "undefined" ? window.innerWidth : 1000;
     const screenHeight = typeof window !== "undefined" ? window.innerHeight : 700;
 
     const randomTop = Math.floor(Math.random() * (screenHeight - randomSize));
     const randomLeft = Math.floor(Math.random() * (screenWidth - randomSize));
 
-    // Rotazione casuale tra -30 e +30 gradi
-    const randomRotation = Math.floor(Math.random() * 60) - 30;
+    // Inclinazione sobria/digitale per l'effetto artefatto
+    const randomRotation = Math.random() > 0.5 ? 0 : Math.floor(Math.random() * 10) - 5;
 
     const newImage: GlitchImage = {
       id: Date.now() + Math.random(),
