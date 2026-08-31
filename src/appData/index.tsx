@@ -69,6 +69,7 @@ import mr2 from "../../assets/mr2.jpg";
 import mrIcon from "../../assets/mr_icon.png";
 import MS from "../../assets/work/MS.png";
 import MS2 from "../../assets/work/MS2.png";
+import ieIcon from "../../assets/ie.png"
 
 export const TechIcon = {
   REACT:
@@ -263,6 +264,21 @@ export const AppDirectory: Map<number, Tab> = new Map([
       backBtnActive: false,
     },
   ],
+[
+  9,
+  {
+    id: 0,
+    title: "Internet Explorer",
+    message: "",
+    Icon: ieIcon, // usa un'icona esistente o importa quella di IE se presente
+    isMinimized: false,
+    zIndex: 0,
+    program: App.INTERNET_EXPLORER,
+    prompt: false,
+    backBtnActive: false,
+  },
+]
+
 ]);
 
 export const WorkAccordionTitles = [

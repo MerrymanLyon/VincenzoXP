@@ -35,6 +35,7 @@ export enum App {
   HELP,
   WARNING,
   WELCOME,
+  INTERNET_EXPLORER,
 }
 
 export enum WorkType {
