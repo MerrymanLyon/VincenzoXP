@@ -147,9 +147,9 @@
 }
 
 @keyframes textCorrupt {
-  0% { filter: blur(0.2px); skewX(0deg); }
-  50% { filter: blur(0.8px); skewX(1.5deg); color: #ff3366; }
-  100% { filter: blur(0.1px); skewX(-1deg); color: #00ff66; }
+  0% { filter: blur(0.2px); transform: skewX(0deg); }
+  50% { filter: blur(0.8px); transform: skewX(1.5deg); color: #ff3366; }
+  100% { filter: blur(0.1px); transform: skewX(-1deg); color: #00ff66; }
 }
 
 .warningBox {
