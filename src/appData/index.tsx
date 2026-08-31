@@ -296,6 +296,30 @@ export const WorkData = [
 The execution encompassed building the end-to-end messaging narrative, directing international creative agencies, and managing brand activation at RSA. This launch was part of an intensive global roadshow spanning three continents in a single month, reinforcing Exein's position in decentralized embedded security.`,
   },
   {
+    id: 103,
+    title: "Exein Series C & C1 Funding Announcements (€170M Raised) - Brand Positioning",
+    date: "Exein Project",
+    gitURL: "",
+    techstack: [
+      TechIcon.NOTION,
+      TechIcon.ASANA,
+      TechIcon.HUBSPOT,
+      TechIcon.FIGMA,
+      TechIcon.GOOGLE_SUITE,
+    ],
+    gallery: [
+      { src: "/IMG_0621.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0623.jpeg", height: 800, width: 1200 },
+    ],
+    overview: `Led the creative direction, institutional communication strategy, and digital rollout for Exein's consecutive Series C and Series C1 funding announcements, totaling €170M raised from global investors including Blue Cloud Ventures, HV Capital, and J.P. Morgan.
+
+To achieve maximum global impact across international markets, I orchestrated an extensive cross-functional coordination effort—aligning marketing with executive leadership, legal, product, and regional operations—ensuring absolute messaging accuracy across every corporate touchpoint. 
+
+I directed the narrative positioning, shaping internal and external digital collaterals, executive thought leadership messaging, and coordinating international creative agencies. The strategy evolved Exein's brand perception from a European leader in embedded cybersecurity into a dominant global player expanding into North America and Asia-Pacific (APAC). 
+
+This milestone campaign supported Exein's corporate growth past 2 billion protected devices globally, communicating key market drivers like 5x YoY revenue growth, M&A programs, and regulatory readiness for the EU Cyber Resilience Act and US Cyber Trust Mark.`,
+  },
+  {
     id: 102,
     title: "Enel, Enel X & Enel X Way - Global Brand & Communication Strategy",
     date: "Mashfrog Group Project",
@@ -510,6 +534,13 @@ export const WorkAccordionContent = [
     icon: emptyfile,
     title: "Photon Launch & RSA 2026",
     content: WorkData[WorkData.findIndex((x) => x.id === 101)],
+  },
+  {
+    id: 103,
+    type: WorkType.HACKATHON,
+    icon: emptyfile,
+    title: "Exein Series C/C1 Funding",
+    content: WorkData[WorkData.findIndex((x) => x.id === 103)],
   },
   {
     id: 102,
