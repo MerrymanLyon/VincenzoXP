@@ -5,7 +5,20 @@ interface Props {
   id?: string | number;
 }
 
-// Parole chiave dal mondo Deep Tech & Cybersecurity
+interface GlitchImage {
+  id: number;
+  src: string;
+  top: number;
+  left: number;
+  size: number;
+  rotation: number;
+}
+
+// Immagine personalizzata dal repository
+const KILL_IMAGES = [
+  "/IMG_0903-modified.png"
+];
+
 const DEEP_TECH_TERMS = [
   "KERNEL_RUNTIME_AGENT",
   "PHYSICAL_AI_THREAT",
@@ -19,7 +32,6 @@ const DEEP_TECH_TERMS = [
   "SYSTEM_CALL_HOOK"
 ];
 
-// 1. Testo criptico sugli Easter Egg nei CV (Leetspeak / Criptato)
 const EASTER_EGG_TEXTS = [
   "C0ngr4tul4t10ns 0n f1nd1ng th1s h1dd3n 34st3r 3gg. M0st r3cr31t3rs n3v3r d1sc0v3r th3 d33p3st l4y3rs 0f 4 cur r1culum v1t43.",
   "Y0u 4r3 0n3 0f th3 f3w wh0 4ctu4lly c11ck3d thr0ugh. C0r10s1ty 1s th3 tr03 m4rk 0f g3n1us 1n t3ch & str4t3gy.",
@@ -27,7 +39,6 @@ const EASTER_EGG_TEXTS = [
   "34st3r 3ggs 1n CVs 4r3 th3 u1t1m4t3 t3st. Y0u p4ss3d th3 h1dd3n ch4ll3ng3 0f th1s p0rtf0l10."
 ];
 
-// 2. Testo di avvertimento a cambio rapido
 const WARNING_TEXTS = [
   "WARNING: DO NOT CLICK THE CLOSING BUTTON BELOW! IT WILL TRIGGER AN UNRECOVERABLE SYSTEM DUMP!",
   "CRITICAL ALERT: KEEP YOUR CURSOR AWAY FROM THE KILL BUTTON! CLOSE AT YOUR OWN RISK!",
@@ -41,30 +52,53 @@ const InternetExplorer = ({ id }: Props) => {
   const [crypticText, setCrypticText] = useState(EASTER_EGG_TEXTS[0]);
   const [warningText, setWarningText] = useState(WARNING_TEXTS[0]);
   const [techStream, setTechStream] = useState(DEEP_TECH_TERMS[0]);
+  
+  // Stato per salvare le immagini irremovibili spawnate
+  const [spawnedImages, setSpawnedImages] = useState<GlitchImage[]>([]);
 
-  // Aggiornamento iper-veloce per massima tensione visiva
   useEffect(() => {
     const textInterval = setInterval(() => {
-      const randomEgg = EASTER_EGG_TEXTS[Math.floor(Math.random() * EASTER_EGG_TEXTS.length)];
-      const randomWarn = WARNING_TEXTS[Math.floor(Math.random() * WARNING_TEXTS.length)];
-      const randomTech = DEEP_TECH_TERMS[Math.floor(Math.random() * DEEP_TECH_TERMS.length)];
-
-      setCrypticText(randomEgg);
-      setWarningText(randomWarn);
-      setTechStream(randomTech);
-    }, 150); // Cambia ogni 150ms
+      setCrypticText(EASTER_EGG_TEXTS[Math.floor(Math.random() * EASTER_EGG_TEXTS.length)]);
+      setWarningText(WARNING_TEXTS[Math.floor(Math.random() * WARNING_TEXTS.length)]);
+      setTechStream(DEEP_TECH_TERMS[Math.floor(Math.random() * DEEP_TECH_TERMS.length)]);
+    }, 150);
 
     return () => clearInterval(textInterval);
   }, []);
 
+  // Gestore click sul pulsante KILL
+  const handleKillClick = () => {
+    const randomSrc = KILL_IMAGES[Math.floor(Math.random() * KILL_IMAGES.length)];
+    
+    // Genera dimensioni casuali tra 120px e 280px
+    const randomSize = Math.floor(Math.random() * 160) + 120; 
+
+    // Posizione percentuale sicura (tra 5% e 65% per mantenere visibile l'immagine)
+    const randomTop = Math.floor(Math.random() * 60) + 5;
+    const randomLeft = Math.floor(Math.random() * 60) + 5;
+
+    // Rotazione casuale tra -25 e +25 gradi
+    const randomRotation = Math.floor(Math.random() * 50) - 25;
+
+    const newImage: GlitchImage = {
+      id: Date.now() + Math.random(),
+      src: randomSrc,
+      top: randomTop,
+      left: randomLeft,
+      size: randomSize,
+      rotation: randomRotation,
+    };
+
+    setSpawnedImages((prev) => [...prev, newImage]);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.viewport}>
-        {/* Effetto rumore / scanlines / flash d'allarme accelerato */}
         <div className={styles.scanlines} />
         <div className={styles.flashOverlay} />
 
-        {/* Matrix Rain di ASCII e codice */}
+        {/* Matrix Rain */}
         <div className={styles.matrixRain}>
           {Array.from({ length: 14 }).map((_, i) => (
             <div key={i} className={styles.matrixColumn}>
@@ -75,12 +109,12 @@ const InternetExplorer = ({ id }: Props) => {
           ))}
         </div>
 
-        {/* Overlay continuo di termini Deep Tech / Cybersecurity */}
+        {/* Stream Deep Tech */}
         <div className={styles.deepTechOverlay}>
           <span>{techStream}</span>
         </div>
 
-        {/* Muro di testo centrale con allarme e Lorem Ipsum corrotto */}
+        {/* Muro di testo */}
         <div className={styles.textWall}>
           <h1 className={styles.glitchHeader}>Corruption Detected</h1>
           <p className={styles.subText}>
@@ -92,13 +126,28 @@ const InternetExplorer = ({ id }: Props) => {
             <p className={styles.fastWarningText}>{warningText}</p>
           </div>
 
-          {/* Pulsante "Kill" in stile pulito e intatto di Windows XP */}
           <div className={styles.buttonContainer}>
-            <button className={styles.xpKillButton}>
+            <button className={styles.xpKillButton} onClick={handleKillClick}>
               Kill
             </button>
           </div>
         </div>
+
+        {/* Render Immagini Irremovibili Spawnate */}
+        {spawnedImages.map((img) => (
+          <img
+            key={img.id}
+            src={img.src}
+            alt="Corrupted Artifact"
+            className={styles.unremovableImage}
+            style={{
+              top: `${img.top}%`,
+              left: `${img.left}%`,
+              width: `${img.size}px`,
+              transform: `rotate(${img.rotation}deg)`,
+            }}
+          />
+        ))}
       </div>
     </div>
   );
