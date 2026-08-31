@@ -188,7 +188,7 @@ const MyWork = ({ id }: Props) => {
               )}
             </div>
             <div className={styles.body}>
-              <h4>Techstack Used</h4>
+              <h4>Tool Used</h4>
               <div className={styles.content_tech}>
                 {currDisplay.techstack.map((tech) => (
                   <div key={tech} className={styles.tech_badge}>
