@@ -274,7 +274,7 @@ export const WorkAccordionTitles = [
 export const GalleryAccordionTitles = ["Details"];
 
 export const WorkData = [
-  {
+    {
     id: 101,
     title: "Exein Photon Launch & RSA Conference 2026 - Global GTM Strategy",
     date: "Exein Project",
@@ -288,6 +288,9 @@ export const WorkData = [
     ],
     gallery: [
       { src: "/IMG_0585.png", height: 800, width: 1200 },
+      { src: "/IMG_0628.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0626.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0625.jpeg", height: 800, width: 1200 },
       { src: "/IMG_0587.png", height: 800, width: 1200 },
       { src: "/IMG_0589.png", height: 800, width: 1200 },
     ],
