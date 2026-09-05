@@ -9,69 +9,127 @@
   user-select: text;
 }
 
-/* Toolbar stile Office XP */
-.toolbar {
-  background-color: #d4d0c8;
-  border-bottom: 1px solid #808080;
-  padding: 4px 8px;
+/* Header Office XP Top Container */
+.officeHeader {
+  background: linear-gradient(180deg, #f1efe2 0%, #ece9d8 100%);
+  border-bottom: 1px solid #919089;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Menu Bar */
+.menuBar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: inset 0 1px 0 #ffffff;
-}
-
-.toolGroup {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.separator {
-  width: 1px;
-  height: 18px;
-  background-color: #808080;
-  border-right: 1px solid #ffffff;
-  margin: 0 4px;
-}
-
-.selectBox {
-  font-family: "Tahoma", sans-serif;
+  padding: 1px 4px;
   font-size: 11px;
-  padding: 2px 4px;
-  border: 1px solid #7f9db9;
-  background-color: #ffffff;
-  height: 22px;
+  border-bottom: 1px solid #d4d0c8;
 }
 
-.toolButton {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 12px;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 5px;
-  background: #d4d0c8;
-  border: 1px solid transparent;
+.menuItem {
+  padding: 3px 8px;
+  color: #000000;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid transparent;
 }
 
-.toolButton:hover {
+.menuItem:hover {
   border: 1px solid #0a246a;
   background-color: #b6bccc;
 }
 
-.toolButton:active {
+/* Toolbars (Standard & Formatting) */
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 3px;
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #b5b2a5;
+  background: linear-gradient(180deg, #f6f5ec 0%, #e3e0d0 100%);
+}
+
+.handleGrip {
+  width: 3px;
+  height: 18px;
+  border-left: 2px dotted #808080;
+  margin-right: 3px;
+  cursor: move;
+}
+
+.separator {
+  width: 1px;
+  height: 16px;
+  background-color: #919089;
+  border-right: 1px solid #ffffff;
+  margin: 0 3px;
+}
+
+/* Select boxes stile Office XP */
+.selectBox {
+  font-family: "Tahoma", sans-serif;
+  font-size: 11px;
+  height: 21px;
+  border: 1px solid #7f9db9;
+  background-color: #ffffff;
+  padding: 0 2px;
+}
+
+/* Pulsanti Barra Strumenti XP */
+.iconBtn {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 0;
+}
+
+.iconBtn:hover {
+  border: 1px solid #0a246a;
+  background-color: #c1c8d8;
+}
+
+.iconBtn:active {
   border: 1px solid #0a246a;
   background-color: #8592b5;
 }
 
-/* Area del Foglio di lavoro stile Word */
+/* Righello graduato Word */
+.rulerContainer {
+  background-color: #d4d0c8;
+  height: 18px;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.ruler {
+  width: 100%;
+  max-width: 680px;
+  height: 14px;
+  background-color: #ffffff;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #808080;
+  border-top: 1px solid #808080;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 9px;
+  color: #555555;
+  box-sizing: border-box;
+}
+
+/* Area del foglio di lavoro */
 .documentArea {
   flex-grow: 1;
   background-color: #716f64;
-  padding: 20px;
+  padding: 15px 20px 30px 20px;
   overflow-y: auto;
   display: flex;
   justify-content: center;
@@ -80,10 +138,10 @@
 .page {
   background-color: #ffffff;
   width: 100%;
-  max-width: 700px;
+  max-width: 680px;
   min-height: 100%;
   padding: 45px 50px;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
   font-family: "Times New Roman", Times, serif;
   color: #000000;
   line-height: 1.4;
@@ -91,47 +149,44 @@
 }
 
 .docTitle {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   margin-bottom: 25px;
   border-bottom: 2px solid #000000;
   padding-bottom: 8px;
 }
 
 .sectionTitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   color: #000080;
   border-bottom: 1px dashed #000080;
-  margin-top: 22px;
-  margin-bottom: 14px;
+  margin-top: 20px;
+  margin-bottom: 12px;
   padding-bottom: 2px;
-  text-transform: uppercase;
 }
 
 .eduItem {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .degreeHeader {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .institution {
   font-style: italic;
-  font-size: 13px;
+  font-size: 12px;
   color: #222222;
   margin-top: 2px;
 }
 
 .details {
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 4px;
   color: #333333;
 }
