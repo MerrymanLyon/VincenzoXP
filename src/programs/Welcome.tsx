@@ -7,6 +7,7 @@ import cmd from "../../assets/cmd.png";
 import butterfly from "../../assets/butterfly.png";
 import mycomputer from "../../assets/mycomputer.png";
 import outlookIcon from "../../assets/outlook.png";
+import doc from "../../assets/doc.png";
 import WinAccordion from "components/WinAccordion/WinAccordion";
 import { AppDirectory } from "@/appData";
 import store from "@/redux/store";
@@ -119,6 +120,12 @@ const Welcome = ({ id }: props) => {
                   onClick={() => {
                     window.open("./Resume.pdf");
                   }}
+                />
+                <WelcomeIcon
+                  img={doc}
+                  text={"Education"}
+                  tooltip="Academic Background & Certifications"
+                  onClick={() => handleRunApp(10)}
                 />
               </div>
               <div className={styles.rightpanel_inner}>
