@@ -97,7 +97,7 @@ const Welcome = ({ id }: props) => {
 
       <div className={styles.rightpanel}>
         {!aboutmeView ? (
-          <div>
+          <div style={{ width: "100%" }}>
             <h3 className={styles.welcome_text}>
               Welcome To Vincenzo Reina's GTM Hub
             </h3>
@@ -144,7 +144,7 @@ const Welcome = ({ id }: props) => {
             </div>
           </div>
         ) : (
-          <div>
+          <div style={{ width: "100%" }}>
             <h3 className={styles.welcome_text}>About Me</h3>
             <div className={styles.content}>
               <div className={styles.pic_col}>
