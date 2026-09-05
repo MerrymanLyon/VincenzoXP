@@ -5,7 +5,7 @@ import {
   WorkContent,
   WorkFile,
   WorkType,
-} from "src/types";
+} from "@/types";
 import error from "../../assets/dialog/error.png";
 import info from "../../assets/dialog/info.png";
 import warning from "../../assets/dialog/warning.png";
@@ -14,6 +14,8 @@ import cmd from "../../assets/cmd.png";
 import mycomputer from "../../assets/mycomputer.png";
 import gallery from "../../assets/folder_image.png";
 import outlook from "../../assets/outlook.png";
+import doc from "../../assets/doc.png";
+import Education from "@/programs/Education";
 import dsta from "../../assets/workaccordion/dsta.png";
 import gdsc from "../../assets/workaccordion/gdsc.png";
 import file from "../../assets/workaccordion/file.png";
@@ -69,7 +71,7 @@ import mr2 from "../../assets/mr2.jpg";
 import mrIcon from "../../assets/mr_icon.png";
 import MS from "../../assets/work/MS.png";
 import MS2 from "../../assets/work/MS2.png";
-import ieIcon from "../../assets/ie.png"
+import ieIcon from "../../assets/ie.png";
 
 export const TechIcon = {
   REACT:
@@ -264,21 +266,34 @@ export const AppDirectory: Map<number, Tab> = new Map([
       backBtnActive: false,
     },
   ],
-[
-  9,
-  {
-    id: 0,
-    title: "Internet Explorer",
-    message: "",
-    Icon: ieIcon, // usa un'icona esistente o importa quella di IE se presente
-    isMinimized: false,
-    zIndex: 0,
-    program: App.INTERNET_EXPLORER,
-    prompt: false,
-    backBtnActive: false,
-  },
-]
-
+  [
+    9,
+    {
+      id: 0,
+      title: "Internet Explorer",
+      message: "",
+      Icon: ieIcon,
+      isMinimized: false,
+      zIndex: 0,
+      program: App.INTERNET_EXPLORER,
+      prompt: false,
+      backBtnActive: false,
+    },
+  ],
+  [
+    10,
+    {
+      id: 0,
+      title: "Education - Microsoft Word",
+      message: "",
+      Icon: doc,
+      isMinimized: false,
+      zIndex: 0,
+      program: App.EDUCATION,
+      prompt: false,
+      backBtnActive: false,
+    },
+  ],
 ]);
 
 export const WorkAccordionTitles = [
@@ -290,7 +305,7 @@ export const WorkAccordionTitles = [
 export const GalleryAccordionTitles = ["Details"];
 
 export const WorkData = [
-    {
+  {
     id: 101,
     title: "Exein Photon Launch & RSA Conference 2026 - Global GTM Strategy",
     date: "Exein Project",

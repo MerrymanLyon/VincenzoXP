@@ -1,72 +1,64 @@
-import { StaticImageData } from "next/image";
+export enum App {
+  WELCOME = "WELCOME",
+  OUTLOOK = "OUTLOOK",
+  MYWORK = "MYWORK",
+  MYGALLERY = "MYGALLERY",
+  ERROR = "ERROR",
+  WARNING = "WARNING",
+  INFO = "INFO",
+  HELP = "HELP",
+  INTERNET_EXPLORER = "INTERNET_EXPLORER",
+  EDUCATION = "EDUCATION",
+}
 
-export type Tab = {
+export enum WorkType {
+  HACKATHON = "HACKATHON",
+  PERSONAL = "PERSONAL",
+  SCHOOL = "SCHOOL",
+}
+
+export interface WorkContent {
   id: number;
   title: string;
-  message: string;
-  Icon: StaticImageData;
+  date: string;
+  gitURL: string;
+  techstack: string[];
+  gallery: { src: string; height: number; width: number }[];
+  overview: string;
+}
+
+export interface WorkFile {
+  id: number;
+  type: WorkType;
+  icon: any;
+  title: string;
+  content: WorkContent;
+}
+
+export interface GalleryImage {
+  id: number;
+  title: string;
+  location: string;
+  desc: string;
+  date: string;
+  img: { src: string; height: number; width: number };
+}
+
+export interface Tab {
+  id: number;
+  title: string;
+  message?: string;
+  Icon: any;
   isMinimized: boolean;
   zIndex: number;
   program: App;
   prompt: boolean;
   backBtnActive: boolean;
-};
+}
 
-export type RootState = {
+export interface RootState {
   tab: {
-    tray: Tab[];
     id: number;
-    currentFocusedTab: number;
-    currentZIndex: number;
+    tray: Tab[];
   };
-  system: {
-    backactive: boolean;
-  };
-};
-
-export enum App {
-  MYWORK,
-  OUTLOOK,
-  MYDOCUMENT,
-  MYGALLERY,
-  MYBLOG,
-  ERROR,
-  INFO,
-  HELP,
-  WARNING,
-  WELCOME,
-  INTERNET_EXPLORER,
 }
-
-export enum WorkType {
-  PERSONAL = "Mashfrog",
-  SCHOOL = "B2X",
-  HACKATHON = "Exein",
-}
-
-export type WorkFile = {
-  id: number;
-  type: WorkType;
-  icon: StaticImageData;
-  title: string;
-  content: WorkContent;
-};
-
-export type WorkContent = {
-  id: number;
-  title: string;
-  date: string;
-  gitURL: string;
-  gallery: StaticImageData[];
-  techstack: string[];
-  overview: string;
-};
-
-export type GalleryImage = {
-  id: number;
-  title: string;
-  desc: string;
-  location: string;
-  date: string;
-  img: StaticImageData;
-};
