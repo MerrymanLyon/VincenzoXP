@@ -1,124 +1,100 @@
 .main {
-  background-color: #6375d6;
+  display: flex;
+  flex-direction: row;
   height: 100%;
+  overflow: auto;
+}
+
+.leftpanel {
+  width: 300px;
+  max-height: 100%;
+  background: linear-gradient(rgb(116, 138, 255) 0%, rgb(64, 87, 211) 100%);
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.leftpanel::-webkit-scrollbar {
+  width: 15px;
+}
+
+.leftpanel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
+
+.rightpanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
   width: 100%;
-  padding: 0px 6px 6px 6px;
-  background-image: url("../../assets/clipboard_shadow.png");
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  outline: none;
-  padding: 20px;
-  overflow: auto;
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+  overflow-y: auto;
 }
 
-/* Sidebar Task Pane nativa di XP (identica a MyWork / MyGallery) */
-.left_col {
-  width: 200px;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.accordion_content_item {
+  margin: 5px 0px;
+  cursor: default;
 }
 
-.left_box {
-  background: linear-gradient(180deg, #c6d3f7 0%, #a2b4ed 100%);
-  border: 1px solid #7c9cf5;
-  border-radius: 3px 3px 0px 0px;
-  overflow: hidden;
-}
-
-.left_header {
-  background: linear-gradient(180deg, #225ad2 0%, #0c3192 100%);
-  color: #ffffff;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: "Tahoma", sans-serif;
-}
-
-.left_content {
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background-color: #d6dff5;
-}
-
-.contact_item {
+.accordion_content_text {
+  font-size: 12px;
+  line-height: 14px;
+  color: rgb(12, 50, 125);
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: #0c3192;
-  font-family: "Tahoma", sans-serif;
-  text-decoration: none;
+  gap: 5px;
 }
 
-.contact_text {
+.body {
   display: flex;
   flex-direction: column;
-}
-
-.contact_label {
-  font-size: 10px;
-  color: #215dc6;
-  font-weight: bold;
-}
-
-.contact_value {
-  font-size: 11px;
-  color: #000000;
-  font-weight: normal;
-}
-
-/* Area di destra (Viewport principale) */
-.right_col {
-  flex-grow: 1;
-  overflow: auto;
-}
-
-.content {
-  display: flex;
-  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  padding: 15px;
+  gap: 10px;
+  background-color: #ddd;
+  border-radius: 15px;
+  font-size: 16px;
+  margin: 10px 0;
+  box-shadow: 2px 2px #959393;
 }
 
 .welcome_text {
-  color: #d6dff5;
+  color: #111;
   font-weight: bold;
   font-size: 22px;
-  margin-top: 0;
+  margin: 0;
 }
 
 .subtitle_header {
-  color: #d6dff5;
-  font-size: 22px;
+  color: #111;
+  font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 20px;
-  color: #d6dff5;
+  font-size: 16px;
+  color: #333;
   font-weight: 500;
   margin: 0px;
-  padding: 0px;
+  line-height: 1.4;
 }
 
-.leftpanel,
-.rightpanel {
+.content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.leftpanel_inner,
+.rightpanel_inner {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 400px;
-  height: 100%;
+  width: 50%;
   padding: 15px;
   margin: 0px;
 }
@@ -137,5 +113,5 @@
 }
 
 .text_col {
-  width: 60%;
+  width: 70%;
 }

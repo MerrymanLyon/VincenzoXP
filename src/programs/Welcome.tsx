@@ -1,6 +1,5 @@
 import WelcomeIcon from "components/WelcomeIcon/WelcomeIcon";
 import styles from "./Welcome.module.css";
-import linkedin from "../../assets/linkedin.png";
 import outlook from "../../assets/outlook_large.png";
 import gallery from "../../assets/folder_image.png";
 import pdf from "../../assets/pdf.png";
@@ -8,6 +7,7 @@ import cmd from "../../assets/cmd.png";
 import butterfly from "../../assets/butterfly.png";
 import mycomputer from "../../assets/mycomputer.png";
 import outlookIcon from "../../assets/outlook.png";
+import WinAccordion from "components/WinAccordion/WinAccordion";
 import { AppDirectory } from "@/appData";
 import store from "@/redux/store";
 import { addTab, setBackBtn } from "@/redux/tabSlice";
@@ -55,57 +55,49 @@ const Welcome = ({ id }: props) => {
 
   return (
     <div className={styles.main}>
-      {/* Sidebar XP Task Pane */}
-      <div className={styles.left_col}>
-        <div className={styles.left_box}>
-          <div className={styles.left_header}>
-            <span>Contact Details</span>
+      <div className={styles.leftpanel}>
+        <WinAccordion title="Contact Details">
+          <div className={styles.accordion_content_item}>
+            <div className={styles.accordion_content_text}>
+              <Image alt="icon" src={butterfly.src} height={15} width={15} />
+              <p>
+                <strong>Name:</strong> Vincenzo Reina
+              </p>
+            </div>
           </div>
-          <div className={styles.left_content}>
-            <div className={styles.contact_item}>
-              <Image src={butterfly} alt="Name" width={16} height={16} />
-              <div className={styles.contact_text}>
-                <span className={styles.contact_label}>Name</span>
-                <span className={styles.contact_value}>Vincenzo Reina</span>
-              </div>
-            </div>
 
-            <div className={styles.contact_item}>
-              <Image src={mycomputer} alt="Location" width={16} height={16} />
-              <div className={styles.contact_text}>
-                <span className={styles.contact_label}>Location</span>
-                <span className={styles.contact_value}>Rome, Italy</span>
-              </div>
+          <div className={styles.accordion_content_item}>
+            <div className={styles.accordion_content_text}>
+              <Image alt="icon" src={mycomputer.src} height={15} width={15} />
+              <p>
+                <strong>Location:</strong> Rome, Italy
+              </p>
             </div>
-
-            <div className={styles.contact_item}>
-              <Image src={cmd} alt="Phone" width={16} height={16} />
-              <div className={styles.contact_text}>
-                <span className={styles.contact_label}>Phone</span>
-                <span className={styles.contact_value}>+39 339 192 929162</span>
-              </div>
-            </div>
-
-            <a
-              href="mailto:Vincenzo.reina@outlook.it"
-              className={styles.contact_item}
-            >
-              <Image src={outlookIcon} alt="Email" width={16} height={16} />
-              <div className={styles.contact_text}>
-                <span className={styles.contact_label}>Email</span>
-                <span className={styles.contact_value}>
-                  Vincenzo.reina@outlook.it
-                </span>
-              </div>
-            </a>
           </div>
-        </div>
+
+          <div className={styles.accordion_content_item}>
+            <div className={styles.accordion_content_text}>
+              <Image alt="icon" src={cmd.src} height={15} width={15} />
+              <p>
+                <strong>Phone:</strong> +39 339 192 929162
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.accordion_content_item}>
+            <div className={styles.accordion_content_text}>
+              <Image alt="icon" src={outlookIcon.src} height={15} width={15} />
+              <p>
+                <strong>Email:</strong> Vincenzo.reina@outlook.it
+              </p>
+            </div>
+          </div>
+        </WinAccordion>
       </div>
 
-      {/* Main Viewport */}
-      <div className={styles.right_col}>
+      <div className={styles.rightpanel}>
         {!aboutmeView ? (
-          <div>
+          <div className={styles.body}>
             <h3 className={styles.welcome_text}>
               Welcome To Vincenzo Reina's GTM Hub
             </h3>
@@ -113,24 +105,12 @@ const Welcome = ({ id }: props) => {
               Access my logs and case studies by clicking any of the icons below.
             </p>
             <div className={styles.content}>
-              <div className={styles.leftpanel}>
+              <div className={styles.leftpanel_inner}>
                 <WelcomeIcon
                   img={butterfly}
                   text={"About Me"}
                   tooltip="Who am I?"
                   onClick={handleSwitchView}
-                />
-                <WelcomeIcon
-                  img={linkedin}
-                  text={"My Linkedin"}
-                  tooltip="Connect with me!"
-                  onClick={() => {
-                    window.open(
-                      "https://www.linkedin.com/in/vincenzo-reina/",
-                      "_blank",
-                      "noreferrer"
-                    );
-                  }}
                 />
                 <WelcomeIcon
                   img={pdf}
@@ -141,7 +121,7 @@ const Welcome = ({ id }: props) => {
                   }}
                 />
               </div>
-              <div className={styles.rightpanel}>
+              <div className={styles.rightpanel_inner}>
                 <WelcomeIcon
                   img={cmd}
                   text={"My Work"}
@@ -164,9 +144,8 @@ const Welcome = ({ id }: props) => {
             </div>
           </div>
         ) : (
-          <div>
+          <div className={styles.body}>
             <h3 className={styles.welcome_text}>About Me</h3>
-            <p className={styles.subtitle}></p>
             <div className={styles.content}>
               <div className={styles.pic_col}>
                 <Image
@@ -209,7 +188,7 @@ const Welcome = ({ id }: props) => {
                     href="https://www.linkedin.com/posts/vincenzo-reina_vincenzo-reina-copywriter-creativo-umano-activity-7196158740541149184-GrnC?utm_medium=ios_app&rcm=ACoAABzhqawBrPt_BX-BHZtYI5N331tMiXzOgtA&utm_source=social_share_send&utm_campaign=copy_link"
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "#ffffff", textDecoration: "underline" }}
+                    style={{ color: "#0000ff", textDecoration: "underline" }}
                   >
                     Netflix-style streaming platform
                   </a>{" "}
@@ -218,7 +197,7 @@ const Welcome = ({ id }: props) => {
                     href="./terrazzino-menu.pdf"
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "#ffffff", textDecoration: "underline" }}
+                    style={{ color: "#0000ff", textDecoration: "underline" }}
                   >
                     fine-dining restaurant menu
                   </a>
