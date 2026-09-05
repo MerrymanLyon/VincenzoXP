@@ -19,6 +19,12 @@ import Image from "next/image";
 
 const INTRO = `Hi, I'm Vincenzo Reina, a Senior Brand & GTM Strategist. I specialize in building high-impact Go-To-Market strategies for Deeptech startups. I translate complex B2B deeptech products into high-impact market narratives without the corporate fluff.`;
 
+const INTERESTS = `Beyond strategy, I am a multi-instrumentalist. I picked up the guitar at eight and subsequently learned to play the drums, piano, and clarinet entirely by ear. I am also deeply passionate about cinema—specifically Italian neorealism—and I frequently paint scenes I capture through my camera lens.`;
+
+const INTERESTS2 = `I thrive on diverse cultural exploration. My initiatives range from shooting a photo reportage in Tibet in 2025 to organizing cultural events in my hometown, Mazara del Vallo, and performing in various musical projects. This relentless curiosity to explore new horizons defines my mindset: a creative, lateral-thinking approach that consistently proves effective in overcoming complex personal and professional challenges.`;
+
+const INTERESTS3 = `My learning process is continuous. I read extensively across American and European fiction. On the technical front, I absorb new tech daily through specialized academies, podcasts, and continuous, hands-on experimentation with AI tools to keep my stack and strategies razor-sharp.`;
+
 interface props {
   id: number;
 }
@@ -48,86 +54,56 @@ const Welcome = ({ id }: props) => {
   }, [backBtnActive]);
 
   return (
-    <div className={styles.container}>
-      {/* Sidebar XP Task Pane - Contact Details */}
-      <div className={styles.sidebar}>
-        <div className={styles.taskBox}>
-          <div className={styles.taskHeader}>
-            <span>Contact Information</span>
+    <div className={styles.main}>
+      {/* Sidebar XP Task Pane */}
+      <div className={styles.left_col}>
+        <div className={styles.left_box}>
+          <div className={styles.left_header}>
+            <span>Contact Details</span>
           </div>
-          <div className={styles.taskContent}>
-            <div className={styles.contactItem}>
-              <Image src={mycomputer} alt="Location" width={18} height={18} />
-              <div className={styles.contactText}>
-                <span className={styles.contactLabel}>Location</span>
-                <span className={styles.contactValue}>Rome, Italy</span>
+          <div className={styles.left_content}>
+            <div className={styles.contact_item}>
+              <Image src={butterfly} alt="Name" width={16} height={16} />
+              <div className={styles.contact_text}>
+                <span className={styles.contact_label}>Name</span>
+                <span className={styles.contact_value}>Vincenzo Reina</span>
+              </div>
+            </div>
+
+            <div className={styles.contact_item}>
+              <Image src={mycomputer} alt="Location" width={16} height={16} />
+              <div className={styles.contact_text}>
+                <span className={styles.contact_label}>Location</span>
+                <span className={styles.contact_value}>Rome, Italy</span>
+              </div>
+            </div>
+
+            <div className={styles.contact_item}>
+              <Image src={cmd} alt="Phone" width={16} height={16} />
+              <div className={styles.contact_text}>
+                <span className={styles.contact_label}>Phone</span>
+                <span className={styles.contact_value}>+39 339 192 929162</span>
               </div>
             </div>
 
             <a
               href="mailto:Vincenzo.reina@outlook.it"
-              className={styles.contactItem}
+              className={styles.contact_item}
             >
-              <Image src={outlookIcon} alt="Email" width={18} height={18} />
-              <div className={styles.contactText}>
-                <span className={styles.contactLabel}>Email</span>
-                <span className={styles.contactValue}>
+              <Image src={outlookIcon} alt="Email" width={16} height={16} />
+              <div className={styles.contact_text}>
+                <span className={styles.contact_label}>Email</span>
+                <span className={styles.contact_value}>
                   Vincenzo.reina@outlook.it
                 </span>
               </div>
             </a>
-
-            <a href="tel:+39339192929162" className={styles.contactItem}>
-              <Image src={cmd} alt="Phone" width={18} height={18} />
-              <div className={styles.contactText}>
-                <span className={styles.contactLabel}>Phone</span>
-                <span className={styles.contactValue}>+39 339 192 929162</span>
-              </div>
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/vincenzo-reina/"
-              target="_blank"
-              rel="noreferrer"
-              className={styles.contactItem}
-            >
-              <Image src={linkedin} alt="LinkedIn" width={18} height={18} />
-              <div className={styles.contactText}>
-                <span className={styles.contactLabel}>LinkedIn</span>
-                <span className={styles.contactValue}>In/vincenzo-reina</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.taskBox}>
-          <div className={styles.taskHeader}>
-            <span>Quick Actions</span>
-          </div>
-          <div className={styles.taskContent}>
-            <a
-              href="./Resume.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className={styles.contactItem}
-            >
-              <Image src={pdf} alt="Resume" width={18} height={18} />
-              <span className={styles.contactValue}>Download Resume (PDF)</span>
-            </a>
-            <div
-              className={styles.contactItem}
-              onClick={() => handleRunApp(1)}
-              style={{ cursor: "pointer" }}
-            >
-              <Image src={outlookIcon} alt="Send Email" width={18} height={18} />
-              <span className={styles.contactValue}>Open Mail Client</span>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Viewport Content */}
-      <div className={styles.viewport}>
+      {/* Main Viewport */}
+      <div className={styles.right_col}>
         {!aboutmeView ? (
           <div>
             <h3 className={styles.welcome_text}>
@@ -190,34 +166,35 @@ const Welcome = ({ id }: props) => {
         ) : (
           <div>
             <h3 className={styles.welcome_text}>About Me</h3>
+            <p className={styles.subtitle}></p>
             <div className={styles.content}>
               <div className={styles.pic_col}>
                 <Image
                   alt="profile_pic"
                   src="/IMG_0530.jpeg"
-                  width={180}
-                  height={180}
+                  width={200}
+                  height={200}
                   className={styles.profile_pic}
                 />
                 <Image
                   alt="profile_pic"
                   src="/IMG_0532.jpeg"
-                  width={180}
-                  height={180}
+                  width={200}
+                  height={200}
                   className={styles.profile_pic}
                 />
                 <Image
                   alt="profile_pic"
                   src="/IMG_0533.jpeg"
-                  width={180}
-                  height={180}
+                  width={200}
+                  height={200}
                   className={styles.profile_pic}
                 />
                 <Image
                   alt="profile_pic"
                   src="/IMG_0536.jpeg"
-                  width={180}
-                  height={180}
+                  width={200}
+                  height={200}
                   className={styles.profile_pic}
                 />
               </div>
@@ -227,9 +204,7 @@ const Welcome = ({ id }: props) => {
                   Why an OS interface?
                 </h3>
                 <p className={styles.subtitle}>
-                  I’ve always approached personal branding through
-                  unconventional, high-concept narratives—from designing my CV
-                  as a{" "}
+                  I’ve always approached personal branding through unconventional, high-concept narratives—from designing my CV as a{" "}
                   <a
                     href="https://www.linkedin.com/posts/vincenzo-reina_vincenzo-reina-copywriter-creativo-umano-activity-7196158740541149184-GrnC?utm_medium=ios_app&rcm=ACoAABzhqawBrPt_BX-BHZtYI5N331tMiXzOgtA&utm_source=social_share_send&utm_campaign=copy_link"
                     target="_blank"
@@ -247,39 +222,16 @@ const Welcome = ({ id }: props) => {
                   >
                     fine-dining restaurant menu
                   </a>
-                  . Choosing an interactive Windows XP OS interface is a
-                  deliberate extension of this philosophy: it bridges the gap
-                  between underground hacker/dev culture and high-level
-                  enterprise positioning, perfectly aligning with my dev-centric
-                  approach to marketing.
+                  . Choosing an interactive Windows XP OS interface is a deliberate extension of this philosophy: it bridges the gap between underground hacker/dev culture and high-level enterprise positioning, perfectly aligning with my dev-centric approach to marketing.
                 </p>
-                <h3 className={styles.subtitle_header}>Beyond Marketing</h3>
-                <p className={styles.subtitle}>
-                  Beyond strategy, I am a multi-instrumentalist. I picked up the
-                  guitar at eight and subsequently learned to play the drums,
-                  piano, and clarinet entirely by ear. I am also deeply
-                  passionate about cinema—specifically Italian neorealism—and I
-                  frequently paint scenes I capture through my camera lens.
-                </p>
+                <h3 className={styles.subtitle_header}>
+                  Beyond Marketing
+                </h3>
+                <p className={styles.subtitle}>{INTERESTS}</p>
                 <br />
-                <p className={styles.subtitle}>
-                  I thrive on diverse cultural exploration. My initiatives
-                  range from shooting a photo reportage in Tibet to organizing
-                  cultural events in my hometown, Mazara del Vallo, and
-                  performing in various musical projects. This relentless
-                  curiosity to explore new horizons defines my mindset: a
-                  creative, lateral-thinking approach that consistently proves
-                  effective in overcoming complex personal and professional
-                  challenges.
-                </p>
+                <p className={styles.subtitle}>{INTERESTS2}</p>
                 <br />
-                <p className={styles.subtitle}>
-                  My learning process is continuous. I read extensively across
-                  American and European fiction. On the technical front, I absorb
-                  new tech daily through specialized academies, podcasts, and
-                  continuous, hands-on experimentation with AI tools to keep my
-                  stack and strategies razor-sharp.
-                </p>
+                <p className={styles.subtitle}>{INTERESTS3}</p>
               </div>
             </div>
           </div>

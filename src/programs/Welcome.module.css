@@ -1,130 +1,114 @@
-/* Layout principale a due colonne */
-.container {
-  display: flex;
-  flex-direction: row;
+.main {
+  background-color: #6375d6;
   height: 100%;
   width: 100%;
-  background-color: #6375d6;
+  padding: 0px 6px 6px 6px;
   background-image: url("../../assets/clipboard_shadow.png");
   background-repeat: no-repeat;
   background-position: right bottom;
-  overflow: hidden;
-  font-family: "Tahoma", sans-serif;
+  outline: none;
+  padding: 20px;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
-/* Sidebar Task Pane in stile Windows XP */
-.sidebar {
-  width: 250px;
-  min-width: 250px;
-  background: linear-gradient(180deg, #748aff 0%, #4057d3 100%);
-  padding: 12px;
+/* Sidebar Task Pane nativa di XP (identica a MyWork / MyGallery) */
+.left_col {
+  width: 200px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  overflow-y: auto;
-  border-right: 2px solid #3146b0;
+  gap: 15px;
 }
 
-/* Riquadro della Task Pane */
-.taskBox {
-  background: #ffffff;
-  border-radius: 4px;
+.left_box {
+  background: linear-gradient(180deg, #c6d3f7 0%, #a2b4ed 100%);
   border: 1px solid #7c9cf5;
+  border-radius: 3px 3px 0px 0px;
   overflow: hidden;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Intestazione del riquadro Task Pane */
-.taskHeader {
+.left_header {
   background: linear-gradient(180deg, #225ad2 0%, #0c3192 100%);
   color: #ffffff;
-  padding: 5px 10px;
-  font-size: 12px;
+  padding: 4px 8px;
+  font-size: 11px;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #08236d;
+  font-family: "Tahoma", sans-serif;
 }
 
-.taskContent {
-  padding: 10px;
-  background-color: #d6dfed;
+.left_content {
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  background-color: #d6dff5;
 }
 
-/* Elementi dei contatti dentro la sidebar */
-.contactItem {
+.contact_item {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 11px;
   color: #0c3192;
-  font-weight: 600;
+  font-family: "Tahoma", sans-serif;
   text-decoration: none;
-  padding: 4px;
-  border-radius: 3px;
-  transition: background 0.1s ease;
 }
 
-.contactItem:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-  color: #225ad2;
-}
-
-.contactText {
+.contact_text {
   display: flex;
   flex-direction: column;
-  word-break: break-word;
 }
 
-.contactLabel {
+.contact_label {
   font-size: 10px;
-  color: #555555;
-  font-weight: normal;
-}
-
-.contactValue {
-  font-size: 11px;
-  color: #000000;
+  color: #215dc6;
   font-weight: bold;
 }
 
-/* Area dei contenuti principali sulla destra */
-.viewport {
+.contact_value {
+  font-size: 11px;
+  color: #000000;
+  font-weight: normal;
+}
+
+/* Area di destra (Viewport principale) */
+.right_col {
   flex-grow: 1;
-  padding: 20px;
   overflow: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
 }
 
 .welcome_text {
   color: #d6dff5;
   font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 8px;
+  font-size: 22px;
+  margin-top: 0;
 }
 
 .subtitle_header {
   color: #d6dff5;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 16px;
+  font-size: 20px;
   color: #d6dff5;
   font-weight: 500;
   margin: 0px;
-  line-height: 1.4;
-}
-
-.content {
-  display: flex;
-  flex-direction: row;
+  padding: 0px;
 }
 
 .leftpanel,
@@ -133,9 +117,15 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 50%;
+  width: 400px;
+  height: 100%;
   padding: 15px;
   margin: 0px;
+}
+
+.profile_pic {
+  object-fit: cover;
+  border-radius: 20%;
 }
 
 .pic_col {
@@ -146,11 +136,6 @@
   margin: 0px;
 }
 
-.profile_pic {
-  object-fit: cover;
-  border-radius: 12px;
-}
-
 .text_col {
-  width: 70%;
+  width: 60%;
 }
