@@ -8,16 +8,35 @@ interface Props {
 const Education = ({ id }: Props) => {
   return (
     <div className={styles.container}>
-      {/* Barra degli strumenti Office XP */}
+      {/* Menu Bar Word XP */}
+      <div className={styles.menuBar}>
+        <span className={styles.menuItem}>File</span>
+        <span className={styles.menuItem}>Edit</span>
+        <span className={styles.menuItem}>View</span>
+        <span className={styles.menuItem}>Insert</span>
+        <span className={styles.menuItem}>Format</span>
+        <span className={styles.menuItem}>Tools</span>
+        <span className={styles.menuItem}>Table</span>
+        <span className={styles.menuItem}>Window</span>
+        <span className={styles.menuItem}>Help</span>
+      </div>
+
+      {/* Standard & Formatting Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolGroup}>
-          <select className={styles.selectBox} defaultValue="Times New Roman">
+          <select className={styles.selectBoxStyle} defaultValue="Normal">
+            <option>Normal</option>
+            <option>Heading 1</option>
+            <option>Heading 2</option>
+            <option>Title</option>
+          </select>
+          <select className={styles.selectBoxFont} defaultValue="Times New Roman">
             <option>Times New Roman</option>
             <option>Arial</option>
             <option>Courier New</option>
             <option>Tahoma</option>
           </select>
-          <select className={styles.selectBox} defaultValue="12">
+          <select className={styles.selectBoxSize} defaultValue="12">
             <option>10</option>
             <option>11</option>
             <option>12</option>
@@ -53,14 +72,14 @@ const Education = ({ id }: Props) => {
         </div>
       </div>
 
-      {/* Foglio A4 / Word Document */}
+      {/* Foglio A4 / Word Document Area */}
       <div className={styles.documentArea}>
         <div className={styles.page}>
           <h1 className={styles.docTitle}>
-            Academic Background & Certifications
+            ACADEMIC BACKGROUND & CERTIFICATIONS
           </h1>
 
-          <div className={styles.sectionTitle}>Education</div>
+          <div className={styles.sectionTitle}>EDUCATION</div>
 
           <div className={styles.eduItem}>
             <div className={styles.degreeHeader}>
@@ -87,7 +106,7 @@ const Education = ({ id }: Props) => {
             </div>
           </div>
 
-          <div className={styles.sectionTitle}>Certifications & Academies</div>
+          <div className={styles.sectionTitle}>CERTIFICATIONS & ACADEMIES</div>
 
           <div className={styles.eduItem}>
             <div className={styles.degreeHeader}>
