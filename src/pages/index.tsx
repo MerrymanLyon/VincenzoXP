@@ -1,5 +1,6 @@
 // PERCORSO FILE: src/pages/index.tsx
 
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import StartBar from "components/StartBar/StartBar";
@@ -14,13 +15,11 @@ import cmd from "../../assets/cmd.png";
 import solitare from "../../assets/solitaire.png";
 import linkedin from "../../assets/linkedin.png";
 import WinForm from "components/WinForm/WinForm";
-import { useEffect, useState } from "react";
 import store from "@/redux/store";
 import { AppDirectory } from "@/appData";
 import { App, RootState, Tab } from "@/types";
 import { addTab } from "@/redux/tabSlice";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import Outlook from "@/programs/Outlook";
 import MyWork from "@/programs/MyWork";
 import MsgBox from "components/MsgBox/MsgBox";
@@ -38,7 +37,7 @@ export default function Home() {
     if (appConfig) {
       const newTab: Tab = {
         ...appConfig,
-        id: uuidv4(),
+        id: Date.now(), // Genera un ID numerico univoco compatibile con Redux e StartBar
         zIndex: currTabID,
       };
       store.dispatch(addTab(newTab));
