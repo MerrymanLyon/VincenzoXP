@@ -85,7 +85,7 @@ const Welcome = ({ id }: props) => {
           </div>
 
           <div className={styles.accordion_content_item}>
-            <div className={styles.accordion_content_text}>
+            <div className={`${styles.accordion_content_text} ${styles.email_text}`}>
               <Image alt="icon" src={outlookIcon.src} height={15} width={15} />
               <p>
                 <strong>Email:</strong> Vincenzo.reina@outlook.it
@@ -97,7 +97,7 @@ const Welcome = ({ id }: props) => {
 
       <div className={styles.rightpanel}>
         {!aboutmeView ? (
-          <div className={styles.body}>
+          <div>
             <h3 className={styles.welcome_text}>
               Welcome To Vincenzo Reina's GTM Hub
             </h3>
@@ -144,7 +144,7 @@ const Welcome = ({ id }: props) => {
             </div>
           </div>
         ) : (
-          <div className={styles.body}>
+          <div>
             <h3 className={styles.welcome_text}>About Me</h3>
             <div className={styles.content}>
               <div className={styles.pic_col}>
@@ -188,7 +188,7 @@ const Welcome = ({ id }: props) => {
                     href="https://www.linkedin.com/posts/vincenzo-reina_vincenzo-reina-copywriter-creativo-umano-activity-7196158740541149184-GrnC?utm_medium=ios_app&rcm=ACoAABzhqawBrPt_BX-BHZtYI5N331tMiXzOgtA&utm_source=social_share_send&utm_campaign=copy_link"
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "#0000ff", textDecoration: "underline" }}
+                    style={{ color: "#ffffff", textDecoration: "underline" }}
                   >
                     Netflix-style streaming platform
                   </a>{" "}
@@ -197,7 +197,7 @@ const Welcome = ({ id }: props) => {
                     href="./terrazzino-menu.pdf"
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "#0000ff", textDecoration: "underline" }}
+                    style={{ color: "#ffffff", textDecoration: "underline" }}
                   >
                     fine-dining restaurant menu
                   </a>

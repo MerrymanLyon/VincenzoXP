@@ -3,14 +3,21 @@
   flex-direction: row;
   height: 100%;
   overflow: auto;
+  background-color: #6375d6;
+  background-image: url("../../assets/clipboard_shadow.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  outline: none;
 }
 
 .leftpanel {
-  width: 300px;
+  width: 230px;
+  min-width: 230px;
   max-height: 100%;
   background: linear-gradient(rgb(116, 138, 255) 0%, rgb(64, 87, 211) 100%);
   padding: 10px;
   overflow-y: auto;
+  border-right: 1px solid #3146b0;
 }
 
 .leftpanel::-webkit-scrollbar {
@@ -25,49 +32,42 @@
 .rightpanel {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 10px;
+  align-items: flex-start;
+  padding: 20px;
   width: 100%;
   overflow-y: auto;
 }
 
 .accordion_content_item {
-  margin: 5px 0px;
+  margin: 6px 0px;
   cursor: default;
 }
 
 .accordion_content_text {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 14px;
   color: rgb(12, 50, 125);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  white-space: nowrap;
 }
 
-.body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  padding: 15px;
-  gap: 10px;
-  background-color: #ddd;
-  border-radius: 15px;
-  font-size: 16px;
-  margin: 10px 0;
-  box-shadow: 2px 2px #959393;
+.email_text {
+  font-size: 10.5px;
+  letter-spacing: -0.2px;
 }
 
 .welcome_text {
-  color: #111;
+  color: #d6dff5;
   font-weight: bold;
   font-size: 22px;
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .subtitle_header {
-  color: #111;
+  color: #d6dff5;
   font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
@@ -76,9 +76,10 @@
 
 .subtitle {
   font-size: 16px;
-  color: #333;
+  color: #d6dff5;
   font-weight: 500;
   margin: 0px;
+  padding: 0px;
   line-height: 1.4;
 }
 
@@ -94,8 +95,9 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 50%;
-  padding: 15px;
+  width: 320px;
+  height: 100%;
+  padding: 15px 0;
   margin: 0px;
 }
 
@@ -108,7 +110,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
+  padding: 15px 15px 15px 0;
   margin: 0px;
 }
 
