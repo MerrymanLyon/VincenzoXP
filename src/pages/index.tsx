@@ -27,14 +27,22 @@ import MsgBox from "components/MsgBox/MsgBox";
 import Welcome from "@/programs/Welcome";
 import MyGallery from "@/programs/MyGallery";
 import InternetExplorer from "@/programs/InternetExplorer";
+import Education from "@/programs/Education";
 
 export default function Home() {
   const Tabs = useSelector((state: RootState) => state.tab.tray);
   const currTabID = useSelector((state: RootState) => state.tab.id);
 
   const handleRunApp = (e: number) => {
-    const newTab = { ...AppDirectory.get(e), id: uuidv4(), zIndex: currTabID };
-    store.dispatch(addTab(newTab));
+    const appConfig = AppDirectory.get(e);
+    if (appConfig) {
+      const newTab: Tab = {
+        ...appConfig,
+        id: uuidv4(),
+        zIndex: currTabID,
+      };
+      store.dispatch(addTab(newTab));
+    }
   };
 
   const handleOpenGitHub = () => {
@@ -112,15 +120,15 @@ export default function Home() {
             title="My Hobbies"
             img={solitare}
           />
-          {Tabs.map((tab, index) => {
+          {Tabs.map((tab) => {
             return tab.isMinimized ? (
-              <></>
+              <React.Fragment key={tab.id}></React.Fragment>
             ) : (
               <WinForm
                 key={tab.id}
                 id={tab.id}
                 title={tab.title}
-                message={tab.message}
+                message={tab.message || ""}
                 icon={tab.Icon}
                 zIndex={tab.zIndex}
                 programType={tab.program}
@@ -136,10 +144,12 @@ export default function Home() {
                   <MyGallery id={tab.id} />
                 ) : tab.program === App.INTERNET_EXPLORER ? (
                   <InternetExplorer id={tab.id} />
+                ) : tab.program === App.EDUCATION ? (
+                  <Education id={tab.id} />
                 ) : tab.program === App.ERROR ? (
                   <p>{tab.message}</p>
                 ) : tab.program === App.INFO ? (
-                  <MsgBox id={tab.id} message={tab.message} icon={tab.Icon} />
+                  <MsgBox id={tab.id} message={tab.message || ""} icon={tab.Icon} />
                 ) : tab.program === App.WARNING ? (
                   <p>{tab.message}</p>
                 ) : tab.program === App.HELP ? (

@@ -45,7 +45,7 @@ export interface GalleryImage {
 }
 
 export interface Tab {
-  id: number | string;
+  id: string | number;
   title: string;
   message?: string;
   Icon: any;
