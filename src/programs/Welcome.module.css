@@ -1,40 +1,130 @@
-.main {
-  background-color: #6375d6;
+/* Layout principale a due colonne */
+.container {
+  display: flex;
+  flex-direction: row;
   height: 100%;
   width: 100%;
-  padding: 0px 6px 6px 6px;
+  background-color: #6375d6;
   background-image: url("../../assets/clipboard_shadow.png");
   background-repeat: no-repeat;
   background-position: right bottom;
-  outline: none;
-  padding: 20px;
-  overflow: auto;
+  overflow: hidden;
+  font-family: "Tahoma", sans-serif;
 }
 
-.content {
+/* Sidebar Task Pane in stile Windows XP */
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  background: linear-gradient(180deg, #748aff 0%, #4057d3 100%);
+  padding: 12px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  border-right: 2px solid #3146b0;
+}
+
+/* Riquadro della Task Pane */
+.taskBox {
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #7c9cf5;
+  overflow: hidden;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Intestazione del riquadro Task Pane */
+.taskHeader {
+  background: linear-gradient(180deg, #225ad2 0%, #0c3192 100%);
+  color: #ffffff;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #08236d;
+}
+
+.taskContent {
+  padding: 10px;
+  background-color: #d6dfed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Elementi dei contatti dentro la sidebar */
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #0c3192;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.1s ease;
+}
+
+.contactItem:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #225ad2;
+}
+
+.contactText {
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
+}
+
+.contactLabel {
+  font-size: 10px;
+  color: #555555;
+  font-weight: normal;
+}
+
+.contactValue {
+  font-size: 11px;
+  color: #000000;
+  font-weight: bold;
+}
+
+/* Area dei contenuti principali sulla destra */
+.viewport {
+  flex-grow: 1;
+  padding: 20px;
+  overflow: auto;
 }
 
 .welcome_text {
   color: #d6dff5;
   font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 
 .subtitle_header {
   color: #d6dff5;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 20px;
+  font-size: 16px;
   color: #d6dff5;
   font-weight: 500;
   margin: 0px;
-  padding: 0px;
+  line-height: 1.4;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
 }
 
 .leftpanel,
@@ -43,15 +133,9 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 400px;
-  height: 100%;
+  width: 50%;
   padding: 15px;
   margin: 0px;
-}
-
-.profile_pic {
-  object-fit: cover;
-  border-radius: 20%;
 }
 
 .pic_col {
@@ -62,6 +146,11 @@
   margin: 0px;
 }
 
+.profile_pic {
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 .text_col {
-  width: 60%;
+  width: 70%;
 }
