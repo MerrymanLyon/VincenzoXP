@@ -45,7 +45,7 @@ export interface GalleryImage {
 }
 
 export interface Tab {
-  id: number;
+  id: number | string;
   title: string;
   message?: string;
   Icon: any;
@@ -60,5 +60,7 @@ export interface RootState {
   tab: {
     id: number;
     tray: Tab[];
+    currentFocusedTab?: string | number;
+    currentZIndex?: number;
   };
 }
