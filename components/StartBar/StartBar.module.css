@@ -1,12 +1,13 @@
 .bluebar:global {
   display: flex;
   justify-content: space-between;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   left: 0;
   height: 35px;
   width: 100%;
+  z-index: 999999;
   background: linear-gradient(
     rgb(31, 47, 134) 0px,
     rgb(49, 101, 196) 3%,
