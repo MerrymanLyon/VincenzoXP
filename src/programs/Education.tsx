@@ -148,38 +148,38 @@ const Education = ({ id }: Props) => {
 
           <div className={styles.eduItem}>
             <div className={styles.degreeHeader}>
-              <span>Master's Degree / Specialization</span>
-              <span>Year - Year</span>
+              <span>Master in Storytelling e Scrittura Creativa</span>
+              <span>2016 - 2017</span>
             </div>
             <div className={styles.institution}>
-              University / Academic Institution
+              Scuola di Comunicazione IULM, Milano
             </div>
             <div className={styles.details}>
-              Focus on Brand Strategy, Marketing Narrative & Communication Architecture.
+              Advanced training in narrative structures, brand storytelling & transmedia content architecture.
             </div>
           </div>
 
           <div className={styles.eduItem}>
             <div className={styles.degreeHeader}>
-              <span>Bachelor's Degree</span>
-              <span>Year - Year</span>
+              <span>Laurea in Comunicazione, Media e Pubblicità</span>
+              <span>2013 - 2016</span>
             </div>
-            <div className={styles.institution}>University Name</div>
+            <div className={styles.institution}>IULM University, Milano</div>
             <div className={styles.details}>
-              Core studies in Communication Sciences, Media & Cultural Analysis.
+              Core studies in mass media dynamics, advertising strategy, consumer behavior & marketing.
             </div>
           </div>
 
-          <div className={styles.sectionTitle}>CERTIFICATIONS & ACADEMIES</div>
+          <div className={styles.sectionTitle}>TECHNICAL SKILLS & TOOLKIT</div>
 
           <div className={styles.eduItem}>
             <div className={styles.degreeHeader}>
-              <span>Deeptech & Marketing Strategy Certification</span>
-              <span>2024 - 2025</span>
+              <span>Tech Stack, CRM & Digital Marketing Tools</span>
+              <span>Core Stack</span>
             </div>
-            <div className={styles.institution}>Specialized Academy</div>
+            <div className={styles.institution}>Hands-on technical proficiency</div>
             <div className={styles.details}>
-              Hands-on training in AI tools, Go-To-Market frameworks and tech stack positioning.
+              CRM (HubSpot, Salesforce), CMS Platforms, Web Stack (HTML, CSS, React basics), GenAI & Analytics.
             </div>
           </div>
         </div>
