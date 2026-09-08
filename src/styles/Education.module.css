@@ -16,7 +16,7 @@
   flex-direction: column;
 }
 
-/* Toolbar 1: Menu Bar */
+/* Menu Bar */
 .menuBar {
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@
   text-decoration: underline;
 }
 
-/* Toolbar 2: Unificata con sfondo #bfbec3 */
+/* Combined Toolbar */
 .combinedToolbar {
   display: flex;
   align-items: center;
@@ -119,6 +119,7 @@
   pointer-events: none;
 }
 
+/* Righello Orizzontale */
 .rulerContainer {
   background-color: #d4d0c8;
   height: 18px;
@@ -128,7 +129,15 @@
   align-items: flex-end;
 }
 
-.ruler {
+.rulerCorner {
+  width: 16px;
+  height: 14px;
+  background-color: #d4d0c8;
+  border-right: 1px solid #808080;
+  border-top: 1px solid #808080;
+}
+
+.rulerHorizontal {
   width: 100%;
   max-width: 680px;
   height: 14px;
@@ -144,20 +153,46 @@
   box-sizing: border-box;
 }
 
-/* Area Documento: Sfondo aggiornato a #a9a798 */
+/* Area Documento */
 .documentArea {
   flex-grow: 1;
   background-color: #a9a798;
-  padding: 20px;
+  padding: 20px 20px 30px 20px;
   overflow-y: auto;
   display: flex;
   justify-content: center;
 }
 
+.documentWrapper {
+  display: flex;
+  max-width: 700px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+/* Righello Verticale */
+.rulerVertical {
+  width: 16px;
+  min-height: 100%;
+  background-color: #ffffff;
+  border-left: 1px solid #808080;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 0;
+  font-size: 9px;
+  color: #555555;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Foglio A4 */
 .page {
   background-color: #ffffff;
-  width: 100%;
-  max-width: 680px;
+  flex-grow: 1;
   min-height: 100%;
   padding: 40px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
@@ -165,6 +200,17 @@
   color: #000000;
   line-height: 1.4;
   box-sizing: border-box;
+}
+
+/* Hyperlink Word 2002 */
+.wordHyperlink {
+  color: #0000ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.wordHyperlink:hover {
+  color: #0000ff;
 }
 
 .docTitle {

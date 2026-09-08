@@ -10,7 +10,7 @@ const Education = ({ id }: Props) => {
     <div className={styles.container}>
       {/* Header Office XP */}
       <div className={styles.officeHeader}>
-        {/* Toolbar 1: Menu Bar con prima lettera sottolineata */}
+        {/* Toolbar 1: Menu Bar */}
         <div className={styles.menuBar}>
           <span className={styles.menuItem}>
             <u>F</u>ile
@@ -41,12 +41,10 @@ const Education = ({ id }: Props) => {
           </span>
         </div>
 
-        {/* Toolbar 2: Icone affiancate alla formattazione */}
+        {/* Toolbar 2: Icone + Formattazione */}
         <div className={styles.combinedToolbar}>
-          {/* Sezione Icone */}
           <div className={styles.toolSection}>
             <div className={styles.handleGrip} />
-
             <div className={styles.toolBtn} title="New">
               <img src="/New.jpeg" alt="New" className={styles.iconImg} />
             </div>
@@ -96,10 +94,8 @@ const Education = ({ id }: Props) => {
 
           <div className={styles.separatorSection} />
 
-          {/* Sezione Formattazione */}
           <div className={styles.toolSection}>
             <div className={styles.handleGrip} />
-
             <select className={styles.selectBox} style={{ width: "80px" }} defaultValue="Normal">
               <option>Normal</option>
             </select>
@@ -125,9 +121,10 @@ const Education = ({ id }: Props) => {
         </div>
       </div>
 
-      {/* Righello Word XP */}
+      {/* Righello Orizzontale */}
       <div className={styles.rulerContainer}>
-        <div className={styles.ruler}>
+        <div className={styles.rulerCorner} />
+        <div className={styles.rulerHorizontal}>
           <span>1</span>
           <span>2</span>
           <span>3</span>
@@ -137,49 +134,80 @@ const Education = ({ id }: Props) => {
         </div>
       </div>
 
-      {/* Area Documento */}
+      {/* Area Documento con Righello Verticale e Foglio */}
       <div className={styles.documentArea}>
-        <div className={styles.page}>
-          <h1 className={styles.docTitle}>
-            ACADEMIC BACKGROUND & CERTIFICATIONS
-          </h1>
-
-          <div className={styles.sectionTitle}>EDUCATION</div>
-
-          <div className={styles.eduItem}>
-            <div className={styles.degreeHeader}>
-              <span>Master in Storytelling e Scrittura Creativa</span>
-              <span>2016 - 2017</span>
-            </div>
-            <div className={styles.institution}>
-              Scuola di Comunicazione IULM, Milano
-            </div>
-            <div className={styles.details}>
-              Advanced training in narrative structures, brand storytelling & transmedia content architecture.
-            </div>
+        <div className={styles.documentWrapper}>
+          {/* Righello Verticale */}
+          <div className={styles.rulerVertical}>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
           </div>
 
-          <div className={styles.eduItem}>
-            <div className={styles.degreeHeader}>
-              <span>Laurea in Comunicazione, Media e Pubblicità</span>
-              <span>2013 - 2016</span>
-            </div>
-            <div className={styles.institution}>IULM University, Milano</div>
-            <div className={styles.details}>
-              Core studies in mass media dynamics, advertising strategy, consumer behavior & marketing.
-            </div>
-          </div>
+          {/* Foglio A4 / Word Document */}
+          <div className={styles.page}>
+            <h1 className={styles.docTitle}>
+              ACADEMIC BACKGROUND & CERTIFICATIONS
+            </h1>
 
-          <div className={styles.sectionTitle}>TECHNICAL SKILLS & TOOLKIT</div>
+            <div className={styles.sectionTitle}>EDUCATION</div>
 
-          <div className={styles.eduItem}>
-            <div className={styles.degreeHeader}>
-              <span>Tech Stack, CRM & Digital Marketing Tools</span>
-              <span>Core Stack</span>
+            <div className={styles.eduItem}>
+              <div className={styles.degreeHeader}>
+                <span>Master in Storytelling e Scrittura Creativa</span>
+                <span>2016 - 2017</span>
+              </div>
+              <div className={styles.institution}>
+                <a
+                  href="https://www.iulm.it/en/iulm/ateneo/iulm-communication-school"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.wordHyperlink}
+                >
+                  Scuola di Comunicazione IULM
+                </a>
+                , Milano
+              </div>
+              <div className={styles.details}>
+                Advanced training in narrative structures, brand storytelling & transmedia content architecture.
+              </div>
             </div>
-            <div className={styles.institution}>Hands-on technical proficiency</div>
-            <div className={styles.details}>
-              CRM (HubSpot, Salesforce), CMS Platforms, Web Stack (HTML, CSS, React basics), GenAI & Analytics.
+
+            <div className={styles.eduItem}>
+              <div className={styles.degreeHeader}>
+                <span>Laurea in Comunicazione, Media e Pubblicità</span>
+                <span>2013 - 2016</span>
+              </div>
+              <div className={styles.institution}>
+                <a
+                  href="https://www.iulm.it/en/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.wordHyperlink}
+                >
+                  IULM University
+                </a>
+                , Milano
+              </div>
+              <div className={styles.details}>
+                Core studies in mass media dynamics, advertising strategy, consumer behavior & marketing.
+              </div>
+            </div>
+
+            <div className={styles.sectionTitle}>TECHNICAL SKILLS & TOOLKIT</div>
+
+            <div className={styles.eduItem}>
+              <div className={styles.degreeHeader}>
+                <span>Tech Stack, CRM & Digital Marketing Tools</span>
+                <span>Core Stack</span>
+              </div>
+              <div className={styles.institution}>Hands-on technical proficiency</div>
+              <div className={styles.details}>
+                CRM (HubSpot, Salesforce), CMS Platforms, Web Stack (HTML, CSS, React basics), GenAI & Analytics.
+              </div>
             </div>
           </div>
         </div>
