@@ -121,7 +121,7 @@ const Education = ({ id }: Props) => {
         </div>
       </div>
 
-      {/* Righello Orizzontale */}
+      {/* Righello Orizzontale superiore */}
       <div className={styles.rulerContainer}>
         <div className={styles.rulerCorner} />
         <div className={styles.rulerHorizontal}>
@@ -134,20 +134,20 @@ const Education = ({ id }: Props) => {
         </div>
       </div>
 
-      {/* Area Documento con Righello Verticale e Foglio */}
-      <div className={styles.documentArea}>
-        <div className={styles.documentWrapper}>
-          {/* Righello Verticale */}
-          <div className={styles.rulerVertical}>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-          </div>
+      {/* Contenitore Lavoro principale */}
+      <div className={styles.workspace}>
+        {/* Righello Verticale sul bordo sinistro della finestra */}
+        <div className={styles.rulerVertical}>
+          <span>1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+          <span>5</span>
+          <span>6</span>
+        </div>
 
-          {/* Foglio A4 / Word Document */}
+        {/* Area del Documento centrata */}
+        <div className={styles.documentArea}>
           <div className={styles.page}>
             <h1 className={styles.docTitle}>
               ACADEMIC BACKGROUND & CERTIFICATIONS
@@ -201,12 +201,14 @@ const Education = ({ id }: Props) => {
 
             <div className={styles.eduItem}>
               <div className={styles.degreeHeader}>
-                <span>Tech Stack, CRM & Digital Marketing Tools</span>
+                <span>Technical Stack & Marketing Ecosystem</span>
                 <span>Core Stack</span>
               </div>
-              <div className={styles.institution}>Hands-on technical proficiency</div>
+              <div className={styles.institution}>
+                Software, CRM/CMS Platforms & Web Technologies
+              </div>
               <div className={styles.details}>
-                CRM (HubSpot, Salesforce), CMS Platforms, Web Stack (HTML, CSS, React basics), GenAI & Analytics.
+                CRM (HubSpot, Salesforce, Magnews), Analytics & Ads (Meta, Hootsuite, NJA), Web & GenAI (CMS, HTML/CSS, MailChimp).
               </div>
             </div>
           </div>
