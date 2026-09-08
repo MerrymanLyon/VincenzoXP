@@ -12,9 +12,9 @@ export enum App {
 }
 
 export enum WorkType {
-  HACKATHON = "HACKATHON",
-  PERSONAL = "PERSONAL",
-  SCHOOL = "SCHOOL",
+  HACKATHON = "Exein",
+  PERSONAL = "Mashfrog Group",
+  SCHOOL = "B2X",
 }
 
 export interface WorkContent {
