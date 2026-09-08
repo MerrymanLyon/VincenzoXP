@@ -354,6 +354,27 @@ I directed the narrative positioning, shaping internal and external digital coll
 This milestone campaign supported Exein's corporate growth past 2 billion protected devices globally, communicating key market drivers like 5x YoY revenue growth, M&A programs, and regulatory readiness for the EU Cyber Resilience Act and US Cyber Trust Mark.`,
   },
   {
+    id: 104,
+    title: "Exein APAC HQ Opening & CRA Summits (Taipei) - Brand Activation",
+    date: "Exein Project",
+    gitURL: "",
+    techstack: [
+      TechIcon.NOTION,
+      TechIcon.ASANA,
+      TechIcon.FIGMA,
+      TechIcon.HUBSPOT,
+      TechIcon.GOOGLE_SUITE,
+    ],
+    gallery: [
+      { src: "/IMG_0668.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0667.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0666.jpeg", height: 800, width: 1200 },
+    ],
+    overview: `Directed the integrated Go-To-Market strategy, brand identity implementation, and event execution for Exein’s official expansion into Asia-Pacific, encompassing the Grand Opening of the APAC Headquarters in Taipei and two strategic CRA Summits in Taipei and Hsinchu. Serving as the central operational bridge between executive leadership, product teams, and local Taiwanese agencies, I supervised all vendor workflows, cultural adaptations, and physical brand activations across both locations.
+
+My scope covered the end-to-end visual identity application—from executive venue staging to product marketing collaterals—ensuring flawless brand consistency. Additionally, I curated the event agenda, managed localized technical leave-behinds for over 150 C-level tech executives, and developed dedicated landing page architectures to drive engagement ahead of regional trade shows like Cybersec and Computex.`,
+  },
+  {
     id: 102,
     title: "Enel, Enel X & Enel X Way - Global Brand & Communication Strategy",
     date: "Mashfrog Group Project",
@@ -575,6 +596,13 @@ export const WorkAccordionContent = [
     icon: emptyfile,
     title: "Exein Series C/C1 Funding",
     content: WorkData[WorkData.findIndex((x) => x.id === 103)],
+  },
+  {
+    id: 104,
+    type: WorkType.HACKATHON,
+    icon: emptyfile,
+    title: "APAC HQ Opening & CRA Summits",
+    content: WorkData[WorkData.findIndex((x) => x.id === 104)],
   },
   {
     id: 102,
