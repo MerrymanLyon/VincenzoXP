@@ -6,6 +6,7 @@
   background-color: #d4d0c8;
   font-family: "Tahoma", sans-serif;
   overflow: hidden;
+  user-select: text;
 }
 
 .officeHeader {
@@ -19,7 +20,7 @@
   display: flex;
   align-items: center;
   height: 22px;
-  padding: 0 4px;
+  padding: 0 2px;
   font-size: 11px;
   border-bottom: 1px solid #d4d0c8;
 }
@@ -34,8 +35,8 @@
   display: flex;
   align-items: center;
   height: 26px;
-  padding: 0 6px;
-  gap: 6px;
+  padding: 0 4px;
+  gap: 2px;
   border-top: 1px solid #ffffff;
   border-bottom: 1px solid #b5b2a5;
   background: linear-gradient(180deg, #f6f5ec 0%, #e3e0d0 100%);
@@ -46,6 +47,7 @@
   height: 16px;
   border-left: 2px dotted #808080;
   margin-right: 2px;
+  margin-left: 2px;
 }
 
 .separator {
@@ -53,7 +55,7 @@
   height: 16px;
   background-color: #919089;
   border-right: 1px solid #ffffff;
-  margin: 0 2px;
+  margin: 0 3px;
 }
 
 .selectBox {
@@ -66,17 +68,31 @@
   pointer-events: none;
 }
 
-.toolBtnStatic {
+.toolBtn {
   width: 22px;
-  height: 20px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.iconImg {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+}
+
+.toolBtnText {
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Times New Roman", Times, serif;
-  font-size: 12px;
-  font-weight: bold;
-  color: #000080;
-  border: 1px solid transparent;
+  font-size: 13px;
+  color: #000000;
   pointer-events: none;
 }
 
@@ -99,7 +115,7 @@
   border-top: 1px solid #808080;
   display: flex;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 0 12px;
   font-size: 9px;
   color: #555555;
   box-sizing: border-box;
