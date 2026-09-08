@@ -10,17 +10,35 @@ const Education = ({ id }: Props) => {
     <div className={styles.container}>
       {/* Header Office XP */}
       <div className={styles.officeHeader}>
-        {/* Toolbar 1: Menu Bar */}
+        {/* Toolbar 1: Menu Bar con prima lettera sottolineata */}
         <div className={styles.menuBar}>
-          <span className={styles.menuItem}>File</span>
-          <span className={styles.menuItem}>Edit</span>
-          <span className={styles.menuItem}>View</span>
-          <span className={styles.menuItem}>Insert</span>
-          <span className={styles.menuItem}>Format</span>
-          <span className={styles.menuItem}>Tools</span>
-          <span className={styles.menuItem}>Table</span>
-          <span className={styles.menuItem}>Window</span>
-          <span className={styles.menuItem}>Help</span>
+          <span className={styles.menuItem}>
+            <u>F</u>ile
+          </span>
+          <span className={styles.menuItem}>
+            <u>E</u>dit
+          </span>
+          <span className={styles.menuItem}>
+            <u>V</u>iew
+          </span>
+          <span className={styles.menuItem}>
+            <u>I</u>nsert
+          </span>
+          <span className={styles.menuItem}>
+            F<u>o</u>rmat
+          </span>
+          <span className={styles.menuItem}>
+            <u>T</u>ools
+          </span>
+          <span className={styles.menuItem}>
+            T<u>a</u>ble
+          </span>
+          <span className={styles.menuItem}>
+            <u>W</u>indow
+          </span>
+          <span className={styles.menuItem}>
+            <u>H</u>elp
+          </span>
         </div>
 
         {/* Toolbar 2: Icone affiancate alla formattazione */}

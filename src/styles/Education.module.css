@@ -33,6 +33,10 @@
   cursor: default;
 }
 
+.menuItem u {
+  text-decoration: underline;
+}
+
 /* Toolbar 2: Unificata con sfondo #bfbec3 */
 .combinedToolbar {
   display: flex;
@@ -140,9 +144,10 @@
   box-sizing: border-box;
 }
 
+/* Area Documento: Sfondo aggiornato a #a9a798 */
 .documentArea {
   flex-grow: 1;
-  background-color: #716f64;
+  background-color: #a9a798;
   padding: 20px;
   overflow-y: auto;
   display: flex;
