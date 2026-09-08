@@ -8,9 +8,9 @@ interface Props {
 const Education = ({ id }: Props) => {
   return (
     <div className={styles.container}>
-      {/* Header Office XP Top */}
+      {/* Header Office XP */}
       <div className={styles.officeHeader}>
-        {/* Menu Bar */}
+        {/* Toolbar 1: Menu Bar */}
         <div className={styles.menuBar}>
           <span className={styles.menuItem}>File</span>
           <span className={styles.menuItem}>Edit</span>
@@ -23,85 +23,91 @@ const Education = ({ id }: Props) => {
           <span className={styles.menuItem}>Help</span>
         </div>
 
-        {/* Prima riga della Toolbar: Stili, Font e Formattazione */}
-        <div className={styles.toolbarRow}>
-          <div className={styles.handleGrip} />
-          <select className={styles.selectBox} style={{ width: "85px" }} defaultValue="Normal">
-            <option>Normal</option>
-          </select>
-          <select className={styles.selectBox} style={{ width: "125px" }} defaultValue="Times New Roman">
-            <option>Times New Roman</option>
-          </select>
-          <select className={styles.selectBox} style={{ width: "45px" }} defaultValue="12">
-            <option>12</option>
-          </select>
+        {/* Toolbar 2: Icone affiancate alla formattazione */}
+        <div className={styles.combinedToolbar}>
+          {/* Sezione Icone */}
+          <div className={styles.toolSection}>
+            <div className={styles.handleGrip} />
 
-          <div className={styles.separator} />
+            <div className={styles.toolBtn} title="New">
+              <img src="/New.jpeg" alt="New" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Open">
+              <img src="/Open.jpeg" alt="Open" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Save">
+              <img src="/Save.jpeg" alt="Save" className={styles.iconImg} />
+            </div>
 
-          <div className={styles.toolBtnText} style={{ fontWeight: "bold" }}>B</div>
-          <div className={styles.toolBtnText} style={{ fontStyle: "italic" }}>I</div>
-          <div className={styles.toolBtnText} style={{ textDecoration: "underline" }}>U</div>
+            <div className={styles.separator} />
 
-          <div className={styles.separator} />
+            <div className={styles.toolBtn} title="Mail">
+              <img src="/Mail.jpeg" alt="Mail" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Print">
+              <img src="/Print.jpeg" alt="Print" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Grammar">
+              <img src="/Gram.jpeg" alt="Grammar" className={styles.iconImg} />
+            </div>
 
-          <div className={styles.toolBtnText}>≡</div>
-          <div className={styles.toolBtnText}>≣</div>
-          <div className={styles.toolBtnText}>≡</div>
-        </div>
+            <div className={styles.separator} />
 
-        {/* Seconda riga della Toolbar: Immagini in sequenza esatta */}
-        <div className={styles.toolbarRow}>
-          <div className={styles.handleGrip} />
+            <div className={styles.toolBtn} title="Cut">
+              <img src="/Cut.jpeg" alt="Cut" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Copy">
+              <img src="/Copy.jpeg" alt="Copy" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Paste">
+              <img src="/Paste.jpeg" alt="Paste" className={styles.iconImg} />
+            </div>
 
-          <div className={styles.toolBtn} title="New">
-            <img src="/New.jpeg" alt="New" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Open">
-            <img src="/Open.jpeg" alt="Open" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Save">
-            <img src="/Save.jpeg" alt="Save" className={styles.iconImg} />
-          </div>
+            <div className={styles.separator} />
 
-          <div className={styles.separator} />
-
-          <div className={styles.toolBtn} title="Mail">
-            <img src="/Mail.jpeg" alt="Mail" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Print">
-            <img src="/Print.jpeg" alt="Print" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Grammar">
-            <img src="/Gram.jpeg" alt="Grammar" className={styles.iconImg} />
-          </div>
-
-          <div className={styles.separator} />
-
-          <div className={styles.toolBtn} title="Cut">
-            <img src="/Cut.jpeg" alt="Cut" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Copy">
-            <img src="/Copy.jpeg" alt="Copy" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Paste">
-            <img src="/Paste.jpeg" alt="Paste" className={styles.iconImg} />
+            <div className={styles.toolBtn} title="Undo">
+              <img src="/Undo.jpeg" alt="Undo" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Redo">
+              <img src="/Redo.jpeg" alt="Redo" className={styles.iconImg} />
+            </div>
+            <div className={styles.toolBtn} title="Search">
+              <img src="/Search.jpeg" alt="Search" className={styles.iconImg} />
+            </div>
           </div>
 
-          <div className={styles.separator} />
+          <div className={styles.separatorSection} />
 
-          <div className={styles.toolBtn} title="Undo">
-            <img src="/Undo.jpeg" alt="Undo" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Redo">
-            <img src="/Redo.jpeg" alt="Redo" className={styles.iconImg} />
-          </div>
-          <div className={styles.toolBtn} title="Search">
-            <img src="/Search.jpeg" alt="Search" className={styles.iconImg} />
+          {/* Sezione Formattazione */}
+          <div className={styles.toolSection}>
+            <div className={styles.handleGrip} />
+
+            <select className={styles.selectBox} style={{ width: "80px" }} defaultValue="Normal">
+              <option>Normal</option>
+            </select>
+            <select className={styles.selectBox} style={{ width: "115px" }} defaultValue="Times New Roman">
+              <option>Times New Roman</option>
+            </select>
+            <select className={styles.selectBox} style={{ width: "42px" }} defaultValue="12">
+              <option>12</option>
+            </select>
+
+            <div className={styles.separator} />
+
+            <div className={styles.toolBtnText} style={{ fontWeight: "bold" }}>B</div>
+            <div className={styles.toolBtnText} style={{ fontStyle: "italic" }}>I</div>
+            <div className={styles.toolBtnText} style={{ textDecoration: "underline" }}>U</div>
+
+            <div className={styles.separator} />
+
+            <div className={styles.toolBtnText}>≡</div>
+            <div className={styles.toolBtnText}>≣</div>
+            <div className={styles.toolBtnText}>≡</div>
           </div>
         </div>
       </div>
 
-      {/* Righello graduato Word XP */}
+      {/* Righello Word XP */}
       <div className={styles.rulerContainer}>
         <div className={styles.ruler}>
           <span>1</span>
