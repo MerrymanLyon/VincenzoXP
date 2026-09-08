@@ -150,7 +150,7 @@ const Education = ({ id }: Props) => {
         <div className={styles.documentArea}>
           <div className={styles.page}>
             <h1 className={styles.docTitle}>
-              ACADEMIC BACKGROUND & CERTIFICATIONS
+              ACADEMIC BACKGROUND & SKILLS
             </h1>
 
             <div className={styles.sectionTitle}>EDUCATION</div>

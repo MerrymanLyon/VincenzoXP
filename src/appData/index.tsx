@@ -297,9 +297,9 @@ export const AppDirectory: Map<number, Tab> = new Map([
 ]);
 
 export const WorkAccordionTitles = [
-  WorkType.HACKATHON,
-  WorkType.PERSONAL,
-  WorkType.SCHOOL,
+  WorkType.Exein,
+  WorkType.Mashfrog Group,
+  WorkType.B2X,
 ];
 
 export const GalleryAccordionTitles = ["Details"];
