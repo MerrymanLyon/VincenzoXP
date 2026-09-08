@@ -366,9 +366,9 @@ This milestone campaign supported Exein's corporate growth past 2 billion protec
       TechIcon.GOOGLE_SUITE,
     ],
     gallery: [
-      { src: "/IMG_0668.jpeg", height: 800, width: 1200 },
-      { src: "/IMG_0667.jpeg", height: 800, width: 1200 },
       { src: "/IMG_0666.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0667.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0668.jpeg", height: 800, width: 1200 },
     ],
     overview: `Directed the integrated Go-To-Market strategy, brand identity implementation, and event execution for Exein’s official expansion into Asia-Pacific, encompassing the Grand Opening of the APAC Headquarters in Taipei and two strategic CRA Summits in Taipei and Hsinchu. Serving as the central operational bridge between executive leadership, product teams, and local Taiwanese agencies, I supervised all vendor workflows, cultural adaptations, and physical brand activations across both locations.
 
