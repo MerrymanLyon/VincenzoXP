@@ -49,7 +49,15 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       {/* TOP BAR WINDOWS MOBILE */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
-          {winLogo && <Image src={winLogo.src} alt="Start" width={14} height={14} />}
+          {winLogo && (
+            <Image
+              src={winLogo.src}
+              alt="Start"
+              width={14}
+              height={14}
+              className={styles.todayIcon}
+            />
+          )}
           <span className={styles.startTitle}>Start</span>
         </div>
         <div className={styles.topBarRight}>
@@ -82,7 +90,15 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           className={styles.todayRow}
         >
           <div className={styles.todayLeft}>
-            {pdf && <Image src={pdf.src} alt="Resume" className={styles.todayIcon} width={16} height={16} />}
+            {pdf && (
+              <Image
+                src={pdf.src}
+                alt="Resume"
+                className={styles.todayIcon}
+                width={16}
+                height={16}
+              />
+            )}
             <span>My Resume (CV.pdf)</span>
           </div>
         </a>
@@ -106,7 +122,15 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
         {/* VOCE 4: WORK EXPERIENCE & EDUCATION */}
         <div className={styles.todayRow} onClick={() => setShowExpModal(true)}>
           <div className={styles.todayLeft}>
-            {mycomputer && <Image src={mycomputer.src} alt="Work" className={styles.todayIcon} width={16} height={16} />}
+            {mycomputer && (
+              <Image
+                src={mycomputer.src}
+                alt="Work"
+                className={styles.todayIcon}
+                width={16}
+                height={16}
+              />
+            )}
             <span>Work Experience & Education</span>
           </div>
         </div>
@@ -119,15 +143,29 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           className={styles.todayRow}
         >
           <div className={styles.todayLeft}>
-            {linkedin && <Image src={linkedin.src} alt="LinkedIn" className={styles.todayIcon} width={16} height={16} />}
+            {linkedin && (
+              <Image
+                src={linkedin.src}
+                alt="LinkedIn"
+                className={styles.todayIcon}
+                width={16}
+                height={16}
+              />
+            )}
             <span>LinkedIn Profile</span>
           </div>
         </a>
       </div>
 
-      {/* LOGO WINDOWS XP WATERMARK IN BASSO A DESTRA */}
+      {/* LOGO WINDOWS XP WATERMARK IN BASSO A DESTRA (IMG_0689.webp) */}
       <div className={styles.winLogoWatermark}>
-        <Image src="/IMG_0687.jpeg" alt="Windows Logo" width={85} height={70} style={{ objectFit: "contain" }} />
+        <Image
+          src="/IMG_0689.webp"
+          alt="Windows Logo"
+          width={85}
+          height={70}
+          className={styles.winLogoImage}
+        />
       </div>
 
       {/* MODAL WORK EXPERIENCE */}
@@ -173,7 +211,13 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       <div className={styles.bottomBar}>
         <button className={styles.bottomButton} onClick={onSwitchToDesktop}>
           {mycomputer && (
-            <Image src={mycomputer.src} alt="Desktop" width={14} height={14} />
+            <Image
+              src={mycomputer.src}
+              alt="Desktop"
+              width={14}
+              height={14}
+              className={styles.todayIcon}
+            />
           )}
           <span>Full XP Desktop</span>
         </button>
