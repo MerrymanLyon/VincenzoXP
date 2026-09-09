@@ -35,11 +35,23 @@ export default function Home() {
 
   const [isMobile, setIsMobile] = useState(false);
   const [forceDesktop, setForceDesktop] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const userAgent = typeof window !== "undefined" ? navigator.userAgent : "";
+      const isMobileDevice =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          userAgent
+        );
+      const isSmallScreen = window.innerWidth <= 768;
+
+      setIsMobile(
+        isSmallScreen || (isMobileDevice && window.innerWidth < window.innerHeight)
+      );
     };
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -50,7 +62,7 @@ export default function Home() {
     if (appConfig) {
       const newTab: Tab = {
         ...appConfig,
-        id: Date.now(), // Genera un ID numerico univoco compatibile con Redux e StartBar
+        id: Date.now(),
         zIndex: currTabID,
       };
       store.dispatch(addTab(newTab));
@@ -72,6 +84,11 @@ export default function Home() {
   const handleOpenResume = () => {
     window.open("./Resume.pdf");
   };
+
+  // Evita problemi di discrepanza tra Server-Side Rendering e Client hydration
+  if (!isMounted) {
+    return null;
+  }
 
   // Se l'utente è da Mobile e non ha richiesto la versione Desktop XP completa:
   if (isMobile && !forceDesktop) {
