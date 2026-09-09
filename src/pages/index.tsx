@@ -27,10 +27,23 @@ import Welcome from "@/programs/Welcome";
 import MyGallery from "@/programs/MyGallery";
 import InternetExplorer from "@/programs/InternetExplorer";
 import Education from "@/programs/Education";
+import PocketPC from "components/PocketPC/PocketPC";
 
 export default function Home() {
   const Tabs = useSelector((state: RootState) => state.tab.tray);
   const currTabID = useSelector((state: RootState) => state.tab.id);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [forceDesktop, setForceDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleRunApp = (e: number) => {
     const appConfig = AppDirectory.get(e);
@@ -59,6 +72,11 @@ export default function Home() {
   const handleOpenResume = () => {
     window.open("./Resume.pdf");
   };
+
+  // Se l'utente è da Mobile e non ha richiesto la versione Desktop XP completa:
+  if (isMobile && !forceDesktop) {
+    return <PocketPC onSwitchToDesktop={() => setForceDesktop(true)} />;
+  }
 
   return (
     <>
