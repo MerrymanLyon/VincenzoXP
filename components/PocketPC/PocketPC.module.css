@@ -1,8 +1,8 @@
 .container {
   width: 100vw;
   min-height: 100vh;
-  /* Sfondo Bliss (Colline XP) o azzurro chiaro di fallback */
-  background: #62a3f7 url("../../assets/bliss.png") no-repeat center center / cover;
+  /* Utilizza lo sfondo Bliss ufficiale caricato in public/IMG_0688.webp */
+  background: #62a3f7 url("/IMG_0688.webp") no-repeat center center / cover;
   color: #000000;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   display: flex;
@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 6px;
+  padding: 0 8px;
   border-bottom: 1px solid #204098;
   color: #ffffff;
   font-size: 12px;
@@ -31,7 +31,7 @@
 .topBarLeft, .topBarRight {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .startTitle {
@@ -47,25 +47,26 @@
   flex-direction: column;
   position: relative;
   z-index: 2;
+  margin-top: 4px;
 }
 
-/* RIGHE TODAY SCREEN (STILE ORIGINALE WIN MOBILE) */
+/* RIGHE TODAY SCREEN (DIVISORI ORIZZONTALI TRASPARENTI) */
 .todayRow {
-  background: rgba(230, 240, 255, 0.72);
-  border-bottom: 1px solid #7ea1ee;
-  padding: 6px 10px;
+  background: rgba(230, 240, 255, 0.75);
+  border-bottom: 1px solid rgba(126, 161, 238, 0.8);
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #000066;
   text-decoration: none;
   font-size: 13px;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
   cursor: pointer;
 }
 
 .todayRow:active {
-  background: rgba(180, 210, 255, 0.9);
+  background: rgba(180, 210, 255, 0.95);
 }
 
 .todayLeft {
@@ -81,7 +82,7 @@
 }
 
 .headerRow {
-  background: rgba(200, 225, 255, 0.85);
+  background: rgba(200, 225, 255, 0.88);
   font-weight: bold;
   color: #000080;
 }
@@ -89,14 +90,15 @@
 .subText {
   font-size: 11px;
   color: #333399;
+  font-weight: normal;
 }
 
 /* WINDOWS XP LOGO WATERMARK IN BASSO A DESTRA */
 .winLogoWatermark {
   position: absolute;
-  bottom: 42px;
+  bottom: 38px;
   right: 12px;
-  opacity: 0.85;
+  opacity: 0.9;
   pointer-events: none;
   z-index: 1;
 }

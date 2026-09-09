@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./PocketPC.module.css";
 import Image from "next/image";
 
-// Import asset di sistema
+// Import degli asset
 import mycomputer from "../../assets/mycomputer.png";
 import pdf from "../../assets/pdf.png";
 import linkedin from "../../assets/linkedin.png";
@@ -71,7 +71,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
         {/* RIGA STATUS */}
         <div className={styles.todayRow}>
-          <span>Status: Open to opportunities</span>
+          <span>Status: Open to new opportunities</span>
         </div>
 
         {/* VOCE 1: RESUME (PDF) */}
@@ -125,9 +125,9 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
         </a>
       </div>
 
-      {/* BANDIERA WINDOWS XP IN BASSO A DESTRA (WATERMARK) */}
+      {/* LOGO WINDOWS XP WATERMARK IN BASSO A DESTRA */}
       <div className={styles.winLogoWatermark}>
-        {winLogo && <Image src={winLogo.src} alt="Windows" width={70} height={70} />}
+        <Image src="/IMG_0687.jpeg" alt="Windows Logo" width={85} height={70} style={{ objectFit: "contain" }} />
       </div>
 
       {/* MODAL WORK EXPERIENCE */}
