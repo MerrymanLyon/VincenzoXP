@@ -32,15 +32,17 @@ const Outlook = () => {
     setIsSending(true);
 
     const payload = {
-      service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-      template_id: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-      user_id: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-      template_params: {
-        from_email: from,
-        subject: subject,
-        message: message,
-      },
-    };
+  service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+  template_id: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+  user_id: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+  public_key: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+  template_params: {
+    from_email: from,
+    subject: subject,
+    message: message,
+  },
+};
+
 
     try {
       const response = await fetch(
