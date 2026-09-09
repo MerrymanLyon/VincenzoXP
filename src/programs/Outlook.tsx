@@ -31,11 +31,34 @@ const Outlook = () => {
 
     setIsSending(true);
 
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    // Controllo se le variabili sono caricate correttamente
+    if (!serviceId || !templateId || !publicKey) {
+      const missingVars = [];
+      if (!serviceId) missingVars.push("SERVICE_ID");
+      if (!templateId) missingVars.push("TEMPLATE_ID");
+      if (!publicKey) missingVars.push("PUBLIC_KEY");
+
+      const errorTab = {
+        ...AppDirectory.get(5),
+        id: uuidv4(),
+        zIndex: currTabID,
+        title: "Error - Missing Config",
+        message: `Missing Environment Variables: ${missingVars.join(", ")}`,
+      };
+      store.dispatch(addTab(errorTab));
+      setIsSending(false);
+      return;
+    }
+
     const payload = {
-      service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-      template_id: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-      user_id: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-      public_key: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+      service_id: serviceId,
+      template_id: templateId,
+      user_id: publicKey,
+      public_key: publicKey,
       template_params: {
         from_name: from,
         from_email: from,
@@ -56,6 +79,8 @@ const Outlook = () => {
         }
       );
 
+      const responseText = await response.text();
+
       if (response.ok) {
         const newTab = {
           ...AppDirectory.get(7),
@@ -70,15 +95,23 @@ const Outlook = () => {
         setSubject("");
         setMessage("");
       } else {
-        throw new Error("Failed to send");
+        // Mostra il codice e il messaggio di errore restituito da EmailJS
+        const errorTab = {
+          ...AppDirectory.get(5),
+          id: uuidv4(),
+          zIndex: currTabID,
+          title: `Error ${response.status}`,
+          message: `EmailJS Error (${response.status}): ${responseText}`,
+        };
+        store.dispatch(addTab(errorTab));
       }
-    } catch (error) {
+    } catch (error: any) {
       const errorTab = {
         ...AppDirectory.get(5),
         id: uuidv4(),
         zIndex: currTabID,
-        title: "Error - Email Failed",
-        message: "Failed to send email. Please try again later.",
+        title: "Network Error",
+        message: `Fetch failed: ${error?.message || "Unknown error"}`,
       };
       store.dispatch(addTab(errorTab));
     } finally {
