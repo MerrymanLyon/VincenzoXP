@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import StartBar from "components/StartBar/StartBar";
 import "xp.css/dist/XP.css";
 import styles from "../styles/Home.module.css";
@@ -39,22 +38,28 @@ export default function Home() {
 
   useEffect(() => {
     setIsMounted(true);
-    const checkMobile = () => {
-      const userAgent = typeof window !== "undefined" ? navigator.userAgent : "";
-      const isMobileDevice =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          userAgent
-        );
-      const isSmallScreen = window.innerWidth <= 768;
 
-      setIsMobile(
-        isSmallScreen || (isMobileDevice && window.innerWidth < window.innerHeight)
-      );
+    const checkMobile = () => {
+      // 1. Rilevamento via UserAgent
+      const ua = navigator.userAgent || "";
+      const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+
+      // 2. Rilevamento via screen / matchMedia (ignorando i pixel logici scalati del viewport)
+      const isSmallScreen = window.matchMedia("(max-width: 768px)").matches || window.screen.width <= 768;
+
+      // 3. Touch screen + orientamento verticale
+      const isTouchVertical = navigator.maxTouchPoints > 0 && window.innerHeight > window.innerWidth;
+
+      setIsMobile(isMobileUA || isSmallScreen || isTouchVertical);
     };
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    window.addEventListener("orientationchange", checkMobile);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("orientationchange", checkMobile);
+    };
   }, []);
 
   const handleRunApp = (e: number) => {
@@ -85,7 +90,6 @@ export default function Home() {
     window.open("./Resume.pdf");
   };
 
-  // Evita problemi di discrepanza tra Server-Side Rendering e Client hydration
   if (!isMounted) {
     return null;
   }
@@ -100,7 +104,7 @@ export default function Home() {
       <Head>
         <title>Vincenzo Reina - Senior Brand & GTM Strategist</title>
         <meta name="description" content="My Personal Space" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
       <main className={styles.main}>
