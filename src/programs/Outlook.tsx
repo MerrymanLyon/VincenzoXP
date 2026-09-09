@@ -35,7 +35,6 @@ const Outlook = () => {
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    // Controllo se le variabili sono caricate correttamente
     if (!serviceId || !templateId || !publicKey) {
       const missingVars = [];
       if (!serviceId) missingVars.push("SERVICE_ID");
@@ -58,7 +57,6 @@ const Outlook = () => {
       service_id: serviceId,
       template_id: templateId,
       user_id: publicKey,
-      public_key: publicKey,
       template_params: {
         from_name: from,
         from_email: from,
@@ -95,7 +93,6 @@ const Outlook = () => {
         setSubject("");
         setMessage("");
       } else {
-        // Mostra il codice e il messaggio di errore restituito da EmailJS
         const errorTab = {
           ...AppDirectory.get(5),
           id: uuidv4(),
