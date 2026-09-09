@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import styles from "./PocketPC.module.css";
 import Image from "next/image";
 
-// Import degli asset con percorsi corretti (identici a index.tsx)
+// Import asset di sistema
 import mycomputer from "../../assets/mycomputer.png";
 import pdf from "../../assets/pdf.png";
 import linkedin from "../../assets/linkedin.png";
+import winLogo from "../../assets/winlogo.png";
 
 interface PocketPCProps {
   onSwitchToDesktop: () => void;
@@ -45,102 +46,95 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
   return (
     <div className={styles.container}>
-      {/* TOP BAR */}
+      {/* TOP BAR WINDOWS MOBILE */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
-          <span style={{ fontSize: "14px" }}>❖</span>
+          {winLogo && <Image src={winLogo.src} alt="Start" width={14} height={14} />}
           <span className={styles.startTitle}>Start</span>
         </div>
         <div className={styles.topBarRight}>
-          <span>🔊</span>
-          <span>🔋</span>
           <span>{time || "12:00"}</span>
         </div>
       </div>
 
-      {/* TODAY SCREEN CONTENT */}
+      {/* TODAY SCREEN (MENU A RIGHE DIVISE) */}
       <div className={styles.content}>
-        <div className={styles.headerSection}>
-          <div className={styles.dateText}>
-            {new Date().toLocaleDateString("en-US", {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+        {/* RIGA DATA & UTENTE */}
+        <div className={`${styles.todayRow} ${styles.headerRow}`}>
+          <div className={styles.todayLeft}>
+            <div>
+              <div>Vincenzo Reina</div>
+              <div className={styles.subText}>Senior Brand & GTM Strategist</div>
+            </div>
           </div>
-          <div className={styles.ownerText}>Vincenzo Reina</div>
-          <div className={styles.statusText}>Senior Brand & GTM Strategist</div>
         </div>
 
-        <div className={styles.itemList}>
-          {/* VOCE 1: RESUME */}
-          <a
-            href="./Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.itemRow}
-          >
-            <div className={styles.itemLeft}>
-              {pdf ? (
-                <Image src={pdf.src} alt="Resume" width={20} height={20} />
-              ) : (
-                "📄"
-              )}
-              <span>My Resume (CV)</span>
-            </div>
-            <span className={styles.arrow}>➔</span>
-          </a>
-
-          {/* VOCE 2: OUTLOOK / MAILTO */}
-          <a
-            href="mailto:vincenzo.reina@outlook.it"
-            className={styles.itemRow}
-          >
-            <div className={styles.itemLeft}>
-              <span>✉️</span>
-              <span>Send Email</span>
-            </div>
-            <span className={styles.arrow}>➔</span>
-          </a>
-
-          {/* VOCE 3: WORK EXPERIENCE & EDU */}
-          <div
-            className={styles.itemRow}
-            onClick={() => setShowExpModal(true)}
-          >
-            <div className={styles.itemLeft}>
-              <span>💼</span>
-              <span>Work Experience & Education</span>
-            </div>
-            <span className={styles.arrow}>➔</span>
-          </div>
-
-          {/* VOCE 4: LINKEDIN */}
-          <a
-            href="https://www.linkedin.com/in/vincenzo-reina/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.itemRow}
-          >
-            <div className={styles.itemLeft}>
-              {linkedin ? (
-                <Image src={linkedin.src} alt="LinkedIn" width={20} height={20} />
-              ) : (
-                "🔗"
-              )}
-              <span>LinkedIn Profile</span>
-            </div>
-            <span className={styles.arrow}>➔</span>
-          </a>
+        {/* RIGA STATUS */}
+        <div className={styles.todayRow}>
+          <span>Status: Open to opportunities</span>
         </div>
+
+        {/* VOCE 1: RESUME (PDF) */}
+        <a
+          href="./Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.todayRow}
+        >
+          <div className={styles.todayLeft}>
+            {pdf && <Image src={pdf.src} alt="Resume" className={styles.todayIcon} width={16} height={16} />}
+            <span>My Resume (CV.pdf)</span>
+          </div>
+        </a>
+
+        {/* VOCE 2: OUTLOOK / MAILTO */}
+        <a href="mailto:vincenzo.reina@outlook.it" className={styles.todayRow}>
+          <div className={styles.todayLeft}>
+            <span>✉</span>
+            <span>Send Email</span>
+          </div>
+        </a>
+
+        {/* VOCE 3: CALL ME */}
+        <a href="tel:+390000000000" className={styles.todayRow}>
+          <div className={styles.todayLeft}>
+            <span>✆</span>
+            <span>Call Me</span>
+          </div>
+        </a>
+
+        {/* VOCE 4: WORK EXPERIENCE & EDUCATION */}
+        <div className={styles.todayRow} onClick={() => setShowExpModal(true)}>
+          <div className={styles.todayLeft}>
+            {mycomputer && <Image src={mycomputer.src} alt="Work" className={styles.todayIcon} width={16} height={16} />}
+            <span>Work Experience & Education</span>
+          </div>
+        </div>
+
+        {/* VOCE 5: LINKEDIN */}
+        <a
+          href="https://www.linkedin.com/in/vincenzo-reina/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.todayRow}
+        >
+          <div className={styles.todayLeft}>
+            {linkedin && <Image src={linkedin.src} alt="LinkedIn" className={styles.todayIcon} width={16} height={16} />}
+            <span>LinkedIn Profile</span>
+          </div>
+        </a>
       </div>
 
-      {/* MODAL ESPERIENZE */}
+      {/* BANDIERA WINDOWS XP IN BASSO A DESTRA (WATERMARK) */}
+      <div className={styles.winLogoWatermark}>
+        {winLogo && <Image src={winLogo.src} alt="Windows" width={70} height={70} />}
+      </div>
+
+      {/* MODAL WORK EXPERIENCE */}
       {showExpModal && (
         <div className={styles.modal}>
           <div className={styles.modalHeader}>
-            <span className={styles.modalTitle}>Experience & Edu</span>
+            <span className={styles.modalTitle}>Experience & Education</span>
             <button
               className={styles.closeBtn}
               onClick={() => setShowExpModal(false)}
@@ -149,15 +143,15 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             </button>
           </div>
 
-          <div className={styles.card}>
+          <div className={styles.modalRow}>
             <div className={styles.cardTitle}>Senior Brand & GTM Strategist</div>
             <div className={styles.cardSubtitle}>2022 - Present</div>
             <div className={styles.cardDesc}>
-              Leading GTM strategies, brand positionings, and marketing campaigns.
+              Leading GTM strategies, brand positioning, and marketing campaigns.
             </div>
           </div>
 
-          <div className={styles.card}>
+          <div className={styles.modalRow}>
             <div className={styles.cardTitle}>Marketing & Brand Specialist</div>
             <div className={styles.cardSubtitle}>2019 - 2022</div>
             <div className={styles.cardDesc}>
@@ -165,7 +159,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             </div>
           </div>
 
-          <div className={styles.card}>
+          <div className={styles.modalRow}>
             <div className={styles.cardTitle}>Education & Degree</div>
             <div className={styles.cardSubtitle}>University</div>
             <div className={styles.cardDesc}>
@@ -179,13 +173,12 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       <div className={styles.bottomBar}>
         <button className={styles.bottomButton} onClick={onSwitchToDesktop}>
           {mycomputer && (
-            <Image src={mycomputer.src} alt="Desktop" width={16} height={16} />
+            <Image src={mycomputer.src} alt="Desktop" width={14} height={14} />
           )}
           <span>Full XP Desktop</span>
         </button>
 
         <button className={styles.bottomButton} onClick={handleShare}>
-          <span>🔗</span>
           <span>Share</span>
         </button>
       </div>
