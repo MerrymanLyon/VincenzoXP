@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import styles from "./PocketPC.module.css";
 import Image from "next/image";
 
-// Import degli asset che hai già
-import winLogo from "../../assets/winlogo.png"; // Controlla il percorso relativo corretto
-import myComputer from "../../assets/desktop/mycomputer.png";
-import myResume from "../../assets/desktop/myresume.png";
-import outlookIcon from "../../assets/desktop/outlook.png";
-import linkedinIcon from "../../assets/desktop/linkedin.png";
+// Import degli asset con percorsi corretti (identici a index.tsx)
+import mycomputer from "../../assets/mycomputer.png";
+import pdf from "../../assets/pdf.png";
+import linkedin from "../../assets/linkedin.png";
 
 interface PocketPCProps {
   onSwitchToDesktop: () => void;
@@ -50,7 +48,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       {/* TOP BAR */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
-          {winLogo && <Image src={winLogo.src} alt="Start" width={16} height={16} />}
+          <span style={{ fontSize: "14px" }}>❖</span>
           <span className={styles.startTitle}>Start</span>
         </div>
         <div className={styles.topBarRight}>
@@ -72,20 +70,20 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             })}
           </div>
           <div className={styles.ownerText}>Vincenzo Reina</div>
-          <div className={styles.statusText}>Senior Brand & GTM</div>
+          <div className={styles.statusText}>Senior Brand & GTM Strategist</div>
         </div>
 
         <div className={styles.itemList}>
           {/* VOCE 1: RESUME */}
           <a
-            href="/resume.pdf"
+            href="./Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.itemRow}
           >
             <div className={styles.itemLeft}>
-              {myResume ? (
-                <Image src={myResume.src} alt="Resume" width={20} height={20} />
+              {pdf ? (
+                <Image src={pdf.src} alt="Resume" width={20} height={20} />
               ) : (
                 "📄"
               )}
@@ -100,26 +98,13 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             className={styles.itemRow}
           >
             <div className={styles.itemLeft}>
-              {outlookIcon ? (
-                <Image src={outlookIcon.src} alt="Outlook" width={20} height={20} />
-              ) : (
-                "✉️"
-              )}
-              <span>Send Email (Mailto)</span>
+              <span>✉️</span>
+              <span>Send Email</span>
             </div>
             <span className={styles.arrow}>➔</span>
           </a>
 
-          {/* VOCE 3: CHIAMA */}
-          <a href="tel:+393000000000" className={styles.itemRow}>
-            <div className={styles.itemLeft}>
-              <span>📞</span>
-              <span>Call Me</span>
-            </div>
-            <span className={styles.arrow}>➔</span>
-          </a>
-
-          {/* VOCE 4: WORK EXPERIENCE & EDU */}
+          {/* VOCE 3: WORK EXPERIENCE & EDU */}
           <div
             className={styles.itemRow}
             onClick={() => setShowExpModal(true)}
@@ -131,16 +116,16 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <span className={styles.arrow}>➔</span>
           </div>
 
-          {/* VOCE 5: LINKEDIN */}
+          {/* VOCE 4: LINKEDIN */}
           <a
-            href="https://www.linkedin.com/in/vincenzo-reina"
+            href="https://www.linkedin.com/in/vincenzo-reina/"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.itemRow}
           >
             <div className={styles.itemLeft}>
-              {linkedinIcon ? (
-                <Image src={linkedinIcon.src} alt="LinkedIn" width={20} height={20} />
+              {linkedin ? (
+                <Image src={linkedin.src} alt="LinkedIn" width={20} height={20} />
               ) : (
                 "🔗"
               )}
@@ -165,7 +150,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           </div>
 
           <div className={styles.card}>
-            <div className={styles.cardTitle}>Senior Brand & GTM Manager</div>
+            <div className={styles.cardTitle}>Senior Brand & GTM Strategist</div>
             <div className={styles.cardSubtitle}>2022 - Present</div>
             <div className={styles.cardDesc}>
               Leading GTM strategies, brand positionings, and marketing campaigns.
@@ -193,8 +178,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       {/* BOTTOM BAR */}
       <div className={styles.bottomBar}>
         <button className={styles.bottomButton} onClick={onSwitchToDesktop}>
-          {myComputer && (
-            <Image src={myComputer.src} alt="Desktop" width={16} height={16} />
+          {mycomputer && (
+            <Image src={mycomputer.src} alt="Desktop" width={16} height={16} />
           )}
           <span>Full XP Desktop</span>
         </button>
