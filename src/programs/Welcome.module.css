@@ -1,51 +1,104 @@
 .main {
-  background-color: #6375d6;
+  display: flex;
+  flex-direction: row;
   height: 100%;
-  width: 100%;
-  padding: 0px 6px 6px 6px;
+  overflow: auto;
+  background-color: #6375d6;
   background-image: url("../../assets/clipboard_shadow.png");
   background-repeat: no-repeat;
   background-position: right bottom;
   outline: none;
-  padding: 20px;
-  overflow: auto;
 }
 
-.content {
+.leftpanel {
+  width: 230px;
+  min-width: 230px;
+  max-height: 100%;
+  background: linear-gradient(rgb(116, 138, 255) 0%, rgb(64, 87, 211) 100%);
+  padding: 10px;
+  overflow-y: auto;
+  border-right: 1px solid #3146b0;
+}
+
+.leftpanel::-webkit-scrollbar {
+  width: 15px;
+}
+
+.leftpanel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
+
+.rightpanel {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  flex-grow: 1;
+  width: calc(100% - 230px);
+  overflow-y: auto;
+}
+
+.accordion_content_item {
+  margin: 6px 0px;
+  cursor: default;
+}
+
+.accordion_content_text {
+  font-size: 11px;
+  line-height: 14px;
+  color: rgb(12, 50, 125);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.email_text {
+  font-size: 10.5px;
+  letter-spacing: -0.2px;
 }
 
 .welcome_text {
   color: #d6dff5;
   font-weight: bold;
+  font-size: 22px;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .subtitle_header {
   color: #d6dff5;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 20px;
+  font-size: 16px;
   color: #d6dff5;
   font-weight: 500;
   margin: 0px;
   padding: 0px;
+  line-height: 1.4;
 }
 
-.leftpanel,
-.rightpanel {
+.content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.leftpanel_inner,
+.rightpanel_inner {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 400px;
-  height: 100%;
-  padding: 15px;
+  width: 50%;
+  padding: 10px 0;
   margin: 0px;
 }
 
@@ -58,10 +111,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
+  padding: 15px 15px 15px 0;
   margin: 0px;
 }
 
 .text_col {
-  width: 60%;
+  width: 70%;
 }

@@ -1,0 +1,262 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #d4d0c8;
+  font-family: "Tahoma", sans-serif;
+  overflow: hidden;
+  user-select: text;
+}
+
+.officeHeader {
+  background: #ece9d8;
+  border-bottom: 1px solid #919089;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Menu Bar */
+.menuBar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 2px;
+  font-size: 11px;
+  background-color: #ece9d8;
+  border-bottom: 1px solid #d4d0c8;
+}
+
+.menuItem {
+  padding: 2px 7px;
+  color: #000000;
+  cursor: default;
+}
+
+.menuItem u {
+  text-decoration: underline;
+}
+
+/* Combined Toolbar */
+.combinedToolbar {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 4px;
+  gap: 4px;
+  background-color: #bfbec3;
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #919089;
+  overflow-x: auto;
+}
+
+.toolSection {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.handleGrip {
+  width: 2px;
+  height: 16px;
+  border-left: 2px dotted #666666;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.separator {
+  width: 1px;
+  height: 16px;
+  background-color: #808080;
+  border-right: 1px solid #ffffff;
+  margin: 0 2px;
+}
+
+.separatorSection {
+  width: 1px;
+  height: 20px;
+  background-color: #666666;
+  border-right: 1px solid #ffffff;
+  margin: 0 6px;
+}
+
+.selectBox {
+  font-family: "Tahoma", sans-serif;
+  font-size: 11px;
+  height: 20px;
+  border: 1px solid #7f9db9;
+  background-color: #ffffff;
+  padding: 0 2px;
+  pointer-events: none;
+}
+
+.toolBtn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.iconImg {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+}
+
+.toolBtnText {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  color: #000000;
+  pointer-events: none;
+}
+
+/* Righello Orizzontale Superior */
+.rulerContainer {
+  background-color: #d4d0c8;
+  height: 18px;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.rulerCorner {
+  width: 16px;
+  height: 14px;
+  background-color: #d4d0c8;
+  border-right: 1px solid #808080;
+  border-top: 1px solid #808080;
+  flex-shrink: 0;
+}
+
+.rulerHorizontal {
+  flex-grow: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  height: 14px;
+  background-color: #ffffff;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #808080;
+  border-top: 1px solid #808080;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-size: 9px;
+  color: #555555;
+  box-sizing: border-box;
+}
+
+/* Contenitore Workspace (Righello SX + Area Foglio) */
+.workspace {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  background-color: #a9a798;
+  position: relative;
+}
+
+/* Righello Verticale ancorato al bordo sx interno della finestra */
+.rulerVertical {
+  width: 16px;
+  height: 100%;
+  background-color: #ffffff;
+  border-right: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 0;
+  font-size: 9px;
+  color: #555555;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+/* Area Documento centrata */
+.documentArea {
+  flex-grow: 1;
+  background-color: #a9a798;
+  padding: 20px 20px 30px 20px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Foglio A4 */
+.page {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 680px;
+  min-height: 100%;
+  padding: 40px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  font-family: "Times New Roman", Times, serif;
+  color: #000000;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* Hyperlink Word 2002 */
+.wordHyperlink {
+  color: #0000ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.wordHyperlink:hover {
+  color: #0000ff;
+}
+
+.docTitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 6px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: bold;
+  color: #000080;
+  border-bottom: 1px dashed #000080;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  padding-bottom: 2px;
+}
+
+.eduItem {
+  margin-bottom: 14px;
+}
+
+.degreeHeader {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.institution {
+  font-style: italic;
+  font-size: 12px;
+  color: #222222;
+  margin-top: 2px;
+}
+
+.details {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #333333;
+}

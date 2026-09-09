@@ -108,10 +108,10 @@ const MyWork = ({ id }: Props) => {
       <div className={styles.rightpanel}>
         {currDisplay.title === "" ? (
           <div className={styles.body}>
-            <h4>Welcome To My Portfolio Section</h4>
+            <h4>Welcome to my portfolio section</h4>
             <h5>
-              Begin Navigation by clicking on one of my projects on the left
-              panel
+              Begin navigation by clicking on one of my projects on the left
+              panel.
             </h5>
             <h5>
               These are some of the brands and clients I have collaborated with!

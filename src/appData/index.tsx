@@ -5,7 +5,7 @@ import {
   WorkContent,
   WorkFile,
   WorkType,
-} from "src/types";
+} from "@/types";
 import error from "../../assets/dialog/error.png";
 import info from "../../assets/dialog/info.png";
 import warning from "../../assets/dialog/warning.png";
@@ -14,6 +14,8 @@ import cmd from "../../assets/cmd.png";
 import mycomputer from "../../assets/mycomputer.png";
 import gallery from "../../assets/folder_image.png";
 import outlook from "../../assets/outlook.png";
+import doc from "../../assets/doc.png";
+import Education from "@/programs/Education";
 import dsta from "../../assets/workaccordion/dsta.png";
 import gdsc from "../../assets/workaccordion/gdsc.png";
 import file from "../../assets/workaccordion/file.png";
@@ -69,6 +71,7 @@ import mr2 from "../../assets/mr2.jpg";
 import mrIcon from "../../assets/mr_icon.png";
 import MS from "../../assets/work/MS.png";
 import MS2 from "../../assets/work/MS2.png";
+import ieIcon from "../../assets/ie.png";
 
 export const TechIcon = {
   REACT:
@@ -263,6 +266,34 @@ export const AppDirectory: Map<number, Tab> = new Map([
       backBtnActive: false,
     },
   ],
+  [
+    9,
+    {
+      id: 0,
+      title: "Internet Explorer",
+      message: "",
+      Icon: ieIcon,
+      isMinimized: false,
+      zIndex: 0,
+      program: App.INTERNET_EXPLORER,
+      prompt: false,
+      backBtnActive: false,
+    },
+  ],
+  [
+    10,
+    {
+      id: 0,
+      title: "Education - Microsoft Word",
+      message: "",
+      Icon: doc,
+      isMinimized: false,
+      zIndex: 0,
+      program: App.EDUCATION,
+      prompt: false,
+      backBtnActive: false,
+    },
+  ],
 ]);
 
 export const WorkAccordionTitles = [
@@ -274,7 +305,7 @@ export const WorkAccordionTitles = [
 export const GalleryAccordionTitles = ["Details"];
 
 export const WorkData = [
-    {
+  {
     id: 101,
     title: "Exein Photon Launch & RSA Conference 2026 - Global GTM Strategy",
     date: "Exein Project",
@@ -321,6 +352,27 @@ To achieve maximum global impact across international markets, I orchestrated an
 I directed the narrative positioning, shaping internal and external digital collaterals, executive thought leadership messaging, and coordinating international creative agencies. The strategy evolved Exein's brand perception from a European leader in embedded cybersecurity into a dominant global player expanding into North America and Asia-Pacific (APAC). 
 
 This milestone campaign supported Exein's corporate growth past 2 billion protected devices globally, communicating key market drivers like 5x YoY revenue growth, M&A programs, and regulatory readiness for the EU Cyber Resilience Act and US Cyber Trust Mark.`,
+  },
+  {
+    id: 104,
+    title: "Exein APAC HQ Opening & CRA Summits (Taipei) - Brand Activation",
+    date: "Exein Project",
+    gitURL: "",
+    techstack: [
+      TechIcon.NOTION,
+      TechIcon.ASANA,
+      TechIcon.FIGMA,
+      TechIcon.HUBSPOT,
+      TechIcon.GOOGLE_SUITE,
+    ],
+    gallery: [
+      { src: "/IMG_0666.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0667.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0668.jpeg", height: 800, width: 1200 },
+    ],
+    overview: `Directed the integrated Go-To-Market strategy, brand identity implementation, and event execution for Exein’s official expansion into Asia-Pacific, encompassing the Grand Opening of the APAC Headquarters in Taipei and two strategic CRA Summits in Taipei and Hsinchu. Serving as the central operational bridge between executive leadership, product teams, and local Taiwanese agencies, I supervised all vendor workflows, cultural adaptations, and physical brand activations across both locations.
+
+My scope covered the end-to-end visual identity application—from executive venue staging to product marketing collaterals—ensuring flawless brand consistency. Additionally, I curated the event agenda, managed localized technical leave-behinds for over 150 C-level tech executives, and developed dedicated landing page architectures to drive engagement ahead of regional trade shows like Cybersec and Computex.`,
   },
   {
     id: 102,
@@ -544,6 +596,13 @@ export const WorkAccordionContent = [
     icon: emptyfile,
     title: "Exein Series C/C1 Funding",
     content: WorkData[WorkData.findIndex((x) => x.id === 103)],
+  },
+  {
+    id: 104,
+    type: WorkType.HACKATHON,
+    icon: emptyfile,
+    title: "APAC HQ Opening & CRA Summits",
+    content: WorkData[WorkData.findIndex((x) => x.id === 104)],
   },
   {
     id: 102,

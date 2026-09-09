@@ -1,5 +1,6 @@
 // PERCORSO FILE: src/pages/index.tsx
 
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import StartBar from "components/StartBar/StartBar";
@@ -14,26 +15,33 @@ import cmd from "../../assets/cmd.png";
 import solitare from "../../assets/solitaire.png";
 import linkedin from "../../assets/linkedin.png";
 import WinForm from "components/WinForm/WinForm";
-import { useEffect, useState } from "react";
 import store from "@/redux/store";
 import { AppDirectory } from "@/appData";
 import { App, RootState, Tab } from "@/types";
 import { addTab } from "@/redux/tabSlice";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import Outlook from "@/programs/Outlook";
 import MyWork from "@/programs/MyWork";
 import MsgBox from "components/MsgBox/MsgBox";
 import Welcome from "@/programs/Welcome";
 import MyGallery from "@/programs/MyGallery";
+import InternetExplorer from "@/programs/InternetExplorer";
+import Education from "@/programs/Education";
 
 export default function Home() {
   const Tabs = useSelector((state: RootState) => state.tab.tray);
   const currTabID = useSelector((state: RootState) => state.tab.id);
 
   const handleRunApp = (e: number) => {
-    const newTab = { ...AppDirectory.get(e), id: uuidv4(), zIndex: currTabID };
-    store.dispatch(addTab(newTab));
+    const appConfig = AppDirectory.get(e);
+    if (appConfig) {
+      const newTab: Tab = {
+        ...appConfig,
+        id: Date.now(), // Genera un ID numerico univoco compatibile con Redux e StartBar
+        zIndex: currTabID,
+      };
+      store.dispatch(addTab(newTab));
+    }
   };
 
   const handleOpenGitHub = () => {
@@ -111,15 +119,15 @@ export default function Home() {
             title="My Hobbies"
             img={solitare}
           />
-          {Tabs.map((tab, index) => {
+          {Tabs.map((tab) => {
             return tab.isMinimized ? (
-              <></>
+              <React.Fragment key={tab.id}></React.Fragment>
             ) : (
               <WinForm
                 key={tab.id}
                 id={tab.id}
                 title={tab.title}
-                message={tab.message}
+                message={tab.message || ""}
                 icon={tab.Icon}
                 zIndex={tab.zIndex}
                 programType={tab.program}
@@ -133,10 +141,14 @@ export default function Home() {
                   <Welcome id={tab.id} />
                 ) : tab.program === App.MYGALLERY ? (
                   <MyGallery id={tab.id} />
+                ) : tab.program === App.INTERNET_EXPLORER ? (
+                  <InternetExplorer id={tab.id} />
+                ) : tab.program === App.EDUCATION ? (
+                  <Education id={tab.id} />
                 ) : tab.program === App.ERROR ? (
                   <p>{tab.message}</p>
                 ) : tab.program === App.INFO ? (
-                  <MsgBox id={tab.id} message={tab.message} icon={tab.Icon} />
+                  <MsgBox id={tab.id} message={tab.message || ""} icon={tab.Icon} />
                 ) : tab.program === App.WARNING ? (
                   <p>{tab.message}</p>
                 ) : tab.program === App.HELP ? (

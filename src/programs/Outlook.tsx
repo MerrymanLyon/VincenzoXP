@@ -22,54 +22,55 @@ const Outlook = () => {
   const [from, setFrom] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const API_KEY = process.env.NEXT_PUBLIC_MAILGUN_API;
-  const FROM_EMAIL = "feedback@pohwp.dev";
-  const TO_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-  const axios = require("axios");
-  const captchaRef = React.useRef(null);
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const subjectRef = React.useRef<HTMLInputElement>(null);
-  const messageRef = React.useRef<HTMLTextAreaElement>(null);
+  const [isSending, setIsSending] = useState(false);
+
   const sendEmail = async () => {
-    if (!from || !subject || !message) {
+    if (!from || !subject || !message || isSending) {
       return;
     }
-    
+
+    setIsSending(true);
+
+    const payload = {
+      service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+      template_id: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+      user_id: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+      template_params: {
+        from_email: from,
+        subject: subject,
+        message: message,
+      },
+    };
+
     try {
-      await axios({
-        method: "post",
-        url: `https://api.mailgun.net/v3/pohwp.dev/messages`,
-        auth: {
-          username: "api",
-          password: API_KEY,
-        },
-        params: {
-          from: FROM_EMAIL,
-          to: TO_EMAIL,
-          subject: "New Message From A Visitor: " + subject,
-          text: "From: " + from + "\nMessage: " + message,
-        },
-      });
-      
-      // Success handling
-      const newTab = {
-        ...AppDirectory.get(7),
-        id: uuidv4(),
-        zIndex: currTabID,
-        title: "Outlook - Message Sent!",
-        message: "Your message has been sent! I will get back to you soon!",
-      };
-      store.dispatch(addTab(newTab));
-      
-      // Clear form
-      setFrom("");
-      setSubject("");
-      setMessage("");
-      if (emailRef.current) emailRef.current.value = "";
-      if (subjectRef.current) subjectRef.current.value = "";
-      if (messageRef.current) messageRef.current.value = "";
+      const response = await fetch(
+        "https://api.emailjs.com/api/v1.0/email/send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (response.ok) {
+        const newTab = {
+          ...AppDirectory.get(7),
+          id: uuidv4(),
+          zIndex: currTabID,
+          title: "Outlook - Message Sent!",
+          message: "Your message has been sent! I will get back to you soon!",
+        };
+        store.dispatch(addTab(newTab));
+
+        setFrom("");
+        setSubject("");
+        setMessage("");
+      } else {
+        throw new Error("Failed to send");
+      }
     } catch (error) {
-      // Show error to user
       const errorTab = {
         ...AppDirectory.get(5),
         id: uuidv4(),
@@ -78,33 +79,35 @@ const Outlook = () => {
         message: "Failed to send email. Please try again later.",
       };
       store.dispatch(addTab(errorTab));
+    } finally {
+      setIsSending(false);
     }
   };
+
+  const isFormValid =
+    from.trim() !== "" &&
+    subject.trim() !== "" &&
+    message.trim() !== "" &&
+    !isSending;
 
   return (
     <div className={styles.main}>
       <div className={styles.icons_toolbar}>
-        <div
-          className={
-            from !== "" && subject !== "" && message !== ""
-              ? styles.icon
-              : styles.icon_disabled
-          }
+        <div 
+          className={isFormValid ? styles.icon : styles.icon_disabled}
+          onClick={isFormValid ? sendEmail : undefined}
+          style={{ cursor: isFormValid ? "pointer" : "default" }}
         >
           <Image
             style={
-              from !== "" && subject !== "" && message !== ""
+              isFormValid
                 ? { margin: "0 4px" }
-                : {
-                    margin: "0 4px",
-                    filter: "grayscale(100%) brightness(0.9)",
-                  }
+                : { margin: "0 4px", filter: "grayscale(100%) brightness(0.9)" }
             }
             alt="send"
             width={40}
             height={30}
             src={send.src}
-            onClick={sendEmail}
           />
           <p>Send</p>
         </div>
@@ -205,24 +208,20 @@ const Outlook = () => {
               disabled
               id="text21"
               type="text"
-              value="Poh Wei Pin (pohwp99@gmail.com)"
+              value="Vincenzo (vincenzo.reina@outlook.it)"
             />
             <input
               className={styles.textfield}
-              ref={emailRef}
               placeholder="Enter your email address"
-              onChange={(e) => {
-                setFrom(e.target.value);
-              }}
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
               type="email"
             />
             <input
               className={styles.textfield}
-              ref={subjectRef}
               placeholder="What is this message/email regarding?"
-              onChange={(e) => {
-                setSubject(e.target.value);
-              }}
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
               type="text"
             />
           </div>
@@ -231,14 +230,12 @@ const Outlook = () => {
       <div className={styles.richfield}>
         <textarea
           draggable={false}
-          ref={messageRef}
           className={styles.richtextbox}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           id="text24"
-          placeholder="Type your message here...(Share with me something interesting or a feedback?)"
-        ></textarea>
+          placeholder="Type your message here... (Share with me something interesting or feedback)"
+        />
       </div>
     </div>
   );

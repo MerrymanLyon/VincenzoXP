@@ -1,3 +1,5 @@
+// PERCORSO FILE: src/components/StartMenu/StartMenu.tsx
+
 import styles from "./StartMenu.module.css";
 import folder from "../../assets/folder_plain.png";
 import StartMenuItem from "components/StartMenuItem/StartMenuItem";
@@ -89,6 +91,7 @@ const StartMenu = ({ menuControl }: StartMenuProps) => {
         <div className={styles.leftmenu}>
           <div>
             <StartMenuItem
+              onClick={() => handleRunApp(9)}
               title="Internet"
               subtitle="Internet Explorer"
               icon={ie}
