@@ -78,9 +78,15 @@ const Welcome = ({ id }: props) => {
 
           <div className={styles.accordion_content_item}>
             <div className={styles.accordion_content_text}>
-              <Image alt="icon" src={cmd.src} height={15} width={15} />
+              <Image
+                alt="icon"
+                src="/Phone-15.png"
+                height={15}
+                width={15}
+                style={{ objectFit: "contain", imageRendering: "pixelated" }}
+              />
               <p>
-                <strong>Phone:</strong> +39 339 192 929162
+                <strong>Phone:</strong> +39 339 1929162
               </p>
             </div>
           </div>

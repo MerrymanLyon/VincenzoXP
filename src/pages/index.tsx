@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import StartBar from "components/StartBar/StartBar";
 import "xp.css/dist/XP.css";
 import styles from "../styles/Home.module.css";
@@ -27,17 +26,48 @@ import Welcome from "@/programs/Welcome";
 import MyGallery from "@/programs/MyGallery";
 import InternetExplorer from "@/programs/InternetExplorer";
 import Education from "@/programs/Education";
+import PocketPC from "components/PocketPC/PocketPC";
 
 export default function Home() {
   const Tabs = useSelector((state: RootState) => state.tab.tray);
   const currTabID = useSelector((state: RootState) => state.tab.id);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [forceDesktop, setForceDesktop] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+
+    const checkMobile = () => {
+      // 1. Rilevamento via UserAgent
+      const ua = navigator.userAgent || "";
+      const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+
+      // 2. Rilevamento via screen / matchMedia (ignorando i pixel logici scalati del viewport)
+      const isSmallScreen = window.matchMedia("(max-width: 768px)").matches || window.screen.width <= 768;
+
+      // 3. Touch screen + orientamento verticale
+      const isTouchVertical = navigator.maxTouchPoints > 0 && window.innerHeight > window.innerWidth;
+
+      setIsMobile(isMobileUA || isSmallScreen || isTouchVertical);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    window.addEventListener("orientationchange", checkMobile);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("orientationchange", checkMobile);
+    };
+  }, []);
 
   const handleRunApp = (e: number) => {
     const appConfig = AppDirectory.get(e);
     if (appConfig) {
       const newTab: Tab = {
         ...appConfig,
-        id: Date.now(), // Genera un ID numerico univoco compatibile con Redux e StartBar
+        id: Date.now(),
         zIndex: currTabID,
       };
       store.dispatch(addTab(newTab));
@@ -60,12 +90,21 @@ export default function Home() {
     window.open("./Resume.pdf");
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
+  // Se l'utente è da Mobile e non ha richiesto la versione Desktop XP completa:
+  if (isMobile && !forceDesktop) {
+    return <PocketPC onSwitchToDesktop={() => setForceDesktop(true)} />;
+  }
+
   return (
     <>
       <Head>
         <title>Vincenzo Reina - Senior Brand & GTM Strategist</title>
         <meta name="description" content="My Personal Space" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
       <main className={styles.main}>
