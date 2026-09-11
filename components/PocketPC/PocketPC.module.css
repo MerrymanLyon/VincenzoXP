@@ -12,10 +12,9 @@
   user-select: none;
   overflow: hidden;
   position: relative;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* TOP BAR WINDOWS MOBILE CON STATUS INTEGRATO */
+/* TOP BAR WINDOWS MOBILE */
 .topBar {
   height: 32px;
   background: linear-gradient(180deg, #1852e0 0%, #0c33a1 100%);
@@ -25,7 +24,7 @@
   padding: 0 10px;
   border-bottom: 1px solid #204098;
   color: #ffffff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
@@ -41,12 +40,14 @@
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #d0e0ff;
+  color: #ffffff;
+  font-weight: normal;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .startTitle {
   color: #ffffff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   margin-left: 2px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
@@ -57,8 +58,9 @@
   align-items: center;
   gap: 5px;
   font-size: 11px;
-  color: #e0f0ff;
+  color: #ffffff;
   font-weight: normal;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .greenDot {
@@ -87,7 +89,7 @@
   margin-top: 4px;
 }
 
-/* RIGHE MENU TODAY SCREEN */
+/* RIGHE MENU TODAY SCREEN (RIPRISTINO FONT ORIGINALE) */
 .todayRow {
   background: rgba(230, 240, 255, 0.82);
   border-bottom: 1px solid rgba(126, 161, 238, 0.85);
@@ -98,7 +100,7 @@
   color: #000080;
   text-decoration: none;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: bold;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   backdrop-filter: blur(3px);
   cursor: pointer;
@@ -171,8 +173,8 @@
   padding: 16px;
   overflow-y: auto;
   z-index: 10;
-  color: #000;
-  font-size: 13px;
+  color: #000000;
+  font-size: 12px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
@@ -196,7 +198,7 @@
   background: #d4d0c8;
   border: 1px solid #404040;
   box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #808080;
-  color: black;
+  color: #000000;
   padding: 4px 10px;
   font-size: 12px;
   font-weight: bold;
@@ -218,7 +220,7 @@
 
 .cardSubtitle {
   font-size: 11px;
-  color: #444;
+  color: #444444;
   margin-bottom: 6px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
@@ -226,7 +228,7 @@
 .cardDesc {
   font-size: 12px;
   line-height: 1.45;
-  color: #111;
+  color: #111111;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
@@ -252,18 +254,18 @@
   color: #ffffff;
   border: 1px solid #000066;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   cursor: pointer;
   border-radius: 2px;
 }
 
-/* BOTTOM BAR BARRA DI STATO */
+/* BOTTOM BAR BARRA DI STATO (STILE ORIGINALE) */
 .bottomBar {
-  height: 38px;
-  background: linear-gradient(180deg, #d4d0c8 0%, #a6a29a 100%);
-  border-top: 1px solid #ffffff;
+  height: 40px;
+  background: linear-gradient(180deg, #c0c0c0 0%, #808080 100%);
+  border-top: 2px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -273,10 +275,10 @@
 }
 
 .bottomButton {
-  background: #d4d0c8;
-  border: 1px solid #404040;
-  box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #808080;
-  padding: 4px 12px;
+  background: linear-gradient(180deg, #ece9d8 0%, #d6d2c2 100%);
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #707070;
+  padding: 4px 10px;
   font-size: 12px;
   font-weight: bold;
   color: #000000;
@@ -284,9 +286,10 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  border-radius: 2px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .bottomButton:active {
-  box-shadow: inset -1px -1px 0px #ffffff, inset 1px 1px 0px #808080;
+  box-shadow: inset -1px -1px 0px #ffffff, inset 1px 1px 0px #707070;
 }
