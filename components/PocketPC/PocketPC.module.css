@@ -15,33 +15,66 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* TOP BAR WINDOWS MOBILE */
+/* TOP BAR WINDOWS MOBILE CON STATUS INTEGRATO */
 .topBar {
   height: 32px;
   background: linear-gradient(180deg, #1852e0 0%, #0c33a1 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
+  padding: 0 10px;
   border-bottom: 1px solid #204098;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
-.topBarLeft, .topBarRight {
+.topBarLeft {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #d0e0ff;
 }
 
 .startTitle {
   color: #ffffff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   margin-left: 2px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+}
+
+.topStatus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #e0f0ff;
+  font-weight: normal;
+}
+
+.greenDot {
+  width: 7px;
+  height: 7px;
+  background-color: #2ed573;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #2ed573;
+  display: inline-block;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 /* TODAY SCREEN CONTENT AREA */
@@ -54,7 +87,7 @@
   margin-top: 4px;
 }
 
-/* RIGHE MENU TODAY SCREEN (PROPORZIONATE PER IPHONE MAX) */
+/* RIGHE MENU TODAY SCREEN */
 .todayRow {
   background: rgba(230, 240, 255, 0.82);
   border-bottom: 1px solid rgba(126, 161, 238, 0.85);
@@ -93,7 +126,7 @@
 .headerRow {
   background: rgba(200, 225, 255, 0.92);
   color: #000066;
-  padding: 14px;
+  padding: 12px 14px;
 }
 
 .ownerTitle {
@@ -109,36 +142,6 @@
   font-weight: normal;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   margin-top: 2px;
-}
-
-/* RIGA STATUS CON PALLINO VERDE */
-.statusRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(215, 235, 255, 0.85);
-  border-bottom: 1px solid rgba(126, 161, 238, 0.85);
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #000080;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
-}
-
-.greenDot {
-  width: 9px;
-  height: 9px;
-  background-color: #2ed573;
-  border-radius: 50%;
-  box-shadow: 0 0 5px #2ed573;
-  display: inline-block;
-  animation: pulse 1.8s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.85); }
-  100% { opacity: 1; transform: scale(1); }
 }
 
 /* WATERMARK WINDOWS XP IN BASSO A DESTRA */
