@@ -1,0 +1,149 @@
+.bootContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #000000;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.centerContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BRAND BLOCK IDENTICO ALLA SCHERMATA ORIGINALE XP */
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* LOGO BANDIERA WINDOWS XP SPOSTATO A DESTRA */
+.logoWrapper {
+  align-self: flex-end;
+  margin-right: 18px;
+  margin-bottom: -4px;
+}
+
+.logoImage {
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* SCRITTA REINA® (AL POSTO DI MICROSOFT®) */
+.subHeader {
+  font-size: 11px;
+  color: #ffffff;
+  font-weight: normal;
+  margin-left: 2px;
+  margin-bottom: -4px;
+  letter-spacing: 0.2px;
+}
+
+/* BLOCCO VINCENZO + xp MINUSCOLO */
+.mainTitleRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.nameText {
+  font-size: 44px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  font-family: Tahoma, "Segoe UI", sans-serif;
+}
+
+.xpText {
+  font-size: 21px;
+  font-weight: bold;
+  color: #e25c0e; /* Arancione nativo boot XP */
+  font-style: normal;
+  line-height: 1;
+  margin-left: 2px;
+  margin-top: 1px;
+  font-family: Tahoma, "Segoe UI", sans-serif;
+}
+
+/* PROGRESS BAR CON BLOCCHETTI BLU */
+.progressTrack {
+  width: 140px;
+  height: 12px;
+  border: 1px solid #7f7f7f;
+  border-radius: 6px;
+  padding: 1px;
+  position: relative;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.blockGroup {
+  display: flex;
+  gap: 2px;
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  animation: loadingSlide 1.3s infinite linear;
+}
+
+.block {
+  width: 7px;
+  height: 100%;
+  background: linear-gradient(180deg, #5b87e6 0%, #2953b0 50%, #153885 100%);
+  border-radius: 1px;
+}
+
+@keyframes loadingSlide {
+  0% {
+    left: -30px;
+  }
+  100% {
+    left: 140px;
+  }
+}
+
+/* FOOTER BOTTOM BAR */
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: #ffffff;
+  font-size: 11px;
+}
+
+.footerLeft {
+  color: #ffffff;
+}
+
+.footerRight {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 13px;
+  color: #ffffff;
+}
