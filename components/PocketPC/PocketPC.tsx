@@ -50,7 +50,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
   return (
     <div className={styles.container}>
-      {/* TOP BAR WINDOWS MOBILE CON STATUS E OROLOGIO */}
+      {/* TOP BAR WINDOWS MOBILE */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
           <Image
@@ -58,7 +58,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             alt="Start"
             width={16}
             height={16}
-            className={styles.todayIcon}
+            style={{ imageRendering: "pixelated" }}
           />
           <span className={styles.startTitle}>Start</span>
         </div>
@@ -72,148 +72,131 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
         </div>
       </div>
 
-      {/* TODAY SCREEN MENU */}
+      {/* CONTENT AREA CON GRIGLIA DI ICONE */}
       <div className={styles.content}>
-        {/* HEADER UTENTE */}
-        <div className={`${styles.todayRow} ${styles.headerRow}`}>
-          <div className={styles.todayLeft}>
-            <div>
-              <div className={styles.ownerTitle}>Vincenzo Reina</div>
-              <div className={styles.subText}>
-                Brand Manager & Strategic Storyteller
-              </div>
-            </div>
-          </div>
+        {/* HEADER USER INFO */}
+        <div className={styles.headerRow}>
+          <div className={styles.ownerTitle}>Vincenzo Reina</div>
+          <div className={styles.subText}>Brand Manager & Strategic Storyteller</div>
         </div>
 
-        {/* EXPERIENCES (TERMINALE CMD) */}
-        <div
-          className={styles.todayRow}
-          onClick={() => setActiveModal("experiences")}
-        >
-          <div className={styles.todayLeft}>
+        {/* GRIGLIA ICONE STILE DESKTOP */}
+        <div className={styles.gridContainer}>
+          {/* ICONA 1: EXPERIENCES */}
+          <div
+            className={styles.iconTile}
+            onClick={() => setActiveModal("experiences")}
+          >
             <Image
               src={cmdIcon.src}
               alt="Experiences"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
+              width={36}
+              height={36}
+              className={styles.iconImage}
             />
-            <span>Experiences</span>
+            <span className={styles.iconLabel}>Experiences</span>
           </div>
-        </div>
 
-        {/* EDUCATION (DOC.PNG) */}
-        <div
-          className={styles.todayRow}
-          onClick={() => setActiveModal("education")}
-        >
-          <div className={styles.todayLeft}>
+          {/* ICONA 2: EDUCATION */}
+          <div
+            className={styles.iconTile}
+            onClick={() => setActiveModal("education")}
+          >
             <Image
               src={docIcon.src}
               alt="Education"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
+              width={36}
+              height={36}
+              className={styles.iconImage}
             />
-            <span>Education</span>
+            <span className={styles.iconLabel}>Education</span>
           </div>
-        </div>
 
-        {/* CALL ME NOW */}
-        <a href="tel:+393391929162" className={styles.todayRow}>
-          <div className={styles.todayLeft}>
-            <Image
-              src="/Phone-15.png"
-              alt="Phone"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
-            />
-            <span>Call me now (+39 339 1929162)</span>
-          </div>
-        </a>
-
-        {/* SEND ME AN EMAIL (TOOLBAR/SENDMAIL.PNG) */}
-        <a
-          href="mailto:Vincenzo.reina@outlook.it"
-          className={styles.todayRow}
-        >
-          <div className={styles.todayLeft}>
-            <Image
-              src={sendmailIcon.src}
-              alt="Send Email"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
-            />
-            <span>Send me an email</span>
-          </div>
-        </a>
-
-        {/* RESUME PDF */}
-        <a
-          href="./Resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.todayRow}
-        >
-          <div className={styles.todayLeft}>
+          {/* ICONA 3: MY RESUME */}
+          <a
+            href="./Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.iconTile}
+          >
             <Image
               src={pdf.src}
               alt="Resume"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
+              width={36}
+              height={36}
+              className={styles.iconImage}
             />
-            <span>My Resume (CV.pdf)</span>
-          </div>
-        </a>
+            <span className={styles.iconLabel}>My Resume</span>
+          </a>
 
-        {/* LINKEDIN PROFILE */}
-        <a
-          href="https://www.linkedin.com/in/vincenzo-reina/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.todayRow}
-        >
-          <div className={styles.todayLeft}>
+          {/* ICONA 4: CALL ME NOW */}
+          <a href="tel:+393391929162" className={styles.iconTile}>
+            <Image
+              src="/Phone-15.png"
+              alt="Phone"
+              width={36}
+              height={36}
+              className={styles.iconImage}
+            />
+            <span className={styles.iconLabel}>Call Me</span>
+          </a>
+
+          {/* ICONA 5: SEND EMAIL */}
+          <a
+            href="mailto:Vincenzo.reina@outlook.it"
+            className={styles.iconTile}
+          >
+            <Image
+              src={sendmailIcon.src}
+              alt="Email"
+              width={36}
+              height={36}
+              className={styles.iconImage}
+            />
+            <span className={styles.iconLabel}>Send Email</span>
+          </a>
+
+          {/* ICONA 6: LINKEDIN */}
+          <a
+            href="https://www.linkedin.com/in/vincenzo-reina/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.iconTile}
+          >
             <Image
               src={linkedin.src}
               alt="LinkedIn"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
+              width={36}
+              height={36}
+              className={styles.iconImage}
             />
-            <span>LinkedIn Profile</span>
-          </div>
-        </a>
+            <span className={styles.iconLabel}>LinkedIn</span>
+          </a>
 
-        {/* WHY A WINDOWS XP RESUME WEBSITE */}
-        <div
-          className={styles.todayRow}
-          onClick={() => setActiveModal("whyXP")}
-        >
-          <div className={styles.todayLeft}>
+          {/* ICONA 7: WHY XP RESUME */}
+          <div
+            className={styles.iconTile}
+            onClick={() => setActiveModal("whyXP")}
+          >
             <Image
               src={mycomputer.src}
               alt="Why XP"
-              className={styles.todayIcon}
-              width={20}
-              height={20}
+              width={36}
+              height={36}
+              className={styles.iconImage}
             />
-            <span>Why a Windows XP resume website?</span>
+            <span className={styles.iconLabel}>Why XP?</span>
           </div>
         </div>
       </div>
 
-      {/* LOGO WINDOWS XP WATERMARK IN BASSO A DESTRA */}
+      {/* WATERMARK WINDOWS LOGO */}
       <div className={styles.winLogoWatermark}>
         <Image
           src="/Windows-logo.png"
           alt="Windows Logo"
-          width={120}
-          height={95}
+          width={110}
+          height={88}
           className={styles.winLogoImage}
         />
       </div>
@@ -401,7 +384,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             alt="Desktop"
             width={16}
             height={16}
-            className={styles.todayIcon}
+            style={{ imageRendering: "pixelated" }}
           />
           <span>Full XP Desktop</span>
         </button>

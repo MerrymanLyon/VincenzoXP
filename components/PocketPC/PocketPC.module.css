@@ -3,7 +3,7 @@
   height: 100vh;
   height: 100dvh;
   background: #62a3f7 url("/IMG_0688.webp") no-repeat center center / cover;
-  color: #000000;
+  color: #ffffff;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,6 @@
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .topBarLeft {
@@ -41,16 +40,12 @@
   gap: 6px;
   font-size: 11px;
   color: #ffffff;
-  font-weight: normal;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .startTitle {
   color: #ffffff;
   font-size: 13px;
   font-weight: bold;
-  margin-left: 2px;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .topStatus {
@@ -59,8 +54,6 @@
   gap: 5px;
   font-size: 11px;
   color: #ffffff;
-  font-weight: normal;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .greenDot {
@@ -79,76 +72,84 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* TODAY SCREEN CONTENT AREA */
+/* CONTAINER PRINCIPALE */
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 8px;
+  padding: 12px;
   position: relative;
   z-index: 2;
+  overflow-y: auto;
 }
 
-/* HEADER UTENTE STILE POCKET PC */
+/* HEADER USER INFO */
 .headerRow {
-  background: rgba(200, 225, 255, 0.92);
-  border: 1px solid #204098;
-  padding: 10px 12px;
-  color: #000000;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  background: rgba(0, 0, 80, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
 }
 
 .ownerTitle {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
-  color: #000000;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  color: #ffffff;
 }
 
 .subText {
   font-size: 11px;
-  color: #333399;
-  font-weight: normal;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  color: #d0e0ff;
   margin-top: 2px;
 }
 
-/* RIGHE MENU CON IL FONT ED EFFETTO DEL PULSANTE FULL XP DESKTOP */
-.todayRow {
-  background: linear-gradient(180deg, #ece9d8 0%, #d6d2c2 100%);
-  border: 1px solid #000000;
-  box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #707070;
-  padding: 10px 12px;
+/* GRIGLIA ICONE STILE DESKTOP / PROGRAMMI */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 12px;
+  padding: 4px;
+}
+
+.iconTile {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  color: #000000;
+  justify-content: flex-start;
+  text-align: center;
   text-decoration: none;
-  font-size: 12px;
-  font-weight: bold;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  color: #ffffff;
   cursor: pointer;
-  border-radius: 2px;
+  padding: 6px;
+  border-radius: 4px;
+  background: transparent;
+  transition: background 0.15s ease;
 }
 
-.todayRow:active {
-  box-shadow: inset -1px -1px 0px #ffffff, inset 1px 1px 0px #707070;
+.iconTile:active {
+  background: rgba(0, 0, 128, 0.5);
+  border: 1px dotted #ffffff;
 }
 
-.todayLeft {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* ICONE RETRO PIXELATE */
-.todayIcon {
-  width: 18px;
-  height: 18px;
+.iconImage {
+  width: 36px;
+  height: 36px;
   object-fit: contain;
+  margin-bottom: 6px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.6));
+}
+
+.iconLabel {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px #000000, 0px 0px 4px #000000;
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 /* WATERMARK WINDOWS XP IN BASSO A DESTRA */
@@ -156,7 +157,7 @@
   position: absolute;
   bottom: 46px;
   right: 14px;
-  opacity: 0.95;
+  opacity: 0.85;
   pointer-events: none;
   z-index: 1;
 }
@@ -180,7 +181,6 @@
   z-index: 10;
   color: #000000;
   font-size: 12px;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .modalHeader {
@@ -195,8 +195,7 @@
 .modalTitle {
   font-size: 13px;
   font-weight: bold;
-  color: #000000;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  color: #000080;
 }
 
 .closeBtn {
@@ -208,7 +207,6 @@
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .modalRow {
@@ -220,21 +218,18 @@
   font-weight: bold;
   font-size: 12px;
   color: #000000;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardSubtitle {
   font-size: 11px;
   color: #444444;
   margin-bottom: 6px;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardDesc {
   font-size: 12px;
   line-height: 1.45;
   color: #111111;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardBullet {
@@ -261,12 +256,11 @@
   text-align: center;
   font-size: 12px;
   font-weight: bold;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   cursor: pointer;
   border-radius: 2px;
 }
 
-/* BOTTOM BAR BARRA DI STATO ORIGINALE */
+/* BOTTOM BAR BARRA DI STATO */
 .bottomBar {
   height: 40px;
   background: linear-gradient(180deg, #c0c0c0 0%, #808080 100%);
@@ -292,7 +286,6 @@
   gap: 6px;
   cursor: pointer;
   border-radius: 2px;
-  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .bottomButton:active {
