@@ -218,65 +218,91 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           </div>
 
           <div className={styles.modalRow}>
-            <div className={styles.cardTitle}>Brand Manager @ Exein</div>
+            <div className={styles.cardTitle}>
+              Brand & Product Marketing Manager @{" "}
+              <a
+                href="https://www.exein.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#000080", textDecoration: "underline" }}
+              >
+                Exein
+              </a>
+            </div>
             <div className={styles.cardSubtitle}>
-              Jan 2025 - Present | Rome, Latium, Italy (Hybrid)[span_0](start_span)[span_0](end_span)
+              Jan 2025 - Present | Rome, Latium, Italy (Hybrid)
             </div>
             <div className={styles.cardDesc}>
-              Driving global brand and product marketing strategies for Exein, a pioneer in runtime security for embedded and Physical AI systems[span_1](start_span)[span_1](end_span).
+              Driving global brand equity, positioning, and end-to-end product marketing strategies for Exein, a pioneer in runtime security for embedded devices and Physical AI systems.
               <div className={styles.cardBullet}>
-                Go-To-Market & Product Launches: Developed the narrative framework and GTM strategy for Photon (eBPF-based runtime security) at RSA Conference 2026 in San Francisco[span_2](start_span)[span_2](end_span).
+                Go-To-Market & Product Launch (Photon): Engineered narrative frameworks, positioning, and global launch collateral for Photon (eBPF-based runtime security solution) presented at RSA Conference in San Francisco.
               </div>
               <div className={styles.cardBullet}>
-                Field Marketing & Global Events: Led end-to-end marketing operations for Embedded World 2026 in Nuremberg, managing field activations, live coverage, and partnership marketing[span_3](start_span)[span_3](end_span).
+                Field Marketing & Global Events (Embedded World): Led marketing execution for Embedded World in Nuremberg, orchestrating live booth activations, keynote storytelling, and partner co-marketing.
               </div>
               <div className={styles.cardBullet}>
-                Analyst Relations & Executive Positioning: Managed ongoing engagement with Gartner and research firms; directed executive thought leadership initiatives globally[span_4](start_span)[span_4](end_span).
+                Open Source & Developer Marketing (Pulsar): Architected community growth campaigns for Pulsar, bridging technical developer advocacy with executive positioning.
               </div>
               <div className={styles.cardBullet}>
-                CRM & Automation: Implemented HubSpot CRM infrastructure, lead nurturing workflows, and agency coordination[span_5](start_span)[span_5](end_span).
+                Analyst Relations & Executive Positioning: Managed strategic engagements with Gartner and key research firms, securing market recognition for Physical AI security.
               </div>
               <div className={styles.cardBullet}>
-                Budget & Performance: Managed €700k+ marketing budget and delivered 30+ multimedia assets driving demand generation[span_6](start_span)[span_6](end_span).
+                Demand Gen & Infrastructure: Deployed HubSpot CRM automation and lead-nurturing workflows, managing a €700k+ budget and delivering 30+ complex multimedia assets.
               </div>
             </div>
           </div>
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Marketing Communications Brand Manager @ Mashfrog Group
+              Marketing Communications Brand Manager @{" "}
+              <a
+                href="https://www.mashfrog.com/en"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#000080", textDecoration: "underline" }}
+              >
+                Mashfrog Group
+              </a>
             </div>
             <div className={styles.cardSubtitle}>
-              Mar 2022 - Dec 2024 | Greater Rome Area (Hybrid)[span_7](start_span)[span_7](end_span)
+              Mar 2022 - Dec 2024 | Greater Rome Area (Hybrid)
             </div>
             <div className={styles.cardDesc}>
-              Strategic brand and communication consulting for key energy, telecommunications, and public utility leaders (Enel X Way, Enel X, Free To X, Alia Servizi Ambientali, Tiscali)[span_8](start_span)[span_8](end_span).
+              Strategic brand and communication consulting for key energy, telecommunications, and public utility leaders (Enel X Way, Enel X, Free To X, Alia Servizi Ambientali, Tiscali).
               <div className={styles.cardBullet}>
-                Integrated Campaigns: Designed and executed B2B, B2C, and B2G campaigns and brand awareness initiatives[span_9](start_span)[span_9](end_span).
+                Integrated Campaigns: Designed and executed integrated B2B, B2C, and B2G campaigns and brand awareness initiatives.
               </div>
               <div className={styles.cardBullet}>
-                Environmental Campaign: Spearheaded the nationwide environmental campaign for Alia Servizi Ambientali with ANCI and CONAI[span_10](start_span)[span_10](end_span).
+                Environmental Campaign: Spearheaded the nationwide environmental campaign for Alia Servizi Ambientali in partnership with ANCI and CONAI.
               </div>
               <div className={styles.cardBullet}>
-                Content & CRM: Managed content marketing, Salesforce Marketing Cloud CRM automation, and motorsport partnerships for Enel X Way[span_11](start_span)[span_11](end_span).
+                Content & CRM: Managed content marketing, Salesforce Marketing Cloud CRM automation, and motorsport sponsorship content strategies for Enel X Way.
               </div>
             </div>
           </div>
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Marketing Communications Brand Specialist @ B2X S.r.l.
+              Marketing Communications Brand Specialist @{" "}
+              <a
+                href="https://www.b2x.it"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#000080", textDecoration: "underline" }}
+              >
+                B2X S.r.l.
+              </a>
             </div>
             <div className={styles.cardSubtitle}>
-              Nov 2017 - Mar 2022 | Rome, Italy (Hybrid)[span_12](start_span)[span_12](end_span)
+              Nov 2017 - Mar 2022 | Rome, Italy (Hybrid)
             </div>
             <div className={styles.cardDesc}>
-              Managed omnichannel marketing and content governance for premium international luxury and consumer goods brands (Bvlgari Hotels & Resorts, Chicco, Goovi)[span_13](start_span)[span_13](end_span).
+              Managed omnichannel marketing and content governance for premium international luxury and consumer goods brands (Bvlgari Hotels & Resorts, Chicco, Goovi).
               <div className={styles.cardBullet}>
-                Brand Alignment: Coordinated brand identity and content strategies across e-commerce, blogs, and social platforms[span_14](start_span)[span_14](end_span).
+                Brand Alignment: Coordinated brand identity and content strategies across e-commerce platforms, blogs, websites, and social channels.
               </div>
               <div className={styles.cardBullet}>
-                Digital Operations: Overseen CMS publishing, microcopy refinement, lead generation, and performance metrics reporting[span_15](start_span)[span_15](end_span).
+                Digital Operations: Overseen CMS publishing, microcopy refinement, lead generation campaigns, and cross-functional international team alignment.
               </div>
             </div>
           </div>
@@ -301,15 +327,15 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               Master, Storytelling and Creative Writing
             </div>
             <div className={styles.cardSubtitle}>
-              Scuola di Comunicazione IULM | Nov 2016 – Jun 2017[span_16](start_span)[span_16](end_span)
+              Scuola di Comunicazione IULM | Nov 2016 – Jun 2017
             </div>
             <div className={styles.cardDesc}>
-              Advanced specialization in narrative structures, creative writing, and story design applied to corporate communications and modern media[span_17](start_span)[span_17](end_span).
+              Advanced specialization in narrative structures, creative writing, and story design applied to corporate communications and modern media.
               <div className={styles.cardBullet}>
-                Core Focus: Transmedia storytelling, content architecture, brand narrative development, and editorial strategy across digital platforms[span_18](start_span)[span_18](end_span).
+                Core Focus: Transmedia storytelling, content architecture, brand narrative development, and editorial strategy across digital platforms.
               </div>
               <div className={styles.cardBullet}>
-                Professional Impact: Strategic foundation used to translate complex technical concepts (Deep Tech, Physical AI, B2B) into compelling brand narratives[span_19](start_span)[span_19](end_span).
+                Professional Impact: Strategic foundation used to translate complex technical concepts (Deep Tech, Physical AI, B2B) into compelling brand narratives.
               </div>
             </div>
           </div>
@@ -319,15 +345,15 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               1° ciclo - Laurea L, Communication and Media Studies
             </div>
             <div className={styles.cardSubtitle}>
-              IULM University | Sep 2013 – Nov 2016[span_20](start_span)[span_20](end_span)
+              IULM University | Sep 2013 – Nov 2016
             </div>
             <div className={styles.cardDesc}>
-              Comprehensive degree covering mass media dynamics, consumer behavior, advertising strategy, and digital marketing[span_21](start_span)[span_21](end_span).
+              Comprehensive degree covering mass media dynamics, consumer behavior, advertising strategy, and digital marketing.
               <div className={styles.cardBullet}>
-                Key Areas: Market analysis, media planning, advertising campaign design, visual communication, and public relations[span_22](start_span)[span_22](end_span).
+                Key Areas: Market analysis, media planning, advertising campaign design, visual communication, and public relations.
               </div>
               <div className={styles.cardBullet}>
-                Strategic Value: Fundamental groundwork in media management and brand communication strategies[span_23](start_span)[span_23](end_span).
+                Strategic Value: Fundamental groundwork in media management and brand communication strategies.
               </div>
             </div>
           </div>
