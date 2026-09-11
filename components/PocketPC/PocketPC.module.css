@@ -12,36 +12,34 @@
   user-select: none;
   overflow: hidden;
   position: relative;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* TOP BAR WINDOWS MOBILE */
 .topBar {
-  height: 24px;
+  height: 32px;
   background: linear-gradient(180deg, #1852e0 0%, #0c33a1 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 12px;
   border-bottom: 1px solid #204098;
   color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: bold;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
-  letter-spacing: -0.2px;
 }
 
 .topBarLeft, .topBarRight {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
 .startTitle {
   color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: bold;
   margin-left: 2px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
@@ -53,24 +51,23 @@
   flex-direction: column;
   position: relative;
   z-index: 2;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
-/* RIGHE MENU TODAY SCREEN (FEDELI ALLO SCREENSHOT) */
+/* RIGHE MENU TODAY SCREEN (PROPORZIONATE PER IPHONE MAX) */
 .todayRow {
-  background: rgba(230, 240, 255, 0.78);
-  border-bottom: 1px solid rgba(126, 161, 238, 0.75);
-  padding: 5px 8px;
+  background: rgba(230, 240, 255, 0.82);
+  border-bottom: 1px solid rgba(126, 161, 238, 0.85);
+  padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #000080;
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 500;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
-  letter-spacing: -0.2px;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
   cursor: pointer;
 }
 
@@ -81,59 +78,59 @@
 .todayLeft {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 /* ICONE RETRO PIXELATE */
 .todayIcon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 
 .headerRow {
-  background: rgba(200, 225, 255, 0.88);
+  background: rgba(200, 225, 255, 0.92);
   color: #000066;
+  padding: 14px;
 }
 
 .ownerTitle {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: bold;
   color: #000066;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
-  letter-spacing: -0.2px;
 }
 
 .subText {
-  font-size: 10px;
+  font-size: 12px;
   color: #333399;
-  font-weight: 400;
+  font-weight: normal;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  margin-top: 2px;
 }
 
 /* RIGA STATUS CON PALLINO VERDE */
 .statusRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(215, 235, 255, 0.82);
-  border-bottom: 1px solid rgba(126, 161, 238, 0.75);
-  padding: 5px 8px;
-  font-size: 11px;
-  font-weight: 700;
+  gap: 10px;
+  background: rgba(215, 235, 255, 0.85);
+  border-bottom: 1px solid rgba(126, 161, 238, 0.85);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: bold;
   color: #000080;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
-  letter-spacing: -0.2px;
 }
 
 .greenDot {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   background-color: #2ed573;
   border-radius: 50%;
-  box-shadow: 0 0 4px #2ed573;
+  box-shadow: 0 0 5px #2ed573;
   display: inline-block;
   animation: pulse 1.8s infinite;
 }
@@ -147,8 +144,8 @@
 /* WATERMARK WINDOWS XP IN BASSO A DESTRA */
 .winLogoWatermark {
   position: absolute;
-  bottom: 36px;
-  right: 12px;
+  bottom: 46px;
+  right: 14px;
   opacity: 0.95;
   pointer-events: none;
   z-index: 1;
@@ -163,16 +160,16 @@
 /* MODAL PER LE SEZIONI */
 .modal {
   position: fixed;
-  top: 24px;
+  top: 32px;
   left: 0;
   right: 0;
-  bottom: 30px;
+  bottom: 40px;
   background: #f0f5ff;
-  padding: 12px;
+  padding: 16px;
   overflow-y: auto;
   z-index: 10;
   color: #000;
-  font-size: 11px;
+  font-size: 13px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
@@ -181,13 +178,13 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid #000080;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .modalTitle {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: bold;
   color: #000080;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
@@ -197,42 +194,42 @@
   border: 1px solid #404040;
   box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #808080;
   color: black;
-  padding: 2px 8px;
-  font-size: 10px;
-  font-weight: 700;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: bold;
   cursor: pointer;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .modalRow {
   border-bottom: 1px solid #b0c4de;
-  padding: 8px 0;
+  padding: 12px 0;
 }
 
 .cardTitle {
-  font-weight: 700;
-  font-size: 11px;
+  font-weight: bold;
+  font-size: 13px;
   color: #000080;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardSubtitle {
-  font-size: 10px;
+  font-size: 11px;
   color: #444;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardDesc {
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.45;
   color: #111;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardBullet {
-  margin: 3px 0;
-  padding-left: 10px;
+  margin: 4px 0;
+  padding-left: 12px;
   position: relative;
 }
 
@@ -246,14 +243,14 @@
 .modalCtaBtn {
   display: block;
   width: 100%;
-  margin-top: 14px;
-  padding: 6px;
+  margin-top: 16px;
+  padding: 10px;
   background: linear-gradient(180deg, #2b55b9 0%, #1843a3 100%);
   color: #ffffff;
   border: 1px solid #000066;
   text-align: center;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: bold;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   cursor: pointer;
   border-radius: 2px;
@@ -261,13 +258,13 @@
 
 /* BOTTOM BAR BARRA DI STATO */
 .bottomBar {
-  height: 30px;
+  height: 38px;
   background: linear-gradient(180deg, #d4d0c8 0%, #a6a29a 100%);
   border-top: 1px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 12px;
   position: relative;
   z-index: 5;
 }
@@ -276,16 +273,15 @@
   background: #d4d0c8;
   border: 1px solid #404040;
   box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #808080;
-  padding: 2px 8px;
-  font-size: 11px;
-  font-weight: 700;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: bold;
   color: #000000;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   cursor: pointer;
   font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
-  letter-spacing: -0.2px;
 }
 
 .bottomButton:active {
