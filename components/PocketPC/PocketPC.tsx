@@ -148,7 +148,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               width={16}
               height={16}
             />
-            <span>Call me now (+39 339 1929162)</span>
+            <span>Call me now</span>
           </div>
         </a>
 
