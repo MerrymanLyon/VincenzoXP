@@ -7,6 +7,7 @@ import mycomputer from "../../assets/mycomputer.png";
 import pdf from "../../assets/pdf.png";
 import linkedin from "../../assets/linkedin.png";
 import cmdIcon from "../../assets/cmd.png";
+import docIcon from "../../assets/doc.png";
 
 interface PocketPCProps {
   onSwitchToDesktop: () => void;
@@ -42,7 +43,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("Link copiato negli appunti!");
+      alert("Link copied to clipboard!");
     }
   };
 
@@ -54,8 +55,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           <Image
             src="/Windows-logo.png"
             alt="Start"
-            width={14}
-            height={14}
+            width={16}
+            height={16}
             className={styles.todayIcon}
           />
           <span className={styles.startTitle}>Start</span>
@@ -79,7 +80,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           </div>
         </div>
 
-        {/* STATUS BAR CON PALLINO VERDE */}
+        {/* STATUS BAR */}
         <div className={styles.statusRow}>
           <span className={styles.greenDot}></span>
           <span>Status: Open to new opportunities</span>
@@ -95,25 +96,25 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               src={cmdIcon.src}
               alt="Experiences"
               className={styles.todayIcon}
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
             <span>Experiences</span>
           </div>
         </div>
 
-        {/* EDUCATION (ICON DOCUMENTO EDUCATION) */}
+        {/* EDUCATION (DOC.PNG) */}
         <div
           className={styles.todayRow}
           onClick={() => setActiveModal("education")}
         >
           <div className={styles.todayLeft}>
             <Image
-              src={pdf.src}
+              src={docIcon.src}
               alt="Education"
               className={styles.todayIcon}
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
             <span>Education</span>
           </div>
@@ -131,24 +132,24 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               src={pdf.src}
               alt="Resume"
               className={styles.todayIcon}
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
             <span>My Resume (CV.pdf)</span>
           </div>
         </a>
 
-        {/* CALL ME NOW (IMG_0691.png) */}
+        {/* CALL ME NOW (PHONE-15.PNG) */}
         <a href="tel:+393391929162" className={styles.todayRow}>
           <div className={styles.todayLeft}>
             <Image
-              src="/IMG_0691.png"
+              src="/Phone-15.png"
               alt="Phone"
               className={styles.todayIcon}
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
-            <span>Call me now</span>
+            <span>Call me now (+39 339 1929162)</span>
           </div>
         </a>
 
@@ -164,8 +165,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               src={linkedin.src}
               alt="LinkedIn"
               className={styles.todayIcon}
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
             <span>LinkedIn Profile</span>
           </div>
@@ -181,21 +182,21 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               src={mycomputer.src}
               alt="Why XP"
               className={styles.todayIcon}
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
             <span>Why a Windows XP resume website?</span>
           </div>
         </div>
       </div>
 
-      {/* LOGO WINDOWS WATERMARK IN BASSO A DESTRA */}
+      {/* INGRANDITO LOGO WINDOWS XP WATERMARK IN BASSO A DESTRA */}
       <div className={styles.winLogoWatermark}>
         <Image
           src="/Windows-logo.png"
           alt="Windows Logo"
-          width={80}
-          height={65}
+          width={120}
+          height={95}
           className={styles.winLogoImage}
         />
       </div>
@@ -216,49 +217,64 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>Brand Manager @ Exein</div>
             <div className={styles.cardSubtitle}>
-              Jan 2025 - Present | Rome (Hybrid)[span_0](start_span)[span_0](end_span)
+              Jan 2025 - Present | Rome, Latium, Italy (Hybrid)[span_1](start_span)[span_1](end_span)
             </div>
             <div className={styles.cardDesc}>
-              Guido la strategia globale di brand e product marketing per la sicurezza IoT e Physical AI[span_1](start_span)[span_1](end_span).
+              Driving global brand and product marketing strategies for Exein, a pioneer in runtime security for embedded and Physical AI systems[span_2](start_span)[span_2](end_span).
               <div className={styles.cardBullet}>
-                GTM & Launch: Sviluppato narrative e strategia per il lancio di Photon a RSA Conference San Francisco[span_2](start_span)[span_2](end_span).
+                Go-To-Market & Product Launches: Developed the narrative framework and GTM strategy for Photon (eBPF-based runtime security) at RSA Conference 2026 in San Francisco[span_3](start_span)[span_3](end_span).
               </div>
               <div className={styles.cardBullet}>
-                Field Marketing: Gestito operazioni e live coverage ad Embedded World Norimberga[span_3](start_span)[span_3](end_span).
+                Field Marketing & Global Events: Led end-to-end marketing operations for Embedded World 2026 in Nuremberg, managing field activations, live coverage, and partnership marketing[span_4](start_span)[span_4](end_span).
               </div>
               <div className={styles.cardBullet}>
-                Growth & Budget: Gestito budget marketing di €700k+ coordinando 30+ asset multimediali[span_4](start_span)[span_4](end_span).
+                Analyst Relations & Executive Positioning: Managed ongoing engagement with Gartner and research firms; directed executive thought leadership initiatives globally[span_5](start_span)[span_5](end_span).
+              </div>
+              <div className={styles.cardBullet}>
+                CRM & Automation: Implemented HubSpot CRM infrastructure, lead nurturing workflows, and agency coordination[span_6](start_span)[span_6](end_span).
+              </div>
+              <div className={styles.cardBullet}>
+                Budget & Performance: Managed €700k+ marketing budget and delivered 30+ multimedia assets driving demand generation[span_7](start_span)[span_7](end_span).
               </div>
             </div>
           </div>
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Marketing Communications Brand Manager @ Mashfrog Group[span_5](start_span)[span_5](end_span)
+              Marketing Communications Brand Manager @ Mashfrog Group
             </div>
             <div className={styles.cardSubtitle}>
-              Mar 2022 - Dec 2024 | Rome[span_6](start_span)[span_6](end_span)
+              Mar 2022 - Dec 2024 | Greater Rome Area (Hybrid)[span_8](start_span)[span_8](end_span)
             </div>
             <div className={styles.cardDesc}>
-              Consulenza strategica di brand per big player nei settori energia, telco e utility (Enel X Way, Enel X, Alia)[span_7](start_span)[span_7](end_span).
+              Strategic brand and communication consulting for key energy, telecommunications, and public utility leaders (Enel X Way, Enel X, Free To X, Alia Servizi Ambientali, Tiscali)[span_9](start_span)[span_9](end_span).
               <div className={styles.cardBullet}>
-                Campaigns: Progettato e diretto campagne integrate B2B, B2C e B2G[span_8](start_span)[span_8](end_span).
+                Integrated Campaigns: Designed and executed B2B, B2C, and B2G campaigns and brand awareness initiatives[span_10](start_span)[span_10](end_span).
               </div>
               <div className={styles.cardBullet}>
-                CRM & Content: Gestito automazione CRM (Salesforce) e partnership motorsport[span_9](start_span)[span_9](end_span).
+                Environmental Campaign: Spearheaded the nationwide environmental campaign for Alia Servizi Ambientali with ANCI and CONAI[span_11](start_span)[span_11](end_span).
+              </div>
+              <div className={styles.cardBullet}>
+                Content & CRM: Managed content marketing, Salesforce Marketing Cloud CRM automation, and motorsport partnerships for Enel X Way[span_12](start_span)[span_12](end_span).
               </div>
             </div>
           </div>
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Marketing Communications Brand Specialist @ B2X S.r.l.[span_10](start_span)[span_10](end_span)
+              Marketing Communications Brand Specialist @ B2X S.r.l.
             </div>
             <div className={styles.cardSubtitle}>
-              Nov 2017 - Mar 2022 | Rome[span_11](start_span)[span_11](end_span)
+              Nov 2017 - Mar 2022 | Rome, Italy (Hybrid)[span_13](start_span)[span_13](end_span)
             </div>
             <div className={styles.cardDesc}>
-              Coordinamento della strategia di brand omnichannel per brand di lusso e consumer goods (Bvlgari Hotels, Chicco, Goovi)[span_12](start_span)[span_12](end_span).
+              Managed omnichannel marketing and content governance for premium international luxury and consumer goods brands (Bvlgari Hotels & Resorts, Chicco, Goovi)[span_14](start_span)[span_14](end_span).
+              <div className={styles.cardBullet}>
+                Brand Alignment: Coordinated brand identity and content strategies across e-commerce, blogs, and social platforms[span_15](start_span)[span_15](end_span).
+              </div>
+              <div className={styles.cardBullet}>
+                Digital Operations: Overseen CMS publishing, microcopy refinement, lead generation, and performance metrics reporting[span_16](start_span)[span_16](end_span).
+              </div>
             </div>
           </div>
         </div>
@@ -268,7 +284,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       {activeModal === "education" && (
         <div className={styles.modal}>
           <div className={styles.modalHeader}>
-            <span className={styles.modalTitle}>Education & Qualifications</span>
+            <span className={styles.modalTitle}>Education & Academic Path</span>
             <button
               className={styles.closeBtn}
               onClick={() => setActiveModal(null)}
@@ -279,26 +295,37 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Master, Storytelling and Creative Writing[span_13](start_span)[span_13](end_span)
+              Master, Storytelling and Creative Writing
             </div>
             <div className={styles.cardSubtitle}>
-              Scuola di Comunicazione IULM (2016 - 2017)[span_14](start_span)[span_14](end_span)
+              Scuola di Comunicazione IULM | Nov 2016 – Jun 2017[span_17](start_span)[span_17](end_span)
             </div>
             <div className={styles.cardDesc}>
-              Specializzazione avanzata in strutture narrative, transmedia storytelling e content architecture[span_15](start_span)[span_15](end_span).
-              Fondamentale per tradurre concetti tecnologici complessi (Deep Tech, Physical AI) in narrazioni di brand efficaci[span_16](start_span)[span_16](end_span).
+              Advanced specialization in narrative structures, creative writing, and story design applied to corporate communications and modern media[span_18](start_span)[span_18](end_span).
+              <div className={styles.cardBullet}>
+                Core Focus: Transmedia storytelling, content architecture, brand narrative development, and editorial strategy across digital platforms[span_19](start_span)[span_19](end_span).
+              </div>
+              <div className={styles.cardBullet}>
+                Professional Impact: Strategic foundation used to translate complex technical concepts (Deep Tech, Physical AI, B2B) into compelling brand narratives[span_20](start_span)[span_20](end_span).
+              </div>
             </div>
           </div>
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Laurea Triennale in Comunicazione e Media Studies[span_17](start_span)[span_17](end_span)
+              1° ciclo - Laurea L, Communication and Media Studies
             </div>
             <div className={styles.cardSubtitle}>
-              IULM University (2013 - 2016)[span_18](start_span)[span_18](end_span)
+              IULM University | Sep 2013 – Nov 2016[span_21](start_span)[span_21](end_span)
             </div>
             <div className={styles.cardDesc}>
-              Percorso focalizzato su dinamiche dei mass media, psicologia dei consumi, strategie pubblicitarie e digital marketing[span_19](start_span)[span_19](end_span).
+              Comprehensive degree covering mass media dynamics, consumer behavior, advertising strategy, and digital marketing[span_22](start_span)[span_22](end_span).
+              <div className={styles.cardBullet}>
+                Key Areas: Market analysis, media planning, advertising campaign design, visual communication, and public relations[span_23](start_span)[span_23](end_span).
+              </div>
+              <div className={styles.cardBullet}>
+                Strategic Value: Fundamental groundwork in media management and brand communication strategies[span_24](start_span)[span_24](end_span).
+              </div>
             </div>
           </div>
         </div>
@@ -309,7 +336,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
         <div className={styles.modal}>
           <div className={styles.modalHeader}>
             <span className={styles.modalTitle}>
-              Why a Windows XP Resume?
+              Case Study: The Windows XP Portfolio
             </span>
             <button
               className={styles.closeBtn}
@@ -321,21 +348,31 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Strategia di Posizionamento & Storytelling
+              Strategic Positioning & Concept
             </div>
             <div className={styles.cardDesc}>
-              In un mercato saturo di CV piatti in PDF, questo sito nasce per applicare direttamente il mio background di Brand Manager: catturare l&apos;attenzione trasformando le informazioni professionali in un&apos;esperienza interattiva e memorabile.
+              In an overcrowded market dominated by standardized PDF resumes, this project applies core Brand Management principles to personal positioning. By turning career credentials into an interactive, nostalgic Windows XP operating system, the portfolio captures recruiter attention, increases time-on-page, and bridges technical developer culture with strategic enterprise marketing.
             </div>
           </div>
 
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
-              Uso Creativo dell&apos;AI: Vincenzo & Gemini
+              Human-AI Collaboration & Tech Stack
             </div>
             <div className={styles.cardDesc}>
-              Questo progetto dimostra come la collaborazione uomo-AI possa abbattere le barriere tecniche. Con pochissime conoscenze di codice React/Next.js, ho guidato l&apos;architettura visiva, la logica di prodotto e il copy, utilizzando Gemini come pair-programmer per sviluppare, debuggare e rendere totalmente responsive una Web App complessa.
+              Built as a hands-on technical experiment, this Web App demonstrates modern product execution through human-AI pair programming.
+              <div className={styles.cardBullet}>
+                Role Division: As Brand Manager, I defined the product vision, UI/UX architecture, copy, and visual assets, leveraging Gemini as an AI technical partner to engineer Next.js, React, and Redux logic.
+              </div>
+              <div className={styles.cardBullet}>
+                Implementation Steps: Built custom windowing managers, integrated EmailJS REST endpoints, implemented adaptive viewports, and created a Pocket PC (Windows Mobile 2003) interface specifically engineered for mobile devices.
+              </div>
             </div>
           </div>
+
+          <button className={styles.modalCtaBtn} onClick={onSwitchToDesktop}>
+            🖥️ Experience Full Desktop XP Version
+          </button>
         </div>
       )}
 
@@ -345,8 +382,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
           <Image
             src={mycomputer.src}
             alt="Desktop"
-            width={14}
-            height={14}
+            width={16}
+            height={16}
             className={styles.todayIcon}
           />
           <span>Full XP Desktop</span>

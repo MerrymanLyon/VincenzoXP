@@ -80,7 +80,7 @@ const Welcome = ({ id }: props) => {
             <div className={styles.accordion_content_text}>
               <Image
                 alt="icon"
-                src="/IMG_0691.png"
+                src="/Phone-15.png"
                 height={15}
                 width={15}
                 style={{ objectFit: "contain", imageRendering: "pixelated" }}
