@@ -3,11 +3,11 @@ import styles from "./PocketPC.module.css";
 import Image from "next/image";
 
 // Import degli asset del progetto
-import mycomputer from "../../assets/mycomputer.png";
 import pdf from "../../assets/pdf.png";
 import linkedin from "../../assets/linkedin.png";
 import cmdIcon from "../../assets/cmd.png";
 import docIcon from "../../assets/doc.png";
+import butterflyIcon from "../../assets/butterfly.png";
 import sendmailIcon from "../../assets/toolbar/sendmail.png";
 
 interface PocketPCProps {
@@ -77,7 +77,9 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
         {/* HEADER USER INFO */}
         <div className={styles.headerRow}>
           <div className={styles.ownerTitle}>Vincenzo Reina</div>
-          <div className={styles.subText}>Brand Manager & Strategic Storyteller</div>
+          <div className={styles.subText}>
+            Brand Manager, Strategic Storyteller & GTM
+          </div>
         </div>
 
         {/* GRIGLIA ICONE STILE DESKTOP */}
@@ -90,8 +92,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <Image
               src={cmdIcon.src}
               alt="Experiences"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>Experiences</span>
@@ -105,8 +107,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <Image
               src={docIcon.src}
               alt="Education"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>Education</span>
@@ -122,8 +124,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <Image
               src={pdf.src}
               alt="Resume"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>My Resume</span>
@@ -134,8 +136,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <Image
               src="/Phone-15.png"
               alt="Phone"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>Call Me</span>
@@ -149,8 +151,8 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <Image
               src={sendmailIcon.src}
               alt="Email"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>Send Email</span>
@@ -166,23 +168,23 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <Image
               src={linkedin.src}
               alt="LinkedIn"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>LinkedIn</span>
           </a>
 
-          {/* ICONA 7: WHY XP RESUME */}
+          {/* ICONA 7: WHY XP RESUME (BUTTERFLY.PNG) */}
           <div
             className={styles.iconTile}
             onClick={() => setActiveModal("whyXP")}
           >
             <Image
-              src={mycomputer.src}
+              src={butterflyIcon.src}
               alt="Why XP"
-              width={36}
-              height={36}
+              width={48}
+              height={48}
               className={styles.iconImage}
             />
             <span className={styles.iconLabel}>Why XP?</span>
@@ -380,7 +382,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       <div className={styles.bottomBar}>
         <button className={styles.bottomButton} onClick={onSwitchToDesktop}>
           <Image
-            src={mycomputer.src}
+            src="/mycomputer.png"
             alt="Desktop"
             width={16}
             height={16}

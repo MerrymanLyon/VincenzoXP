@@ -12,6 +12,7 @@
   user-select: none;
   overflow: hidden;
   position: relative;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* TOP BAR WINDOWS MOBILE */
@@ -26,6 +27,7 @@
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .topBarLeft {
@@ -40,12 +42,16 @@
   gap: 6px;
   font-size: 11px;
   color: #ffffff;
+  font-weight: normal;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .startTitle {
   color: #ffffff;
   font-size: 13px;
   font-weight: bold;
+  margin-left: 2px;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .topStatus {
@@ -54,6 +60,8 @@
   gap: 5px;
   font-size: 11px;
   color: #ffffff;
+  font-weight: normal;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .greenDot {
@@ -85,31 +93,35 @@
 
 /* HEADER USER INFO */
 .headerRow {
-  background: rgba(0, 0, 80, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 80, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(4px);
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 4px;
   margin-bottom: 16px;
 }
 
 .ownerTitle {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   color: #ffffff;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  text-shadow: 1px 1px 2px #000000;
 }
 
 .subText {
-  font-size: 11px;
+  font-size: 12px;
   color: #d0e0ff;
-  margin-top: 2px;
+  margin-top: 3px;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
+  text-shadow: 1px 1px 2px #000000;
 }
 
-/* GRIGLIA ICONE STILE DESKTOP / PROGRAMMI */
+/* GRIGLIA ICONE STILE DESKTOP XP */
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px 12px;
+  gap: 20px 12px;
   padding: 4px;
 }
 
@@ -123,36 +135,39 @@
   color: #ffffff;
   cursor: pointer;
   padding: 6px;
-  border-radius: 4px;
+  border-radius: 3px;
   background: transparent;
   transition: background 0.15s ease;
 }
 
 .iconTile:active {
-  background: rgba(0, 0, 128, 0.5);
-  border: 1px dotted #ffffff;
+  background: rgba(11, 97, 255, 0.6);
+  outline: 1px dotted #ffffff;
 }
 
+/* ICONE PIÙ GRANDI PER MATCHARE IL DESKTOP */
 .iconImage {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   margin-bottom: 6px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.65));
 }
 
+/* FONT TESTO IDENTICO A WINDOWS XP DESKTOP */
 .iconLabel {
-  font-size: 11px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: normal;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   color: #ffffff;
-  text-shadow: 1px 1px 2px #000000, 0px 0px 4px #000000;
-  line-height: 1.2;
+  text-shadow: 1px 1px 1px #000000, 0px 0px 2px #000000;
+  line-height: 1.25;
   word-break: break-word;
 }
 
-/* WATERMARK WINDOWS XP IN BASSO A DESTRA */
+/* WATERMARK WINDOWS LOGO IN BASSO A DESTRA */
 .winLogoWatermark {
   position: absolute;
   bottom: 46px;
@@ -181,6 +196,7 @@
   z-index: 10;
   color: #000000;
   font-size: 12px;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .modalHeader {
@@ -195,7 +211,8 @@
 .modalTitle {
   font-size: 13px;
   font-weight: bold;
-  color: #000080;
+  color: #000000;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .closeBtn {
@@ -207,6 +224,7 @@
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .modalRow {
@@ -218,18 +236,21 @@
   font-weight: bold;
   font-size: 12px;
   color: #000000;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardSubtitle {
   font-size: 11px;
   color: #444444;
   margin-bottom: 6px;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardDesc {
   font-size: 12px;
   line-height: 1.45;
   color: #111111;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .cardBullet {
@@ -256,6 +277,7 @@
   text-align: center;
   font-size: 12px;
   font-weight: bold;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
   cursor: pointer;
   border-radius: 2px;
 }
@@ -286,6 +308,7 @@
   gap: 6px;
   cursor: pointer;
   border-radius: 2px;
+  font-family: Tahoma, "Segoe UI", Geneva, Verdana, sans-serif;
 }
 
 .bottomButton:active {
