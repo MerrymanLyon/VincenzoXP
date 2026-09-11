@@ -3,6 +3,7 @@ import styles from "./PocketPC.module.css";
 import Image from "next/image";
 
 // Import degli asset del progetto
+import mycomputer from "../../assets/mycomputer.png";
 import pdf from "../../assets/pdf.png";
 import linkedin from "../../assets/linkedin.png";
 import cmdIcon from "../../assets/cmd.png";
@@ -175,7 +176,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <span className={styles.iconLabel}>LinkedIn</span>
           </a>
 
-          {/* ICONA 7: WHY XP RESUME (BUTTERFLY.PNG) */}
+          {/* ICONA 7: WHY XP RESUME */}
           <div
             className={styles.iconTile}
             onClick={() => setActiveModal("whyXP")}
@@ -382,7 +383,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
       <div className={styles.bottomBar}>
         <button className={styles.bottomButton} onClick={onSwitchToDesktop}>
           <Image
-            src="/mycomputer.png"
+            src={mycomputer.src}
             alt="Desktop"
             width={16}
             height={16}
@@ -392,6 +393,13 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
         </button>
 
         <button className={styles.bottomButton} onClick={handleShare}>
+          <Image
+            src="/IMG_0695 2.png"
+            alt="Share"
+            width={16}
+            height={16}
+            style={{ imageRendering: "pixelated" }}
+          />
           <span>Share</span>
         </button>
       </div>
