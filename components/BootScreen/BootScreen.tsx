@@ -33,10 +33,10 @@ const BootScreen: React.FC<BootScreenProps> = ({
       <div className={styles.centerContent}>
         {/* BRANDING BLOCK */}
         <div className={styles.brandBlock}>
-          {/* LOGO WINDOWS IMG_0691.png */}
+          {/* LOGO WINDOWS /Windows-logo.png */}
           <div className={styles.logoWrapper}>
             <Image
-              src="/IMG_0691.png"
+              src="/Windows-logo.png"
               alt="Windows Logo"
               width={85}
               height={68}
@@ -64,14 +64,9 @@ const BootScreen: React.FC<BootScreenProps> = ({
         </div>
       </div>
 
-      {/* FOOTER */}
+      {/* FOOTER CENTRATO */}
       <div className={styles.footer}>
-        <div className={styles.footerLeft}>
-          <span>Welcome to my website</span>
-        </div>
-        <div className={styles.footerRight}>
-          <span>Vincenzo</span>
-        </div>
+        <span>Welcome to my website</span>
       </div>
     </div>
   );

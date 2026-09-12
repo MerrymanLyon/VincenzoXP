@@ -54,7 +54,7 @@
   image-rendering: crisp-edges;
 }
 
-/* SCRITTA REINA® (AL POSTO DI MICROSOFT®) */
+/* SCRITTA REINA® */
 .subHeader {
   font-size: 11px;
   color: #ffffff;
@@ -82,7 +82,7 @@
 .xpText {
   font-size: 21px;
   font-weight: bold;
-  color: #e25c0e; /* Arancione nativo boot XP */
+  color: #e25c0e;
   font-style: normal;
   line-height: 1;
   margin-left: 2px;
@@ -127,23 +127,13 @@
   }
 }
 
-/* FOOTER BOTTOM BAR */
+/* FOOTER BOTTOM BAR CENTRATA */
 .footer {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
   color: #ffffff;
   font-size: 11px;
-}
-
-.footerLeft {
-  color: #ffffff;
-}
-
-.footerRight {
-  font-weight: bold;
-  font-style: italic;
-  font-size: 13px;
-  color: #ffffff;
+  padding-bottom: 8px;
 }
