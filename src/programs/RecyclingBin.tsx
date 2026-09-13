@@ -7,42 +7,44 @@ interface RecyclingBinProps {
 const RecyclingBin: React.FC<RecyclingBinProps> = () => {
   return (
     <>
-      <style jsx>{`
+      <style jsx global>{`
+        .secretContainer {
+          width: 100%;
+          height: 100%;
+          min-height: 300px;
+          background-color: #ffffff !important;
+          padding: 20px;
+          box-sizing: border-box;
+          overflow-y: auto;
+          cursor: default;
+        }
+
         .secretText {
-          color: #ffffff;
-          background-color: #ffffff;
+          color: #ffffff !important;
+          background-color: #ffffff !important;
           margin: 0;
           font-size: 13px;
           line-height: 1.6;
           font-family: Tahoma, sans-serif;
-          user-select: text;
-          -webkit-user-select: text;
+          user-select: text !important;
+          -webkit-user-select: text !important;
         }
 
-        /* DEFINIZIONE DEL COLORE TESTO QUANDO VIENE SELEZIONATO DAL MOUSE */
+        /* FORZATURA EVIDENZIAZIONE: TESTO NERO SU SFONDO BLU XP */
         .secretText::selection {
-          background-color: #0a246a; /* Blu classico selezione Windows XP */
-          color: #ffffff; /* Testo bianco ben visibile su fondo blu */
+          background-color: #0a246a !important; /* Blu XP */
+          color: #ffffff !important;            /* Testo Bianco visibile */
+          text-shadow: none !important;
         }
 
         .secretText::-moz-selection {
-          background-color: #0a246a;
-          color: #ffffff;
+          background-color: #0a246a !important;
+          color: #ffffff !important;
+          text-shadow: none !important;
         }
       `}</style>
 
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          minHeight: "300px",
-          backgroundColor: "#ffffff",
-          padding: "20px",
-          boxSizing: "border-box",
-          overflowY: "auto",
-          cursor: "default",
-        }}
-      >
+      <div className="secretContainer">
         <p className="secretText">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis
           quam a ex sagittis pharetra. Etiam gravida blandit eros nec rhoncus.
