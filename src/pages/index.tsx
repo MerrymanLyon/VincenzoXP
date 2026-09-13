@@ -27,6 +27,7 @@ import Welcome from "@/programs/Welcome";
 import MyGallery from "@/programs/MyGallery";
 import InternetExplorer from "@/programs/InternetExplorer";
 import Education from "@/programs/Education";
+import RecyclingBin from "@/programs/RecyclingBin";
 
 export default function Home() {
   const [showBoot, setShowBoot] = useState(true);
@@ -111,7 +112,7 @@ export default function Home() {
             />
             <DesktopIcon
               appID={2}
-              doubleClick={() => void 0}
+              doubleClick={() => handleRunApp(3)}
               title="Recycling Bin"
               img={bin}
             />
@@ -172,6 +173,8 @@ export default function Home() {
                     <InternetExplorer id={tab.id} />
                   ) : tab.program === App.EDUCATION ? (
                     <Education id={tab.id} />
+                  ) : tab.program === App.RECYCLING_BIN ? (
+                    <RecyclingBin id={tab.id} />
                   ) : tab.program === App.ERROR ? (
                     <p>{tab.message}</p>
                   ) : tab.program === App.INFO ? (

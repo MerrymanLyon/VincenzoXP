@@ -15,6 +15,7 @@ import mycomputer from "../../assets/mycomputer.png";
 import gallery from "../../assets/folder_image.png";
 import outlook from "../../assets/outlook.png";
 import doc from "../../assets/doc.png";
+import bin from "../../assets/recycling_bin.png";
 import Education from "@/programs/Education";
 import dsta from "../../assets/workaccordion/dsta.png";
 import gdsc from "../../assets/workaccordion/gdsc.png";
@@ -197,6 +198,20 @@ export const AppDirectory: Map<number, Tab> = new Map([
     },
   ],
   [
+    3,
+    {
+      id: 0,
+      title: "Recycling Bin",
+      message: "",
+      Icon: bin,
+      isMinimized: false,
+      zIndex: 0,
+      program: App.RECYCLING_BIN,
+      prompt: false,
+      backBtnActive: false,
+    },
+  ],
+  [
     4,
     {
       id: 0,
@@ -367,8 +382,8 @@ This milestone campaign supported Exein's corporate growth past 2 billion protec
     ],
     gallery: [
       { src: "/IMG_0666.jpeg", height: 800, width: 1200 },
-      { src: "/IMG_0667.jpeg", height: 800, width: 1200 },
       { src: "/IMG_0668.jpeg", height: 800, width: 1200 },
+      { src: "/IMG_0667.jpeg", height: 800, width: 1200 },
     ],
     overview: `Directed the integrated Go-To-Market strategy, brand identity implementation, and event execution for Exein’s official expansion into Asia-Pacific, encompassing the Grand Opening of the APAC Headquarters in Taipei and two strategic CRA Summits in Taipei and Hsinchu. Serving as the central operational bridge between executive leadership, product teams, and local Taiwanese agencies, I supervised all vendor workflows, cultural adaptations, and physical brand activations across both locations.
 
