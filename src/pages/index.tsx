@@ -26,6 +26,7 @@ import MyGallery from "@/programs/MyGallery";
 import InternetExplorer from "@/programs/InternetExplorer";
 import Education from "@/programs/Education";
 import RecyclingBin from "@/programs/RecyclingBin";
+import WhyXP from "@/programs/WhyXP";
 
 export default function Home() {
   const [showBoot, setShowBoot] = useState(true);
@@ -125,10 +126,10 @@ export default function Home() {
               img={linkedin}
             />
 
-            {/* ICONA 5: MY COMPUTER (EX MY GITHUB, CON L'ICONA MYCOMPUTER) */}
+            {/* ICONA 5: MY COMPUTER (APRE IL NUOVO PROGRAMMA WHY_XP ID 11) */}
             <DesktopIcon
               appID={5}
-              doubleClick={() => handleRunApp(0)}
+              doubleClick={() => handleRunApp(11)}
               title="My Computer"
               img={mycomputer}
             />
@@ -174,6 +175,8 @@ export default function Home() {
                     <Education id={tab.id} />
                   ) : tab.program === App.RECYCLING_BIN ? (
                     <RecyclingBin id={tab.id} />
+                  ) : tab.program === App.WHY_XP ? (
+                    <WhyXP id={tab.id} />
                   ) : tab.program === App.ERROR ? (
                     <p>{tab.message}</p>
                   ) : tab.program === App.INFO ? (
