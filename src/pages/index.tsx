@@ -27,9 +27,6 @@ import InternetExplorer from "@/programs/InternetExplorer";
 import Education from "@/programs/Education";
 import RecyclingBin from "@/programs/RecyclingBin";
 
-// Import sicuro per TypeScript per il file in public/
-import controlPanelImg from "../../public/IMG_0698.webp";
-
 export default function Home() {
   const [showBoot, setShowBoot] = useState(true);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -106,7 +103,7 @@ export default function Home() {
               appID={1}
               doubleClick={() => handleRunApp(0)}
               title="Control Panel"
-              img={controlPanelImg}
+              img={{ src: "/IMG_0698.webp", height: 48, width: 48 }}
             />
 
             <DesktopIcon
