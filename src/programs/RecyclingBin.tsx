@@ -20,8 +20,9 @@ const RecyclingBin: React.FC<RecyclingBinProps> = () => {
         }
 
         .secretText {
-          color: #ffffff !important;
-          background-color: #ffffff !important;
+          /* Testo reso trasparente di base per Safari */
+          color: transparent !important;
+          -webkit-text-fill-color: transparent !important;
           margin: 0;
           font-size: 13px;
           line-height: 1.6;
@@ -30,17 +31,16 @@ const RecyclingBin: React.FC<RecyclingBinProps> = () => {
           -webkit-user-select: text !important;
         }
 
-        /* FORZATURA EVIDENZIAZIONE: TESTO NERO SU SFONDO BLU XP */
+        /* Quando viene evidenziato, forziamo il colore nero/blu per WebKit/Safari */
         .secretText::selection {
-          background-color: #0a246a !important; /* Blu XP */
-          color: #ffffff !important;            /* Testo Bianco visibile */
-          text-shadow: none !important;
+          background-color: #3390ff !important;
+          color: #000000 !important;
+          -webkit-text-fill-color: #000000 !important;
         }
 
         .secretText::-moz-selection {
-          background-color: #0a246a !important;
-          color: #ffffff !important;
-          text-shadow: none !important;
+          background-color: #3390ff !important;
+          color: #000000 !important;
         }
       `}</style>
 
