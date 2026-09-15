@@ -15,7 +15,7 @@ const WhyXP: React.FC<WhyXPProps> = () => {
 
   return (
     <div className={styles.main}>
-      {/* SIDEBAR COMPATTA */}
+      {/* SIDEBAR LARGHEZZA 220PX */}
       <div className={styles.leftpanel}>
         <WinAccordion title="Personal Branding">
           <div
@@ -64,7 +64,7 @@ const WhyXP: React.FC<WhyXPProps> = () => {
         </WinAccordion>
       </div>
 
-      {/* PANNELLO DESTRO CON CONTENUTI */}
+      {/* PANNELLO DESTRO CONTENUTI */}
       <div className={styles.rightpanel}>
         {activeTab === "overview" && (
           <div>
@@ -144,6 +144,7 @@ const WhyXP: React.FC<WhyXPProps> = () => {
               Behind the Pixels: The Stop-Motion Story
             </h2>
 
+            {/* SEZIONE 1 */}
             <div style={{ marginBottom: "16px" }}>
               <h3 style={{ fontSize: "13px", color: "#000080", marginBottom: "6px" }}>
                 Crafting the Omnichannel Narrative
@@ -151,17 +152,8 @@ const WhyXP: React.FC<WhyXPProps> = () => {
               <p style={{ margin: 0 }}>
                 To complete the Windows XP digital ecosystem, I created a high-concept video trailer that serves as a narrative bridge. Rather than a standard screen recording, this introductory artifact recontextualizes the portfolio launch as a clandestine, late-night operation, grounding the website&apos;s dev persona within a tangible, physical world through stop-motion aesthetics.
               </p>
-            </div>
 
-            <div style={{ marginBottom: "16px" }}>
-              <h3 style={{ fontSize: "13px", color: "#000080", marginBottom: "6px" }}>
-                Ideation &amp; Human-AI Production Pipeline
-              </h3>
-              <p style={{ margin: 0 }}>
-                My creative process combined generative AI with traditional post-production into an agile pipeline. Starting from a storyboard refined with Gemini, I generated reference sets in Midjourney, synthesized the voiceover via ElevenLabs, and edited the final composite in DaVinci Resolve—moulding the visuals with a subtle nod to Wes Anderson&apos;s stop-motion style to contrast the high-tech OS with a warm, analogue feel.
-              </p>
-              
-              {/* ANTEPRIMA 1 */}
+              {/* IMMAGINE 1 DOPO "...aesthetics." */}
               <div className={styles.imagePreviewContainer}>
                 <img
                   src="/638cb718-1ba6-48bf-bf6a-69bc70eac9aa.jpeg"
@@ -171,15 +163,16 @@ const WhyXP: React.FC<WhyXPProps> = () => {
               </div>
             </div>
 
-            <div>
+            {/* SEZIONE 2 */}
+            <div style={{ marginBottom: "16px" }}>
               <h3 style={{ fontSize: "13px", color: "#000080", marginBottom: "6px" }}>
-                The Social Amplifier: The LinkedIn Launch
+                Ideation &amp; Human-AI Production Pipeline
               </h3>
               <p style={{ margin: 0 }}>
-                Positioned as the centerpiece of my LinkedIn launch strategy, the video operates as a high-impact, thumb-stopping asset designed to hijack attention in professional feeds. By deploying the trailer alongside the interactive site, I executed a cohesive omnichannel experience where cinematic storytelling drives traffic directly to my interactive portfolio.
+                My creative process combined generative AI with traditional post-production into an agile pipeline. Starting from a storyboard refined with Gemini, I generated reference sets in Midjourney, synthesized the voiceover via ElevenLabs, and edited the final composite in DaVinci Resolve—moulding the visuals with a subtle nod to Wes Anderson&apos;s stop-motion style to contrast the high-tech OS with a warm, analogue feel.
               </p>
 
-              {/* ANTEPRIMA 2 */}
+              {/* IMMAGINE 2 DOPO "...feel." */}
               <div className={styles.imagePreviewContainer}>
                 <img
                   src="/IMG_0721.png"
@@ -187,6 +180,16 @@ const WhyXP: React.FC<WhyXPProps> = () => {
                   className={styles.previewImage}
                 />
               </div>
+            </div>
+
+            {/* SEZIONE 3 */}
+            <div>
+              <h3 style={{ fontSize: "13px", color: "#000080", marginBottom: "6px" }}>
+                The Social Amplifier: The LinkedIn Launch
+              </h3>
+              <p style={{ margin: 0 }}>
+                Positioned as the centerpiece of my LinkedIn launch strategy, the video operates as a high-impact, thumb-stopping asset designed to hijack attention in professional feeds. By deploying the trailer alongside the interactive site, I executed a cohesive omnichannel experience where cinematic storytelling drives traffic directly to my interactive portfolio.
+              </p>
             </div>
           </div>
         )}

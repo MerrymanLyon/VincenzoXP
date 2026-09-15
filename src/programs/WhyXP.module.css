@@ -6,7 +6,7 @@
 }
 
 .leftpanel {
-  width: 200px; /* Ridotto da 300px per renderlo più compatto */
+  width: 220px; /* Larghezza aumentata di 20px per un layout ottimale */
   max-height: 100%;
   background: linear-gradient(rgb(116, 138, 255) 0%, rgb(64, 87, 211) 100%);
   padding: 10px;
@@ -59,7 +59,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 14px 0 20px 0;
+  margin: 12px 0 18px 0;
   width: 100%;
 }
 
