@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import StartBar from "components/StartBar/StartBar";
 import BootScreen from "components/BootScreen/BootScreen";
 import PocketPC from "components/PocketPC/PocketPC";
@@ -10,7 +9,6 @@ import DesktopIcon from "components/DesktopIcon/DesktopIcon";
 import mycomputer from "../../assets/mycomputer.png";
 import bin from "../../assets/recycling_bin.png";
 import pdf from "../../assets/pdf.png";
-import github from "../../assets/github.png";
 import cmd from "../../assets/cmd.png";
 import solitare from "../../assets/solitaire.png";
 import linkedin from "../../assets/linkedin.png";
@@ -28,6 +26,7 @@ import MyGallery from "@/programs/MyGallery";
 import InternetExplorer from "@/programs/InternetExplorer";
 import Education from "@/programs/Education";
 import RecyclingBin from "@/programs/RecyclingBin";
+import WhyXP from "@/programs/WhyXP";
 
 export default function Home() {
   const [showBoot, setShowBoot] = useState(true);
@@ -60,10 +59,6 @@ export default function Home() {
       };
       store.dispatch(addTab(newTab));
     }
-  };
-
-  const handleOpenGitHub = () => {
-    window.open("https://github.com/firwer", "_blank", "noreferrer");
   };
 
   const handleOpenLinkedin = () => {
@@ -104,12 +99,14 @@ export default function Home() {
               height: "100%",
             }}
           >
+            {/* ICONA 1: CONTROL PANEL (APRE L'ATTUALE WELCOME) */}
             <DesktopIcon
               appID={1}
               doubleClick={() => handleRunApp(0)}
-              title="My Computer"
-              img={mycomputer}
+              title="Control Panel"
+              img={{ src: "/IMG_0698.webp", height: 48, width: 48 }}
             />
+
             <DesktopIcon
               appID={2}
               doubleClick={() => handleRunApp(3)}
@@ -128,12 +125,15 @@ export default function Home() {
               title="My LinkedIn"
               img={linkedin}
             />
+
+            {/* ICONA 5: MY COMPUTER (APRE IL NUOVO PROGRAMMA WHY_XP ID 11) */}
             <DesktopIcon
               appID={5}
-              doubleClick={handleOpenGitHub}
-              title="My Github"
-              img={github}
+              doubleClick={() => handleRunApp(11)}
+              title="My Computer"
+              img={mycomputer}
             />
+
             <DesktopIcon
               appID={6}
               doubleClick={() => handleRunApp(2)}
@@ -175,6 +175,8 @@ export default function Home() {
                     <Education id={tab.id} />
                   ) : tab.program === App.RECYCLING_BIN ? (
                     <RecyclingBin id={tab.id} />
+                  ) : tab.program === App.WHY_XP ? (
+                    <WhyXP id={tab.id} />
                   ) : tab.program === App.ERROR ? (
                     <p>{tab.message}</p>
                   ) : tab.program === App.INFO ? (

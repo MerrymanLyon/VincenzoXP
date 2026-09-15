@@ -10,6 +10,7 @@ export enum App {
   INTERNET_EXPLORER = "INTERNET_EXPLORER",
   EDUCATION = "EDUCATION",
   RECYCLING_BIN = "RECYCLING_BIN",
+  WHY_XP = "WHY_XP",
 }
 
 export enum WorkType {
