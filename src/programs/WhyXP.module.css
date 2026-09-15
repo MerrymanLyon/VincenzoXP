@@ -1,0 +1,55 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow: auto;
+}
+
+.leftpanel {
+  width: 300px;
+  max-height: 100%;
+  background: linear-gradient(rgb(116, 138, 255) 0%, rgb(64, 87, 211) 100%);
+  padding: 10px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.leftpanel::-webkit-scrollbar {
+  width: 15px;
+}
+
+.leftpanel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
+
+.rightpanel {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  width: 100%;
+  overflow-y: auto;
+  font-family: Tahoma, sans-serif;
+  color: #000000;
+  font-size: 12px;
+  line-height: 1.55;
+  background-color: #ffffff;
+}
+
+.accordion_content_item {
+  margin: 5px 0px;
+  cursor: pointer;
+}
+
+.accordion_content_item:hover {
+  text-decoration: underline;
+}
+
+.accordion_content_text {
+  font-size: 12px;
+  line-height: 14px;
+  color: rgb(12, 50, 125);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
