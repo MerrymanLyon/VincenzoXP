@@ -1,0 +1,68 @@
+.biosContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #0000aa; /* Blu cobalto nativo BSOD / BIOS Windows XP */
+  color: #ffffff;
+  font-family: "Courier New", Courier, monospace;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.biosContent {
+  max-width: 650px;
+  width: 100%;
+  text-align: left;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #00aaaa;
+  color: #0000aa;
+  padding: 4px 8px;
+  display: inline-block;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.message {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  white-space: pre-line;
+}
+
+.sarcasm {
+  font-size: 14px;
+  font-style: italic;
+  color: #ffff55; /* Giallo BIOS retrò per evidenziare la battuta */
+  margin-top: 12px;
+}
+
+.statusRow {
+  margin-top: 28px;
+  font-size: 14px;
+  border-top: 1px dashed #ffffff;
+  padding-top: 12px;
+  color: #aaaaaa;
+}
+
+.blinking {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
