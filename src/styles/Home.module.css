@@ -181,8 +181,14 @@
   }
 }
 
-/* Mobile */
-@media (max-width: 700px) {
+/* Mobile & Landscape Desktop Handling */
+@media (max-width: 1024px) {
+  .main {
+    min-width: 1024px;
+    min-height: 768px;
+    overflow: auto !important;
+  }
+
   .content {
     padding: 4rem;
   }
