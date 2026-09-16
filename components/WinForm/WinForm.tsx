@@ -1,4 +1,4 @@
-import { ReactNode, useState, useRef } from "react";
+import { ReactNode, useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import styles from "./WinForm.module.css";
 import WinToolBar from "components/WinToolbar/WinToolBar";
@@ -30,12 +30,18 @@ const WinForm = (props: {
   const [isMinimized, setMinimised] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   
-  // Ref necessario per react-draggable in React 18+
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const currTabID = useSelector(
     (state: RootState) => state.tab.currentFocusedTab
   );
+
+  // Sincronizza il focus iniziale all'apertura se non c'è un'altra finestra attiva
+  useEffect(() => {
+    if (currTabID === -1 || currTabID === 0) {
+      store.dispatch(setFocusedTab({ id: props.id }));
+    }
+  }, []);
 
   const handleMaximize = () => {
     setMaximised(!isMaximized);
