@@ -8,7 +8,7 @@ interface BiosScreenProps {
 
 const BiosScreen: React.FC<BiosScreenProps> = ({
   onComplete,
-  durationMs = 10000, // Durata aumentata a 10 secondi
+  durationMs = 10000,
 }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -17,6 +17,11 @@ const BiosScreen: React.FC<BiosScreenProps> = ({
 
     return () => clearTimeout(timer);
   }, [durationMs, onComplete]);
+
+  const handleReturnToPocketPC = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.reload();
+  };
 
   return (
     <div className={styles.biosContainer}>
@@ -28,11 +33,24 @@ const BiosScreen: React.FC<BiosScreenProps> = ({
         </div>
 
         <div className={styles.message}>
-          For the best experience on mobile, please <strong>ROTATE YOUR DEVICE HORIZONTALLY</strong> (Landscape mode).
+          For the best experience on mobile, please <strong>ROTATE YOUR DEVICE HORIZONTALLY</strong> (Landscape mode) or{" "}
+          <a
+            href="#"
+            onClick={handleReturnToPocketPC}
+            style={{
+              color: "#ffff55",
+              textDecoration: "underline",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            return to the Pocket PC Version
+          </a>
+          .
         </div>
 
         <div className={styles.message}>
-          For the absolute ideal experience, we strongly recommend accessing this site from an actual desktop computer.
+          For the absolute ideal experience, we strongly <strong>recommend accessing this site from an actual desktop computer</strong>.
         </div>
 
         <div className={styles.sarcasm}>
