@@ -35,7 +35,9 @@ const StartBar: React.FC<StartBarProps> = ({ disabled = false }) => {
         zIndex: 99999,
       }}
     >
-      {openStartMenu && !disabled && <StartMenu />}
+      {openStartMenu && !disabled && (
+        <StartMenu menuControl={() => setOpenStartMenu(false)} />
+      )}
       <div
         className={styles.startButton}
         onClick={handleStartClick}
