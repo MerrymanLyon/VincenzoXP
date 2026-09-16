@@ -8,7 +8,7 @@ interface BiosScreenProps {
 
 const BiosScreen: React.FC<BiosScreenProps> = ({
   onComplete,
-  durationMs = 4000,
+  durationMs = 10000, // Durata aumentata a 10 secondi
 }) => {
   useEffect(() => {
     const timer = setTimeout(() => {

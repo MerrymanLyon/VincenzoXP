@@ -1,147 +1,84 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import React from "react";
 import styles from "./StartBar.module.css";
-import greenshield from "../../assets/green_shield.png";
-import internet from "../../assets/internet.png";
-import sound from "../../assets/sound.png";
-import removabledevice from "../../assets/removabledevice.png";
-import StartMenu from "components/StartMenu/StartMenu";
-import TrayTab from "components/TrayTab/TrayTab";
-import { StaticImageData } from "next/image";
-import { RootState, Tab } from "src/types";
-import { useSelector } from "react-redux";
-import store from "@/redux/store";
 import Image from "next/image";
-import { maximizeTab, minimizeTab, setFocusedTab } from "@/redux/tabSlice";
+import winLogo from "../../assets/Windows-logo.png";
+import StartMenu from "components/StartMenu/StartMenu";
+import { useSelector } from "react-redux";
+import { RootState } from "@/types";
+import store from "@/redux/store";
+import { removeTab, setFocusedTab, toggleMinimizeTab } from "@/redux/tabSlice";
 
-const getTime = () => {
-  const date = new Date();
-  let hour = date.getHours();
-  let hourPostFix = "AM";
-  let min = date.getMinutes();
-  if (hour >= 12) {
-    hour -= 12;
-    hourPostFix = "PM";
-  }
-  if (hour === 0) {
-    hour = 12;
-  }
-  if (min < 10) {
-    min = 0 + min;
-  }
-  return `${hour}:${String(min).padStart(2, "0")} ${hourPostFix}`;
-};
+interface StartBarProps {
+  disabled?: boolean;
+}
 
-const StartBar = () => {
-  const [time, setTime] = useState(getTime);
-  const ref = useRef<HTMLDivElement>(null);
-  const [startMenuOpen, setStartMenuOpen] = useState(false);
+const StartBar: React.FC<StartBarProps> = ({ disabled = false }) => {
+  const [openStartMenu, setOpenStartMenu] = React.useState(false);
   const Tabs = useSelector((state: RootState) => state.tab.tray);
-  const currTabID = useSelector(
-    (state: RootState) => state.tab.currentFocusedTab
-  );
-  const currzIndex = useSelector((state: RootState) => state.tab.currentZIndex);
+  const currTabID = useSelector((state: RootState) => state.tab.id);
 
-  const handleTabFocus = (tabID: number) => {
-    if (currTabID === tabID) {
-      store.dispatch(minimizeTab({ id: tabID }));
-      store.dispatch(setFocusedTab({ id: -1 }));
-      return;
+  const handleStartMenu = () => {
+    if (disabled) return;
+    setOpenStartMenu(!openStartMenu);
+  };
+
+  const handleTabClick = (id: number) => {
+    const targetTab = Tabs.find((tab) => tab.id === id);
+    if (!targetTab) return;
+
+    if (targetTab.isMinimized) {
+      store.dispatch(toggleMinimizeTab(id));
+      store.dispatch(setFocusedTab(id));
     } else {
-      store.dispatch(maximizeTab({ id: tabID }));
-      store.dispatch(setFocusedTab({ id: tabID }));
-      return;
+      if (currTabID === id) {
+        store.dispatch(toggleMinimizeTab(id));
+      } else {
+        store.dispatch(setFocusedTab(id));
+      }
     }
   };
 
-  const renderTabs = (title: String, Icon: StaticImageData, id: number) => {
-    return (
-      <TrayTab
-        key={id}
-        title={title}
-        Icon={Icon}
-        isFocused={id === currTabID}
-        onFocus={() => handleTabFocus(id)}
-      />
-    );
-  };
-
-  const handleOpenStartMenu = () => {
-    setStartMenuOpen(!startMenuOpen);
-  };
-
-  // Time Update
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(getTime());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Start Menu Detection Out of Bound Listener
-  useEffect(() => {
-    const handleClickOutside = (event: { target: any }) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setStartMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside, true);
-    };
-  }, [ref]);
-
   return (
-    <div style={{ zIndex: currzIndex }}>
-      <div className={styles.bluebar}>
-        <div ref={ref}>
+    <div
+      className={styles.startBar}
+      style={{
+        width: "100%",
+        minWidth: "100%",
+        boxSizing: "border-box",
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        zIndex: 99999,
+      }}
+    >
+      {openStartMenu && !disabled && (
+        <StartMenu closeMenu={() => setOpenStartMenu(false)} />
+      )}
+      <div
+        className={`${styles.startButton} ${disabled ? styles.disabledStart : ""}`}
+        onClick={handleStartMenu}
+        style={{
+          cursor: disabled ? "not-allowed" : "pointer",
+          opacity: disabled ? 0.8 : 1,
+        }}
+      >
+        <Image src={winLogo} alt="Windows Logo" width={18} height={18} />
+        <span className={styles.startText}>start</span>
+      </div>
+
+      <div className={styles.taskbarItems}>
+        {Tabs.map((tab) => (
           <div
-            onClick={handleOpenStartMenu}
-            className={startMenuOpen ? styles.startbtn_active : styles.startbtn}
-          ></div>
-          {startMenuOpen && <StartMenu menuControl={setStartMenuOpen} />}
-        </div>
-        <div className={styles.tabbar}>
-          {Tabs.filter((tab) => tab.prompt !== true).map((_item) =>
-            renderTabs(_item.title, _item.Icon, _item.id)
-          )}
-        </div>
-        <div className={styles.icontray}>
-          <div className={styles.iconrow}>
-            <div className={styles.icon}>
-              <Image
-                width={15}
-                style={{ margin: "0px 3px 0px 3px" }}
-                height={15}
-                src={greenshield.src}
-                alt="Icon 1"
-              />
-              <Image
-                width={15}
-                style={{ margin: "0px 3px 0px 3px" }}
-                height={15}
-                src={internet.src}
-                alt="Icon 2"
-              />
-              <Image
-                width={15}
-                style={{ margin: "0px 3px 0px 3px" }}
-                height={15}
-                src={sound.src}
-                alt="Icon 3"
-              />
-              <Image
-                width={15}
-                style={{ margin: "0px 3px 0px 3px" }}
-                height={15}
-                src={removabledevice.src}
-                alt="Icon 4"
-              />
-            </div>
+            key={tab.id}
+            className={`${styles.taskbarItem} ${
+              !tab.isMinimized && currTabID === tab.id ? styles.activeTask : ""
+            }`}
+            onClick={() => handleTabClick(tab.id)}
+          >
+            <Image src={tab.Icon} alt={tab.title} width={16} height={16} />
+            <span className={styles.taskTitle}>{tab.title}</span>
           </div>
-          <div style={{ color: "white" }} className="time-display">
-            {time}
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

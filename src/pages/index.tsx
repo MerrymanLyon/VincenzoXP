@@ -98,12 +98,12 @@ export default function Home() {
         <BootScreen durationMs={2800} onComplete={() => setShowBoot(false)} />
       )}
 
-      {/* 2. TRANSIZIONE SCHERMATA BIOS/BSOD (SOLO SE RICHIESTO DA MOBILE) */}
+      {/* 2. TRANSIZIONE SCHERMATA BIOS/BSOD (10 SECONDI) */}
       {showBios && (
-        <BiosScreen durationMs={4000} onComplete={handleBiosComplete} />
+        <BiosScreen durationMs={10000} onComplete={handleBiosComplete} />
       )}
 
-      {/* 3. RENDER CONDIZIONALE: POCKET PC MOBILE O DESKTOP CON SCROLL */}
+      {/* 3. RENDER CONDIZIONALE: POCKET PC MOBILE O DESKTOP */}
       {isMobileView && !forceDesktop ? (
         <PocketPC onSwitchToDesktop={handleSwitchToDesktop} />
       ) : (
@@ -204,7 +204,9 @@ export default function Home() {
               );
             })}
           </div>
-          <StartBar />
+
+          {/* STARTBAR: DISABILITATA SOLO SE L'UTENTE È SU MOBILE IN MODALITÀ DESKTOP FORZATA */}
+          <StartBar disabled={isMobileView && forceDesktop} />
         </main>
       )}
     </>
