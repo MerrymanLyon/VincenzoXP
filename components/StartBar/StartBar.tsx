@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import styles from "./StartBar.module.css";
 import Image from "next/image";
-import winLogo from "../../assets/Windows-logo.png";
 import StartMenu from "components/StartMenu/StartMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "@/types";
 import store from "@/redux/store";
-import { addTab, removeTab, setFocusedTab } from "@/redux/tabSlice";
+import { setFocusedTab } from "@/redux/tabSlice";
 
 interface StartBarProps {
   disabled?: boolean;
@@ -46,7 +45,12 @@ const StartBar: React.FC<StartBarProps> = ({ disabled = false }) => {
           opacity: disabled ? 0.8 : 1,
         }}
       >
-        <Image src={winLogo} alt="Windows Logo" width={18} height={18} />
+        <Image
+          src="/Windows-logo.png"
+          alt="Windows Logo"
+          width={18}
+          height={18}
+        />
         <span className={styles.startText}>start</span>
       </div>
 
