@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import StartBar from "components/StartBar/StartBar";
 import BootScreen from "components/BootScreen/BootScreen";
+import BiosScreen from "components/BiosScreen/BiosScreen";
 import PocketPC from "components/PocketPC/PocketPC";
 import "xp.css/dist/XP.css";
 import styles from "../styles/Home.module.css";
@@ -30,6 +31,7 @@ import WhyXP from "@/programs/WhyXP";
 
 export default function Home() {
   const [showBoot, setShowBoot] = useState(true);
+  const [showBios, setShowBios] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [forceDesktop, setForceDesktop] = useState(false);
 
@@ -48,6 +50,15 @@ export default function Home() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const handleSwitchToDesktop = () => {
+    setShowBios(true);
+  };
+
+  const handleBiosComplete = () => {
+    setShowBios(false);
+    setForceDesktop(true);
+  };
 
   const handleRunApp = (e: number) => {
     const appConfig = AppDirectory.get(e);
@@ -82,14 +93,19 @@ export default function Home() {
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
 
-      {/* ANIMAZIONE BOOT VINCENZO XP */}
+      {/* 1. ANIMAZIONE BOOT INIZIALE */}
       {showBoot && (
         <BootScreen durationMs={2800} onComplete={() => setShowBoot(false)} />
       )}
 
-      {/* RENDER CONDIZIONALE: POCKET PC PER MOBILE O DESKTOP */}
+      {/* 2. TRANSIZIONE SCHERMATA BIOS/BSOD (SOLO SE RICHIESTO DA MOBILE) */}
+      {showBios && (
+        <BiosScreen durationMs={4000} onComplete={handleBiosComplete} />
+      )}
+
+      {/* 3. RENDER CONDIZIONALE: POCKET PC MOBILE O DESKTOP CON SCROLL */}
       {isMobileView && !forceDesktop ? (
-        <PocketPC onSwitchToDesktop={() => setForceDesktop(true)} />
+        <PocketPC onSwitchToDesktop={handleSwitchToDesktop} />
       ) : (
         <main className={styles.main}>
           <div
@@ -99,7 +115,6 @@ export default function Home() {
               height: "100%",
             }}
           >
-            {/* ICONA 1: CONTROL PANEL (APRE L'ATTUALE WELCOME) */}
             <DesktopIcon
               appID={1}
               doubleClick={() => handleRunApp(0)}
@@ -126,7 +141,6 @@ export default function Home() {
               img={linkedin}
             />
 
-            {/* ICONA 5: MY COMPUTER (APRE IL NUOVO PROGRAMMA WHY_XP ID 11) */}
             <DesktopIcon
               appID={5}
               doubleClick={() => handleRunApp(11)}
