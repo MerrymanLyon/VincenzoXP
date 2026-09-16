@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./StartBar.module.css";
 import Image from "next/image";
+import winLogo from "../../assets/Windows-logo.png";
 import StartMenu from "components/StartMenu/StartMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "@/types";
@@ -22,18 +23,7 @@ const StartBar: React.FC<StartBarProps> = ({ disabled = false }) => {
   };
 
   return (
-    <div
-      className={styles.startBar}
-      style={{
-        width: "100%",
-        minWidth: "100%",
-        boxSizing: "border-box",
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        zIndex: 99999,
-      }}
-    >
+    <div className={styles.startBar}>
       {openStartMenu && !disabled && (
         <StartMenu menuControl={() => setOpenStartMenu(false)} />
       )}
@@ -42,15 +32,9 @@ const StartBar: React.FC<StartBarProps> = ({ disabled = false }) => {
         onClick={handleStartClick}
         style={{
           cursor: disabled ? "not-allowed" : "pointer",
-          opacity: disabled ? 0.8 : 1,
         }}
       >
-        <Image
-          src="/Windows-logo.png"
-          alt="Windows Logo"
-          width={18}
-          height={18}
-        />
+        <Image src={winLogo} alt="Windows Logo" width={18} height={18} />
         <span className={styles.startText}>start</span>
       </div>
 
