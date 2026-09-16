@@ -31,7 +31,11 @@ const getTime = () => {
   return `${hour}:${String(min).padStart(2, "0")} ${hourPostFix}`;
 };
 
-const StartBar = () => {
+interface StartBarProps {
+  disabled?: boolean;
+}
+
+const StartBar: React.FC<StartBarProps> = ({ disabled = false }) => {
   const [time, setTime] = useState(getTime);
   const ref = useRef<HTMLDivElement>(null);
   const [startMenuOpen, setStartMenuOpen] = useState(false);
@@ -42,6 +46,7 @@ const StartBar = () => {
   const currzIndex = useSelector((state: RootState) => state.tab.currentZIndex);
 
   const handleTabFocus = (tabID: number) => {
+    if (disabled) return;
     if (currTabID === tabID) {
       store.dispatch(minimizeTab({ id: tabID }));
       store.dispatch(setFocusedTab({ id: -1 }));
@@ -66,6 +71,7 @@ const StartBar = () => {
   };
 
   const handleOpenStartMenu = () => {
+    if (disabled) return;
     setStartMenuOpen(!startMenuOpen);
   };
 
@@ -91,14 +97,16 @@ const StartBar = () => {
   }, [ref]);
 
   return (
-    <div style={{ zIndex: currzIndex }}>
+    <div style={{ zIndex: currzIndex, pointerEvents: disabled ? "none" : "auto" }}>
       <div className={styles.bluebar}>
         <div ref={ref}>
           <div
             onClick={handleOpenStartMenu}
             className={startMenuOpen ? styles.startbtn_active : styles.startbtn}
           ></div>
-          {startMenuOpen && <StartMenu menuControl={setStartMenuOpen} />}
+          {startMenuOpen && !disabled && (
+            <StartMenu menuControl={setStartMenuOpen} />
+          )}
         </div>
         <div className={styles.tabbar}>
           {Tabs.filter((tab) => tab.prompt !== true).map((_item) =>
