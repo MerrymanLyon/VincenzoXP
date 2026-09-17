@@ -80,7 +80,7 @@ export default function Home() {
   };
 
   const handleOpenResume = () => {
-    window.open("./Resume.pdf");
+    window.open(encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf"));
   };
 
   return (
@@ -198,7 +198,6 @@ export default function Home() {
             })}
           </div>
 
-          {/* STARTBAR: DISABILITATA SOLO SE L'UTENTE È SU MOBILE IN MODALITÀ DESKTOP FORZATA */}
           <StartBar disabled={isMobileView && forceDesktop} />
         </main>
       )}

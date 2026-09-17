@@ -117,7 +117,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
           {/* ICONA 3: MY RESUME */}
           <a
-            href="./Resume.pdf"
+            href={encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf")}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.iconTile}

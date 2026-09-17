@@ -124,7 +124,7 @@ const Welcome = ({ id }: props) => {
                   text={"My Resume"}
                   tooltip="My Curriculum Vitae"
                   onClick={() => {
-                    window.open("./Resume.pdf");
+                    window.open(encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf"));
                   }}
                 />
                 <WelcomeIcon
