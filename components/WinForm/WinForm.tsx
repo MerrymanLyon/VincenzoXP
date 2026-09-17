@@ -85,8 +85,8 @@ const WinForm = (props: {
           store.dispatch(setFocusedTab({ id: props.id }));
         }}
         style={{
-          top: isMaximized ? "0px" : "calc(50% - 250px)",
-          left: isMaximized ? "0px" : "calc(50% - 330px)",
+          top: isMaximized ? "0px" : "calc(50% - 37.5% - 17.5px)",
+          left: isMaximized ? "0px" : "calc(50% - 375px)",
           position: "absolute",
           display: props.prompt ? promptDisplay : normalDisplay,
           flexDirection: "column",
