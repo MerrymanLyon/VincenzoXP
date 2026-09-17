@@ -193,30 +193,6 @@ const Welcome = ({ id }: props) => {
               <div className={styles.text_col}>
                 <p className={styles.subtitle}>{INTRO}</p>
                 <h3 className={styles.subtitle_header}>
-                  Why an OS interface?
-                </h3>
-                <p className={styles.subtitle}>
-                  I’ve always approached personal branding through unconventional, high-concept narratives—from designing my CV as a{" "}
-                  <a
-                    href="https://www.linkedin.com/posts/vincenzo-reina_vincenzo-reina-copywriter-creativo-umano-activity-7196158740541149184-GrnC?utm_medium=ios_app&rcm=ACoAABzhqawBrPt_BX-BHZtYI5N331tMiXzOgtA&utm_source=social_share_send&utm_campaign=copy_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ color: "#ffffff", textDecoration: "underline" }}
-                  >
-                    Netflix-style streaming platform
-                  </a>{" "}
-                  to structuring it as a{" "}
-                  <a
-                    href="./terrazzino-menu.pdf"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ color: "#ffffff", textDecoration: "underline" }}
-                  >
-                    fine-dining restaurant menu
-                  </a>
-                  . Choosing an interactive Windows XP OS interface is a deliberate extension of this philosophy: it bridges the gap between underground hacker/dev culture and high-level enterprise positioning, perfectly aligning with my dev-centric approach to marketing.
-                </p>
-                <h3 className={styles.subtitle_header}>
                   Beyond Marketing
                 </h3>
                 <p className={styles.subtitle}>{INTERESTS}</p>

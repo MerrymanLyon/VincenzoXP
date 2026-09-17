@@ -400,6 +400,25 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             </div>
           </div>
 
+          {/* CAPITOLO BRANDED VIDEO SHORT CON IMMAGINE CENTRATA */}
+          <div className={styles.modalRow}>
+            <div className={styles.cardTitle}>
+              Deeptech Storytelling: Branded Short Film
+            </div>
+            <div className={styles.cardDesc}>
+              To elevate Exein’s flagship runtime security launch beyond dry technical specs, I authored and directed a cinematic branded video short. By merging retro cyberpunk aesthetics with high-stakes narrative storytelling, the short film translated eBPF kernel-level protection into an engaging visual experience that drove record engagement across executive stakeholders and developer communities.
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", marginBottom: "8px" }}>
+              <Image
+                src="/EXEIN-2.png"
+                alt="Branded Video Short Preview"
+                width={300}
+                height={168}
+                style={{ borderRadius: "4px", border: "1px solid #7f9db9", objectFit: "cover" }}
+              />
+            </div>
+          </div>
+
           <div className={styles.modalRow}>
             <div className={styles.cardTitle}>
               Human-AI Collaboration & Tech Stack
