@@ -406,7 +406,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               Deeptech Storytelling: Branded Short Film
             </div>
             <div className={styles.cardDesc}>
-              To elevate Exein’s flagship runtime security launch beyond dry technical specs, I authored and directed a cinematic branded video short. By merging retro cyberpunk aesthetics with high-stakes narrative storytelling, the short film translated eBPF kernel-level protection into an engaging visual experience that drove record engagement across executive stakeholders and developer communities.
+              To launch vincenzoxp.com beyond a standard portfolio reveal, I authored and directed a cinematic branded video short. By merging retro XP aesthetics with high-stakes narrative storytelling, the short film translated a personal brand strategy into an engaging visual experience that drove record engagement across executive stakeholders and digital communities.
             </div>
             <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", marginBottom: "8px" }}>
               <Image
