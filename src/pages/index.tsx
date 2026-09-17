@@ -11,7 +11,6 @@ import mycomputer from "../../assets/mycomputer.png";
 import bin from "../../assets/recycling_bin.png";
 import pdf from "../../assets/pdf.png";
 import cmd from "../../assets/cmd.png";
-import solitare from "../../assets/solitaire.png";
 import linkedin from "../../assets/linkedin.png";
 import WinForm from "components/WinForm/WinForm";
 import store from "@/redux/store";
@@ -81,7 +80,7 @@ export default function Home() {
   };
 
   const handleOpenResume = () => {
-    window.open("./Resume.pdf");
+    window.open(encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf"));
   };
 
   return (
@@ -90,7 +89,7 @@ export default function Home() {
         <title>Vincenzo Reina - Senior Brand & GTM Strategist</title>
         <meta name="description" content="My Personal Space" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/images/favicon.ico" />
+        <link rel="icon" href="/Windows-logo.png" />
       </Head>
 
       {/* 1. ANIMAZIONE BOOT INIZIALE */}
@@ -155,12 +154,6 @@ export default function Home() {
               img={cmd}
             />
 
-            <DesktopIcon
-              appID={7}
-              doubleClick={() => void 0}
-              title="My Hobbies"
-              img={solitare}
-            />
             {Tabs.map((tab) => {
               return tab.isMinimized ? (
                 <React.Fragment key={tab.id}></React.Fragment>
@@ -205,7 +198,6 @@ export default function Home() {
             })}
           </div>
 
-          {/* STARTBAR: DISABILITATA SOLO SE L'UTENTE È SU MOBILE IN MODALITÀ DESKTOP FORZATA */}
           <StartBar disabled={isMobileView && forceDesktop} />
         </main>
       )}

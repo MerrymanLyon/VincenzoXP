@@ -117,7 +117,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
 
           {/* ICONA 3: MY RESUME */}
           <a
-            href="./Resume.pdf"
+            href={encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf")}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.iconTile}
@@ -397,6 +397,25 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             </div>
             <div className={styles.cardDesc}>
               In an overcrowded market dominated by standardized PDF resumes, this project applies core Brand Management principles to personal positioning. By turning career credentials into an interactive, nostalgic Windows XP operating system, the portfolio captures recruiter attention, increases time-on-page, and bridges technical developer culture with strategic enterprise marketing.
+            </div>
+          </div>
+
+          {/* CAPITOLO BRANDED VIDEO SHORT CON IMMAGINE CENTRATA */}
+          <div className={styles.modalRow}>
+            <div className={styles.cardTitle}>
+              Deeptech Storytelling: Branded Short Film
+            </div>
+            <div className={styles.cardDesc}>
+              To launch vincenzoxp.com beyond a standard portfolio reveal, I authored and directed a cinematic branded video short. By merging retro XP aesthetics with high-stakes narrative storytelling, the short film translated a personal brand strategy into an engaging visual experience that drove record engagement across executive stakeholders and digital communities.
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", marginBottom: "8px" }}>
+              <Image
+                src="/EXEIN-2.png"
+                alt="Branded Video Short Preview"
+                width={300}
+                height={168}
+                style={{ borderRadius: "4px", border: "1px solid #7f9db9", objectFit: "cover" }}
+              />
             </div>
           </div>
 
