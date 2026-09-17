@@ -11,7 +11,6 @@ import mycomputer from "../../assets/mycomputer.png";
 import bin from "../../assets/recycling_bin.png";
 import pdf from "../../assets/pdf.png";
 import cmd from "../../assets/cmd.png";
-import solitare from "../../assets/solitaire.png";
 import linkedin from "../../assets/linkedin.png";
 import WinForm from "components/WinForm/WinForm";
 import store from "@/redux/store";
@@ -155,12 +154,6 @@ export default function Home() {
               img={cmd}
             />
 
-            <DesktopIcon
-              appID={7}
-              doubleClick={() => void 0}
-              title="My Hobbies"
-              img={solitare}
-            />
             {Tabs.map((tab) => {
               return tab.isMinimized ? (
                 <React.Fragment key={tab.id}></React.Fragment>
