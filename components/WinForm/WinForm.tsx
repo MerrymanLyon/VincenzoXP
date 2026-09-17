@@ -68,7 +68,6 @@ const WinForm = (props: {
   const promptHeight = "auto";
   const normalDisplay = isMinimized ? "none" : "flex";
   const normalWidth = isMaximized ? "100%" : "750px";
-  const normalHeight = isMaximized ? "calc(100% - 35px)" : "75%";
 
   return (
     <Draggable
@@ -85,13 +84,14 @@ const WinForm = (props: {
           store.dispatch(setFocusedTab({ id: props.id }));
         }}
         style={{
-          top: isMaximized ? "0px" : "calc(50% - 37.5% - 17.5px)",
+          top: isMaximized ? "0px" : "10%",
+          bottom: isMaximized ? "0px" : "calc(10% + 35px)",
           left: isMaximized ? "0px" : "calc(50% - 375px)",
           position: "absolute",
           display: props.prompt ? promptDisplay : normalDisplay,
           flexDirection: "column",
           width: props.prompt ? promptWidth : normalWidth,
-          height: props.prompt ? promptHeight : normalHeight,
+          height: props.prompt ? promptHeight : "auto",
           zIndex: props.zIndex,
         }}
         className={styles.window}
