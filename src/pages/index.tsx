@@ -89,7 +89,7 @@ export default function Home() {
         <title>Vincenzo Reina - Senior Brand & GTM Strategist</title>
         <meta name="description" content="My Personal Space" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/images/favicon.ico" />
+        <link rel="icon" href="/Windows-logo.png" />
       </Head>
 
       {/* 1. ANIMAZIONE BOOT INIZIALE */}
