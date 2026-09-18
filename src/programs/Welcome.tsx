@@ -106,7 +106,7 @@ const Welcome = ({ id }: props) => {
         {!aboutmeView ? (
           <div style={{ width: "100%" }}>
             <h3 className={styles.welcome_text}>
-              Welcome To Vincenzo Reina's GTM Hub
+              Welcome To Vincenzo Reina&apos;s GTM Hub
             </h3>
             <p className={styles.subtitle}>
               Access my logs and case studies by clicking any of the icons below.

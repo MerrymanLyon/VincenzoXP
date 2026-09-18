@@ -46,7 +46,7 @@ const RecyclingBin: React.FC<RecyclingBinProps> = () => {
 
       <div className="secretContainer">
         <p className="secretText">
-          Congratulations! You have found one of the easter eggs on this site. Inside this recycling bin you won't find anything other than the satisfaction of having discovered one of the secrets of this portfolio.
+          Congratulations! You have found one of the easter eggs on this site. Inside this recycling bin you won&apos;t find anything other than the satisfaction of having discovered one of the secrets of this portfolio.
         </p>
       </div>
     </>
