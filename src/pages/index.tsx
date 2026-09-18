@@ -113,6 +113,9 @@ export default function Home() {
         <meta name="twitter:title" content={siteTitle} />
         <meta name="twitter:description" content={siteDescription} />
         <meta name="twitter:image" content={ogImageUrl} />
+
+        {/* Vercel Web Analytics Script */}
+        <script defer src="/_vercel/insights/script.js"></script>
       </Head>
 
       {/* 1. ANIMAZIONE BOOT INIZIALE */}
