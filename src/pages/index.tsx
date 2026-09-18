@@ -83,13 +83,39 @@ export default function Home() {
     window.open(encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf"));
   };
 
+  const siteTitle = "Vincenzo Reina | Senior Brand & GTM Strategist";
+  const siteDescription =
+    "Interactive Windows XP Portfolio & GTM Hub. Translating complex B2B deeptech products into high-impact market narratives without the corporate fluff.";
+  const siteUrl = "https://vincenzoxp.com";
+  const ogImageUrl = `${siteUrl}/og-image.jpeg.jpeg`;
+
   return (
     <>
       <Head>
-        <title>Vincenzo Reina - Senior Brand & GTM Strategist</title>
-        <meta name="description" content="My Personal Space" />
+        {/* Metadati Standard */}
+        <title>{siteTitle}</title>
+        <meta name="description" content={siteDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/Windows-logo.png" />
+
+        {/* Open Graph / Facebook / WhatsApp / LinkedIn */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta property="og:title" content={siteTitle} />
+        <meta property="og:description" content={siteDescription} />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Twitter Cards */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={siteUrl} />
+        <meta name="twitter:title" content={siteTitle} />
+        <meta name="twitter:description" content={siteDescription} />
+        <meta name="twitter:image" content={ogImageUrl} />
+
+        {/* Vercel Web Analytics Script */}
+        <script defer src="/_vercel/insights/script.js"></script>
       </Head>
 
       {/* 1. ANIMAZIONE BOOT INIZIALE */}
