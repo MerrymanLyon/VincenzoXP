@@ -87,7 +87,7 @@ export default function Home() {
   const siteDescription =
     "Interactive Windows XP Portfolio & GTM Hub. Translating complex B2B deeptech products into high-impact market narratives without the corporate fluff.";
   const siteUrl = "https://vincenzoxp.com";
-  const ogImageUrl = `${siteUrl}/og-image.jpeg.jpeg`;
+  const ogImageUrl = `${siteUrl}/IMG_0760.jpeg`;
 
   return (
     <>
@@ -113,9 +113,6 @@ export default function Home() {
         <meta name="twitter:title" content={siteTitle} />
         <meta name="twitter:description" content={siteDescription} />
         <meta name="twitter:image" content={ogImageUrl} />
-
-        {/* Vercel Web Analytics Script */}
-        <script defer src="/_vercel/insights/script.js"></script>
       </Head>
 
       {/* 1. ANIMAZIONE BOOT INIZIALE */}
