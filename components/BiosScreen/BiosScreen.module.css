@@ -4,11 +4,11 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #0000aa; /* Tipico blu BIOS/BSOD */
+  background-color: #0000aa;
   color: #ffffff;
   font-family: "Lucida Console", "Courier New", monospace;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
   padding: 40px 20px;
   box-sizing: border-box;
   z-index: 99999;
@@ -19,7 +19,7 @@
 }
 
 .biosContent {
-  max-width: 800px;
+  max-width: 850px;
   width: 100%;
 }
 
@@ -34,57 +34,44 @@
 }
 
 .codeBlock {
-  background-color: #ffffff;
-  color: #0000aa;
+  background-color: #ff0000;
+  color: #ffffff;
   padding: 4px 8px;
   font-weight: bold;
   display: inline-block;
   margin: 15px 0;
+  letter-spacing: 1px;
 }
 
-.paragraph {
-  margin: 10px 0;
-}
-
-.sectionTitle {
-  margin-top: 25px;
-  margin-bottom: 10px;
-  color: #ffff55; /* Giallo BIOS */
-  font-weight: bold;
-}
-
-.diagRow {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 5px;
-}
-
-.success {
-  color: #55ff55; /* Verde OK */
-  font-weight: bold;
-}
-
-.highlight {
-  color: #ffff55;
-  font-weight: bold;
-}
-
-.progressContainer {
-  margin: 25px 0;
+.cveContainer {
+  margin: 20px 0;
   background-color: #000055;
   padding: 15px;
   border: 1px solid #ffffff;
+  min-height: 180px;
 }
 
-.progressLabel {
+.cveRow {
   margin-bottom: 8px;
   color: #ffffff;
+  font-size: 13px;
 }
 
-.progressBar {
-  color: #55ff55;
-  letter-spacing: 2px;
-  word-break: break-all;
+.cveRowCritical {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  color: #ff3333;
+  background-color: #330000;
+  padding: 6px;
+  border: 1px solid #ff0000;
+  font-weight: bold;
+  font-size: 14px;
+  animation: pulse 1.5s infinite;
+}
+
+.cveDate {
+  color: #ffff55;
+  font-weight: bold;
 }
 
 .actionBlock {
@@ -123,14 +110,22 @@
   50% { opacity: 0; }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 @media (max-width: 600px) {
   .biosContainer {
     font-size: 12px;
     padding: 20px 15px;
   }
-  
-  .diagRow {
-    flex-direction: column;
-    gap: 2px;
+
+  .cveRow {
+    font-size: 11px;
+  }
+
+  .cveRowCritical {
+    font-size: 12px;
   }
 }
