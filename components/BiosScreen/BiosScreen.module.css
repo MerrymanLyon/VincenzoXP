@@ -4,65 +4,133 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
-  background-color: #0000aa;
+  background-color: #0000aa; /* Tipico blu BIOS/BSOD */
   color: #ffffff;
-  font-family: "Courier New", Courier, monospace;
-  z-index: 999999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 24px;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 40px 20px;
   box-sizing: border-box;
-  user-select: none;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
 }
 
 .biosContent {
-  max-width: 650px;
+  max-width: 800px;
   width: 100%;
-  text-align: left;
 }
 
-.title {
-  font-size: 18px;
+.header {
   font-weight: bold;
-  background-color: #00aaaa;
+  letter-spacing: 1px;
+}
+
+.divider {
+  color: #aaaaaa;
+  margin: 10px 0;
+}
+
+.codeBlock {
+  background-color: #ffffff;
   color: #0000aa;
   padding: 4px 8px;
+  font-weight: bold;
   display: inline-block;
-  margin-bottom: 20px;
-  text-transform: uppercase;
+  margin: 15px 0;
 }
 
-.message {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 16px;
-  white-space: pre-line;
+.paragraph {
+  margin: 10px 0;
 }
 
-.sarcasm {
-  font-size: 14px;
-  font-style: italic;
+.sectionTitle {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #ffff55; /* Giallo BIOS */
+  font-weight: bold;
+}
+
+.diagRow {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 5px;
+}
+
+.success {
+  color: #55ff55; /* Verde OK */
+  font-weight: bold;
+}
+
+.highlight {
   color: #ffff55;
-  margin-top: 12px;
+  font-weight: bold;
 }
 
-.statusRow {
-  margin-top: 28px;
-  font-size: 14px;
-  border-top: 1px dashed #ffffff;
-  padding-top: 12px;
+.progressContainer {
+  margin: 25px 0;
+  background-color: #000055;
+  padding: 15px;
+  border: 1px solid #ffffff;
+}
+
+.progressLabel {
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.progressBar {
+  color: #55ff55;
+  letter-spacing: 2px;
+  word-break: break-all;
+}
+
+.actionBlock {
+  margin: 25px 0;
+  font-size: 15px;
+}
+
+.biosLink {
+  display: inline-block;
+  margin-top: 10px;
+  color: #ffff55;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.biosLink:hover {
+  background-color: #ffff55;
+  color: #0000aa;
+  text-decoration: none;
+}
+
+.footer {
+  margin-top: 30px;
   color: #aaaaaa;
+  font-size: 12px;
 }
 
 .blinking {
-  animation: blink 1s step-start infinite;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0;
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .biosContainer {
+    font-size: 12px;
+    padding: 20px 15px;
+  }
+  
+  .diagRow {
+    flex-direction: column;
+    gap: 2px;
   }
 }

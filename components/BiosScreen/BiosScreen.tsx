@@ -1,68 +1,90 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./BiosScreen.module.css";
 
-interface BiosScreenProps {
-  onComplete: () => void;
-  durationMs?: number;
-}
+export default function BiosScreen() {
+  const [progress, setProgress] = useState(0);
 
-const BiosScreen: React.FC<BiosScreenProps> = ({
-  onComplete,
-  durationMs = 10000,
-}) => {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onComplete();
-    }, durationMs);
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, 40); // Completa il caricamento in circa 4 secondi
 
-    return () => clearTimeout(timer);
-  }, [durationMs, onComplete]);
+    return () => clearInterval(interval);
+  }, []);
 
-  const handleReturnToPocketPC = (e: React.MouseEvent) => {
+  const handleOpenLinkedin = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.location.reload();
+    window.open("https://www.linkedin.com/in/vincenzo-reina/", "_blank", "noreferrer");
   };
 
   return (
     <div className={styles.biosContainer}>
       <div className={styles.biosContent}>
-        <div className={styles.title}>*** SYSTEM WARNING ***</div>
+        <div className={styles.header}>
+          VINCENZO_XP BIOS v2.0 (C) 2001-2026, INC.
+        </div>
+        <div className={styles.divider}>--------------------------------------------------</div>
 
-        <div className={styles.message}>
-          A problem has been detected and the OS desktop interface is trying to optimize for your current mobile screen.
+        <div className={styles.codeBlock}>
+          *** SYSTEM HALTED: NEW CHAPTER DETECTED ***
         </div>
 
-        <div className={styles.message}>
-          For the best experience on mobile, please <strong>ROTATE YOUR DEVICE HORIZONTALLY</strong> (Landscape mode) or{" "}
+        <p className={styles.paragraph}>
+          A problem has NOT occurred. The system has successfully executed its personal branding mission.
+        </p>
+
+        <p className={styles.paragraph}>
+          The interactive portfolio experience is officially closing to make room for a new professional journey.
+        </p>
+
+        <div className={styles.sectionTitle}>
+          [ SYSTEM STATUS & DIAGNOSTICS ]
+        </div>
+        
+        <div className={styles.diagRow}>
+          <span>JOB_HUNT_STATUS:</span> <span className={styles.success}>COMPLETED</span>
+        </div>
+        <div className={styles.diagRow}>
+          <span>PREVIOUS_ROLE:</span> <span>OFFICIALLY_TERMINATED</span>
+        </div>
+        <div className={styles.diagRow}>
+          <span>NEXT_CHALLENGE:</span> <span className={styles.highlight}>INITIALIZING_NEW_BRAND...</span>
+        </div>
+
+        <div className={styles.progressContainer}>
+          <div className={styles.progressLabel}>
+            Loading new adventure: {progress}%
+          </div>
+          <div className={styles.progressBar}>
+            {"█".repeat(Math.floor(progress / 5))}
+            <span className={styles.blinking}>_</span>
+          </div>
+        </div>
+
+        <div className={styles.divider}>--------------------------------------------------</div>
+
+        <div className={styles.actionBlock}>
+          To follow the new adventure and discover the next role, connect on LinkedIn:
+          <br />
           <a
-            href="#"
-            onClick={handleReturnToPocketPC}
-            style={{
-              color: "#ffff55",
-              textDecoration: "underline",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
+            href="https://www.linkedin.com/in/vincenzo-reina/"
+            onClick={handleOpenLinkedin}
+            className={styles.biosLink}
           >
-            return to the Pocket PC Version
+            &gt; PRESS HERE TO OPEN LINKEDIN PROFILE &lt;
           </a>
-          .
         </div>
 
-        <div className={styles.message}>
-          For the absolute ideal experience, we strongly <strong>recommend accessing this site from an actual desktop computer</strong>.
-        </div>
-
-        <div className={styles.sarcasm}>
-          (Yes, one of those physical machines with a keyboard, mouse, or trackpad.)
-        </div>
-
-        <div className={styles.statusRow}>
-          Switching to Full Desktop environment... <span className={styles.blinking}>_</span>
+        <div className={styles.footer}>
+          Press ANY KEY to continue... (or just click the link above) <span className={styles.blinking}>_</span>
         </div>
       </div>
     </div>
   );
-};
-
-export default BiosScreen;
+}
