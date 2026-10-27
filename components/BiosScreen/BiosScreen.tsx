@@ -2,29 +2,39 @@ import React, { useState, useEffect } from "react";
 import styles from "./BiosScreen.module.css";
 
 export default function BiosScreen() {
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [cveIndex, setCveIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   const cveList = [
-    { date: "02.10.26", text: "CVE-2026-34512: PHP Remote Code Execution Vulnerability detected" },
-    { date: "08.10.26", text: "CVE-2026-38901: NGINX HTTP/3 Stack Buffer Overflow exploited" },
-    { date: "15.10.26", text: "CVE-2026-41203: OpenSSL Certificate Parsing Memory Corruption" },
-    { date: "21.10.26", text: "CVE-2026-43990: WebKit Zero-Day Arbitrary Code Execution" },
-    { date: "25.10.26", text: "CVE-2026-45102: Apache HTTP Server Authentication Bypass" },
+    { date: "02.10.26", text: "CVE-2026-34512: PHP Remote Code Execution" },
+    { date: "08.10.26", text: "CVE-2026-38901: NGINX HTTP/3 Stack Overflow" },
+    { date: "15.10.26", text: "CVE-2026-41203: OpenSSL Cert Memory Corruption" },
+    { date: "21.10.26", text: "CVE-2026-43990: WebKit Zero-Day Execution" },
+    { date: "25.10.26", text: "CVE-2026-45102: Apache Auth Bypass" },
   ];
 
+  // Sequenza di comparsa delle CVE
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisibleCount((prev) => {
-        if (prev < cveList.length + 1) {
-          return prev + 1;
-        }
+      setCveIndex((prev) => {
+        if (prev < cveList.length) return prev + 1;
         clearInterval(interval);
         return prev;
       });
-    }, 600); // Fa comparire una nuova CVE ogni 600ms
-
+    }, 450);
     return () => clearInterval(interval);
   }, [cveList.length]);
+
+  // Barra di caricamento buggata che loopa e si resetta
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 99) return Math.floor(Math.random() * 20); // Glitch & reset
+        return prev + Math.floor(Math.random() * 15) + 1;
+      });
+    }, 180);
+    return () => clearInterval(progressInterval);
+  }, []);
 
   const handleOpenLinkedin = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -34,38 +44,53 @@ export default function BiosScreen() {
   return (
     <div className={styles.biosContainer}>
       <div className={styles.biosContent}>
-        <div className={styles.header}>
-          VINCENZOXP.COM BIOS v2.0 (C) 1994-2026, INC.
+        <div>VINCENZOXP.COM BIOS v2.0 (C) 1994-2026, INC.</div>
+        <div>-----------------------------------------------------------------</div>
+        <br />
+        <div className={styles.warningTitle}>*** SYSTEM HACKED: CVE-2026-XXXXX ***</div>
+        <br />
+
+        {/* LISTA CVE IN PURO TESTO BIOS */}
+        {cveList.slice(0, cveIndex).map((item, idx) => (
+          <div key={idx}>
+            [{item.date}] {item.text} ... <span className={styles.failed}>FAILED</span>
+          </div>
+        ))}
+
+        {cveIndex >= cveList.length && (
+          <div className={styles.criticalAlert}>
+            [29.10.26] *** CRITICAL ALERT: VINCENZOXP.COM LEAKED ***
+          </div>
+        )}
+
+        <br />
+        <div>-----------------------------------------------------------------</div>
+        <div>[ SYSTEM DIAGNOSTICS & MEMORY DUMP ]</div>
+        <br />
+
+        {/* PARAMETRI BUGGATI ANIMATI */}
+        <div>MEM_CORRUPTION_ADDR : 0x0000F83C [ERR_OVERFLOW]</div>
+        <div>STACK_INTEGRITY    : 0% CORRUPTED</div>
+        <div>EXECUTION_THREAD   : TERMINATED_BY_SYSTEM</div>
+        <div>NEXT_CHAPTER_STATUS: INITIALIZING_NEW_BRAND...</div>
+        <br />
+
+        {/* BARRA LOADING ANIMATA BUGGATA */}
+        <div>
+          DUMPING SYSTEM MEMORY: {progress}%
         </div>
-        <div className={styles.divider}>
-          --------------------------------------------------
+        <div>
+          [{"█".repeat(Math.floor(progress / 5))}{"░".repeat(20 - Math.floor(progress / 5))}] <span className={styles.blinking}>_</span>
         </div>
 
-        <div className={styles.codeBlock}>
-          *** SYSTEM HACKED: CVE-2026-XXXXX ***
-        </div>
+        <br />
+        <div>-----------------------------------------------------------------</div>
+        <br />
 
-        <div className={styles.cveContainer}>
-          {cveList.slice(0, visibleCount).map((item, index) => (
-            <div key={index} className={styles.cveRow}>
-              <span className={styles.cveDate}>[{item.date}]</span> {item.text}
-            </div>
-          ))}
-
-          {visibleCount > cveList.length && (
-            <div className={styles.cveRowCritical}>
-              <span className={styles.cveDate}>[29.10.26]</span> *** CRITICAL ALERT: VINCENZOXP.COM LEAKED ***
-            </div>
-          )}
-        </div>
-
-        <div className={styles.divider}>
-          --------------------------------------------------
-        </div>
-
-        <div className={styles.actionBlock}>
+        <div>
           To follow any news connect on LinkedIn:
-          <br />
+        </div>
+        <div>
           <a
             href="https://www.linkedin.com/in/vincenzo-reina/"
             onClick={handleOpenLinkedin}
@@ -75,6 +100,8 @@ export default function BiosScreen() {
           </a>
         </div>
 
+        <br />
+        <br />
         <div className={styles.footer}>
           Press ANY KEY to return to the desktop and ignore the threat <span className={styles.blinking}>_</span>
         </div>

@@ -4,89 +4,49 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #0000aa;
+  background-color: #0000aa; /* Blu puro BIOS */
   color: #ffffff;
   font-family: "Lucida Console", "Courier New", monospace;
   font-size: 14px;
-  line-height: 1.6;
-  padding: 40px 20px;
+  line-height: 1.4;
+  padding: 30px 20px;
   box-sizing: border-box;
   z-index: 99999;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   overflow-y: auto;
+  user-select: none;
 }
 
 .biosContent {
-  max-width: 850px;
-  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
-.header {
+.warningTitle {
+  color: #ffff55; /* Giallo BIOS */
   font-weight: bold;
-  letter-spacing: 1px;
 }
 
-.divider {
-  color: #aaaaaa;
-  margin: 10px 0;
-}
-
-.codeBlock {
-  background-color: #ff0000;
-  color: #ffffff;
-  padding: 4px 8px;
-  font-weight: bold;
-  display: inline-block;
-  margin: 15px 0;
-  letter-spacing: 1px;
-}
-
-.cveContainer {
-  margin: 20px 0;
-  background-color: #000055;
-  padding: 15px;
-  border: 1px solid #ffffff;
-  min-height: 180px;
-}
-
-.cveRow {
-  margin-bottom: 8px;
-  color: #ffffff;
-  font-size: 13px;
-}
-
-.cveRowCritical {
-  margin-top: 12px;
-  margin-bottom: 8px;
-  color: #ff3333;
-  background-color: #330000;
-  padding: 6px;
-  border: 1px solid #ff0000;
-  font-weight: bold;
-  font-size: 14px;
-  animation: pulse 1.5s infinite;
-}
-
-.cveDate {
+.failed {
   color: #ffff55;
   font-weight: bold;
 }
 
-.actionBlock {
-  margin: 25px 0;
-  font-size: 15px;
+.criticalAlert {
+  color: #ffffff;
+  background-color: #aa0000; /* Rosso solido senza sfumature web */
+  padding: 2px 4px;
+  margin-top: 6px;
+  display: inline-block;
+  font-weight: bold;
 }
 
 .biosLink {
-  display: inline-block;
-  margin-top: 10px;
   color: #ffff55;
   text-decoration: underline;
   font-weight: bold;
-  font-size: 16px;
   cursor: pointer;
+  display: inline-block;
+  margin-top: 4px;
 }
 
 .biosLink:hover {
@@ -96,36 +56,23 @@
 }
 
 .footer {
-  margin-top: 30px;
   color: #aaaaaa;
   font-size: 12px;
 }
 
 .blinking {
-  animation: blink 1s infinite;
+  animation: blink 0.8s steps(2, start) infinite;
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  to {
+    visibility: hidden;
+  }
 }
 
 @media (max-width: 600px) {
   .biosContainer {
-    font-size: 12px;
-    padding: 20px 15px;
-  }
-
-  .cveRow {
     font-size: 11px;
-  }
-
-  .cveRowCritical {
-    font-size: 12px;
+    padding: 15px 10px;
   }
 }
