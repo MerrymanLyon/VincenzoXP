@@ -107,7 +107,7 @@ export default function BiosScreen() {
             href="https://www.linkedin.com/in/vincenzo-reina/"
             onClick={handleOpenLinkedin}
             className={styles.biosLink}
-          >
+          > 
             &gt; LINKEDIN PROFILE &lt;
           </a>
         </div>
