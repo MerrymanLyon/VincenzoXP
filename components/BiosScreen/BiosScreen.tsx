@@ -4,6 +4,7 @@ import styles from "./BiosScreen.module.css";
 export default function BiosScreen() {
   const [cveIndex, setCveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   const cveList = [
     { date: "02.10.26", text: "CVE-2026-34512: PHP Remote Code Execution" },
@@ -13,8 +14,15 @@ export default function BiosScreen() {
     { date: "25.10.26", text: "CVE-2026-45102: Apache Auth Bypass" },
   ];
 
+  // Garantisce che le animazioni e i numeri casuali partano SOLO lato Client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Sequenza di comparsa delle CVE
   useEffect(() => {
+    if (!isMounted) return;
+
     const interval = setInterval(() => {
       setCveIndex((prev) => {
         if (prev < cveList.length) return prev + 1;
@@ -22,24 +30,31 @@ export default function BiosScreen() {
         return prev;
       });
     }, 450);
-    return () => clearInterval(interval);
-  }, [cveList.length]);
 
-  // Barra di caricamento buggata che loopa e si resetta
+    return () => clearInterval(interval);
+  }, [isMounted, cveList.length]);
+
+  // Barra di caricamento buggata che loopa e si resetta (solo Client)
   useEffect(() => {
+    if (!isMounted) return;
+
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 99) return Math.floor(Math.random() * 20); // Glitch & reset
         return prev + Math.floor(Math.random() * 15) + 1;
       });
     }, 180);
+
     return () => clearInterval(progressInterval);
-  }, []);
+  }, [isMounted]);
 
   const handleOpenLinkedin = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open("https://www.linkedin.com/in/vincenzo-reina/", "_blank", "noreferrer");
   };
+
+  const blocksCount = isMounted ? Math.min(20, Math.max(0, Math.floor(progress / 5))) : 0;
+  const emptyCount = 20 - blocksCount;
 
   return (
     <div className={styles.biosContainer}>
@@ -51,13 +66,14 @@ export default function BiosScreen() {
         <br />
 
         {/* LISTA CVE IN PURO TESTO BIOS */}
-        {cveList.slice(0, cveIndex).map((item, idx) => (
-          <div key={idx}>
-            [{item.date}] {item.text} ... <span className={styles.failed}>FAILED</span>
-          </div>
-        ))}
+        {isMounted &&
+          cveList.slice(0, cveIndex).map((item, idx) => (
+            <div key={idx}>
+              [{item.date}] {item.text} ... <span className={styles.failed}>FAILED</span>
+            </div>
+          ))}
 
-        {cveIndex >= cveList.length && (
+        {isMounted && cveIndex >= cveList.length && (
           <div className={styles.criticalAlert}>
             [29.10.26] *** CRITICAL ALERT: VINCENZOXP.COM LEAKED ***
           </div>
@@ -76,20 +92,16 @@ export default function BiosScreen() {
         <br />
 
         {/* BARRA LOADING ANIMATA BUGGATA */}
+        <div>DUMPING SYSTEM MEMORY: {isMounted ? progress : 0}%</div>
         <div>
-          DUMPING SYSTEM MEMORY: {progress}%
-        </div>
-        <div>
-          [{"█".repeat(Math.floor(progress / 5))}{"░".repeat(20 - Math.floor(progress / 5))}] <span className={styles.blinking}>_</span>
+          [{"█".repeat(blocksCount)}{"░".repeat(emptyCount)}] <span className={styles.blinking}>_</span>
         </div>
 
         <br />
         <div>-----------------------------------------------------------------</div>
         <br />
 
-        <div>
-          To follow any news connect on LinkedIn:
-        </div>
+        <div>To follow any news connect on LinkedIn:</div>
         <div>
           <a
             href="https://www.linkedin.com/in/vincenzo-reina/"
