@@ -52,6 +52,8 @@ const cvePopupCss = `
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("BOOT");
+  // il minigioco San Tufellos, aperto in una finestra sopra il BIOS
+  const [gameOpen, setGameOpen] = useState(false);
   // Posizione casuale (in px) di ogni pop-up
   const [positions, setPositions] = useState<Record<number, { x: number; y: number }>>({});
 
@@ -129,12 +131,24 @@ export default function Home() {
     spawnCveErrorTab();
   };
 
-  // "Press ANY KEY": qualsiasi tasto (o tap fuori dal link LinkedIn) chiude il BIOS
+  // Link segreto vincenzoxp.com/#aezakmi: salta il boot e apre il BIOS con il trucco già attivo
   useEffect(() => {
-    if (stage !== "BIOS") return;
-    const onKey = () => handleDismissBios();
+    if (window.location.hash.toLowerCase() === "#aezakmi") {
+      setStage("BIOS");
+      setGameOpen(true);
+    }
+  }, []);
+
+  // Il BIOS si chiude con Invio/Esc (le lettere servono per il trucco) o con un clic da desktop;
+  // su telefono ci sono le due pillole
+  useEffect(() => {
+    if (stage !== "BIOS" || gameOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === "Escape") handleDismissBios();
+    };
     const onClick = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).closest("a")) return;
+      if (window.matchMedia("(pointer: coarse)").matches) return;
+      if ((e.target as HTMLElement).closest("a, button")) return;
       handleDismissBios();
     };
     window.addEventListener("keydown", onKey);
@@ -143,7 +157,7 @@ export default function Home() {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("click", onClick);
     };
-  }, [stage]);
+  }, [stage, gameOpen]);
 
   // POPUP STORM: ogni finestra CVE chiusa (X della finestra o Cancel) ne fa spawnare una nuova
   useEffect(() => {
@@ -209,7 +223,39 @@ export default function Home() {
       )}
 
       {/* 3. BIOS SCREEN */}
-      {stage === "BIOS" && <BiosScreen />}
+      {stage === "BIOS" && <BiosScreen onCheat={() => setGameOpen(true)} onDismiss={handleDismissBios} />}
+
+      {/* 3b. SAN TUFELLOS: il gioco in una finestra XP sopra il BIOS */}
+      {stage === "BIOS" && gameOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(0, 0, 40, 0.35)",
+          }}
+        >
+          <div className="window" style={{ width: "min(860px, 96vw)", height: "min(620px, 90vh)", display: "flex", flexDirection: "column" }}>
+            <div className="title-bar">
+              <div className="title-bar-text">San Tufellos.exe</div>
+              <div className="title-bar-controls">
+                <button aria-label="Close" onClick={() => setGameOpen(false)} />
+              </div>
+            </div>
+            <div className="window-body" style={{ flex: 1, margin: 0, padding: 0, display: "flex", minHeight: 0 }}>
+              <iframe
+                src="/santufellos/index.html"
+                title="San Tufellos"
+                style={{ border: 0, width: "100%", height: "100%", flex: 1, display: "block" }}
+                onLoad={(e) => (e.target as HTMLIFrameElement).contentWindow?.focus()}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 4. DESKTOP FUNZIONANTE + POPUP STORM CVE */}
       {stage === "DESKTOP" && (

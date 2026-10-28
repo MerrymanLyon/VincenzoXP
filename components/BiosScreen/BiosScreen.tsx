@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BiosScreen.module.css";
 
-export default function BiosScreen() {
+interface BiosScreenProps {
+  onCheat?: () => void;
+  onDismiss?: () => void;
+}
+
+const CHEAT = "AEZAKMI";
+
+export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
   const [cveIndex, setCveIndex] = useState(0);
+  const [cheatBuffer, setCheatBuffer] = useState("");
+  const [isTouch, setIsTouch] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -17,7 +26,25 @@ export default function BiosScreen() {
   // Garantisce che le animazioni e i numeri casuali partano SOLO lato Client
   useEffect(() => {
     setIsMounted(true);
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
+
+  // Il trucco di GTA San Andreas: le lettere digitate riempiono il buffer, AEZAKMI apre il gioco
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!/^[a-zA-Z]$/.test(e.key)) return;
+      setCheatBuffer((prev) => {
+        const next = (prev + e.key.toUpperCase()).slice(-CHEAT.length);
+        if (next === CHEAT) {
+          onCheat?.();
+          return "";
+        }
+        return next;
+      });
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCheat]);
 
   // Sequenza di comparsa delle CVE
   useEffect(() => {
@@ -89,6 +116,14 @@ export default function BiosScreen() {
         <div>STACK_INTEGRITY    : 0% CORRUPTED</div>
         <div>EXECUTION_THREAD   : TERMINATED_BY_SYSTEM</div>
         <div>NEXT_CHAPTER_STATUS: INITIALIZING_NEW_BRAND...</div>
+        <div>
+          CHEAT_INPUT_BUFFER : [{cheatBuffer.padEnd(CHEAT.length, "_")}]{" "}
+          <span className={styles.blinking}>AWAITING CODE</span>
+        </div>
+        <br />
+        <div className={styles.warningTitle}>
+          HINT: TYPE THE SAN ANDREAS CHEAT THAT CLEARS YOUR WANTED LEVEL.
+        </div>
         <br />
 
         {/* BARRA LOADING ANIMATA BUGGATA */}
@@ -114,9 +149,20 @@ export default function BiosScreen() {
 
         <br />
         <br />
-        <div className={styles.footer}>
-          Press ANY KEY to return to the desktop and ignore the threat <span className={styles.blinking}>_</span>
-        </div>
+        {isTouch ? (
+          <div className={styles.pills}>
+            <button className={`${styles.pill} ${styles.bluePill}`} onClick={onDismiss}>
+              GO BACK TO WINDOWS
+            </button>
+            <button className={`${styles.pill} ${styles.redPill}`} onClick={onCheat}>
+              LOS TUFELLOS
+            </button>
+          </div>
+        ) : (
+          <div className={styles.footer}>
+            Press ENTER to return to the desktop and ignore the threat <span className={styles.blinking}>_</span>
+          </div>
+        )}
       </div>
     </div>
   );
