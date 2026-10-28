@@ -92,6 +92,18 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
         <div className={styles.warningTitle}>*** SYSTEM HACKED: CVE-2026-XXXXX ***</div>
         <br />
 
+        {/* Su telefono non c'è tastiera: le due pillole stanno in alto, subito visibili */}
+        {isTouch && (
+          <div className={styles.pills}>
+            <button className={`${styles.pill} ${styles.bluePill}`} onClick={onDismiss}>
+              GO BACK TO WINDOWS
+            </button>
+            <button className={`${styles.pill} ${styles.redPill}`} onClick={onCheat}>
+              LOS TUFELLOS
+            </button>
+          </div>
+        )}
+
         {/* LISTA CVE IN PURO TESTO BIOS */}
         {isMounted &&
           cveList.slice(0, cveIndex).map((item, idx) => (
@@ -149,16 +161,7 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
 
         <br />
         <br />
-        {isTouch ? (
-          <div className={styles.pills}>
-            <button className={`${styles.pill} ${styles.bluePill}`} onClick={onDismiss}>
-              GO BACK TO WINDOWS
-            </button>
-            <button className={`${styles.pill} ${styles.redPill}`} onClick={onCheat}>
-              LOS TUFELLOS
-            </button>
-          </div>
-        ) : (
+        {!isTouch && (
           <div className={styles.footer}>
             Press ENTER to return to the desktop and ignore the threat <span className={styles.blinking}>_</span>
           </div>

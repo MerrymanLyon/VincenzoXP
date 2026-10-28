@@ -784,6 +784,8 @@ canvas:focus { outline: none; }
     if (!bodyHits(c, sx2, sy2).length) { c.x = sx2; c.y = sy2; }
     return impact;
   };
+  // a turbo starts with a small instant shove forward, then keeps pushing
+  const kick = (c, k) => { c.vx += Math.sin(c.a) * VMAX * k; c.vy -= Math.cos(c.a) * VMAX * k; };
   const burst = (x, y, n, cols, sp, life = 20) => { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, v = Math.random() * sp; parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: life + Math.random() * 15, max: life + 15, cols }); } };
   const SMOKE = ["#d8d0c8", "#a8a0a8", "#6e6878", "#403a4a"], SPARK = ["#ffffff", "#ffe27a", "#f07a3c", "#9a2430"];
   const FIRE = ["#fff6c0", "#ffd040", "#ff8a20", "#d02010", "#4a1020"], BLUE = ["#ffffff", "#bfe0ff", "#5a86d0", "#2f4aa0"], ORANGE = ["#ffffff", "#ffe27a", "#f07a3c", "#d0402e"];
@@ -810,7 +812,7 @@ canvas:focus { outline: none; }
       burst(rearX - sx, rearY - sy, 1, cols, 30, 8); burst(rearX + sx, rearY + sy, 1, cols, 30, 8);
     } else if (charge > 0) {
       // mini-turbo: the longer the drift, the longer the boost
-      if (charge > 0.6) { player.boost = charge > 1.4 ? 1.1 : 0.6; pop(charge > 1.4 ? "SUPER TURBO!" : "TURBO!", null, 40); }
+      if (charge > 0.6) { player.boost = charge > 1.4 ? 1.1 : 0.6; kick(player, charge > 1.4 ? 0.25 : 0.18); pop(charge > 1.4 ? "SUPER TURBO!" : "TURBO!", null, 40); }
       if (driftPts > 20) { score += Math.round(driftPts); }
       charge = 0; driftPts = 0;
     }
@@ -819,7 +821,7 @@ canvas:focus { outline: none; }
       parts.push({ x: rearX + (Math.random() - 0.5) * 8, y: rearY + (Math.random() - 0.5) * 8, vx: -Math.sin(player.a) * 60 + (Math.random() - 0.5) * 30, vy: Math.cos(player.a) * 60 + (Math.random() - 0.5) * 30, life: 22, max: 22, cols: FIRE, big: true });
     }
     if (keys.up && speed < 40 && t % 3 === 0) burst(rearX, rearY, 1, SMOKE, 25);
-    PADS.forEach((p) => { if (Math.hypot(player.x - p.x, player.y - p.y) < 16 && player.boost < 0.5) { player.boost = 0.9; pop("BOOST!", null, 30); shake = 3; } });
+    PADS.forEach((p) => { if (Math.hypot(player.x - p.x, player.y - p.y) < 16 && player.boost < 0.5) { player.boost = 0.9; kick(player, 0.22); pop("BOOST!", null, 30); shake = 3; } });
     if (!carrying && Math.hypot(player.x - floppy.x, player.y - floppy.y) < 20) { carrying = true; timeLeft += 5; pop("CVE PATCH GRABBED!", "TAKE IT TO HQ", 90); burst(floppy.x, floppy.y, 16, ["#fff2d0", "#6ac8f0", "#4a6ad0"], 90); }
     if (carrying && Math.hypot(player.x - HQ.x, player.y - HQ.y) < 22) {
       markFlash = 50;
