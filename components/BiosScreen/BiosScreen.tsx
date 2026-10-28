@@ -8,6 +8,7 @@ interface BiosScreenProps {
 }
 
 const CHEAT = "AEZAKMI";
+export const PHONE_QUERY = "(pointer: coarse) and (max-width: 500px), (pointer: coarse) and (max-height: 500px)";
 
 // Tinte della palette BIOS a 16 colori, per codice colore della pillola ASCII
 const PILL_PALETTES = {
@@ -62,7 +63,8 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
   // Garantisce che le animazioni e i numeri casuali partano SOLO lato Client
   useEffect(() => {
     setIsMounted(true);
-    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+    // smartphone = schermo touch con il lato corto sotto i 500px (l'iPad resta "desktop")
+    setIsTouch(window.matchMedia(PHONE_QUERY).matches);
   }, []);
 
   // Il trucco di GTA San Andreas: le lettere digitate riempiono il buffer, AEZAKMI apre il gioco
@@ -166,14 +168,18 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
         <div>STACK_INTEGRITY    : 0% CORRUPTED</div>
         <div>EXECUTION_THREAD   : TERMINATED_BY_SYSTEM</div>
         <div>NEXT_CHAPTER_STATUS: INITIALIZING_NEW_BRAND...</div>
-        <div>
-          CHEAT_INPUT_BUFFER : [{cheatBuffer.padEnd(CHEAT.length, "_")}]{" "}
-          <span className={styles.blinking}>AWAITING CODE</span>
-        </div>
-        <br />
-        <div className={styles.warningTitle}>
-          HINT: TYPE THE SAN ANDREAS CHEAT THAT CLEARS YOUR WANTED LEVEL.
-        </div>
+        {!isTouch && (
+          <>
+            <div>
+              CHEAT_INPUT_BUFFER : [{cheatBuffer.padEnd(CHEAT.length, "_")}]{" "}
+              <span className={styles.blinking}>AWAITING CODE</span>
+            </div>
+            <br />
+            <div className={styles.warningTitle}>
+              HINT: TYPE THE SAN ANDREAS CHEAT THAT CLEARS YOUR WANTED LEVEL.
+            </div>
+          </>
+        )}
         <br />
 
         {/* BARRA LOADING ANIMATA BUGGATA */}
