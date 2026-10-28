@@ -67,28 +67,58 @@
   margin: 8px 0 18px;
 }
 
-.pill {
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: bold;
+.pillButton {
+  background: none;
+  border: 0;
+  padding: 0;
   color: #ffffff;
-  padding: 12px 20px;
-  border: 2px solid #ffffff;
-  border-radius: 999px;
+  font-family: inherit;
   cursor: pointer;
-  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.45), 0 3px 0 rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.pill:active {
-  transform: scale(0.97);
+.pillButton:active .asciiPill {
+  filter: drop-shadow(0 0 3px #ffffff);
+  transform: scale(0.98);
 }
 
-.bluePill {
-  background: linear-gradient(180deg, #6aa8ff 0%, #1a4ad0 100%);
+/* la pillola ASCII: caratteri minuscoli, larghezza calcolata perché ne stiano due affiancate */
+.asciiPill {
+  /* xp.css dà ai <pre> sfondo nero, bordo e padding: qui la pillola fluttua sul blu del BIOS */
+  background: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0;
+  font-family: "Courier New", "Lucida Console", monospace;
+  font-size: min(5px, calc((100vw - 60px) / 82));
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  animation: pillFlicker 5s steps(1) infinite;
 }
 
-.redPill {
-  background: linear-gradient(180deg, #ff7a6a 0%, #c01818 100%);
+.pillButton:nth-child(2) .asciiPill {
+  animation-delay: -2.3s;
+}
+
+/* un tremolio da vecchio monitor ogni tanto: credibile, ma un po' strano per Windows */
+@keyframes pillFlicker {
+  0%, 90%, 96%, 100% { opacity: 1; transform: none; }
+  92% { opacity: 0.75; transform: translateX(1px); }
+  94% { opacity: 0.9; transform: translateX(-1px); }
+}
+
+.pillLabel {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.redLabel {
+  color: #ffff55;
 }
 
 .blinking {

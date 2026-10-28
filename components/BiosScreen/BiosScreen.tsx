@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BiosScreen.module.css";
+import { PILL_ROWS, PILL_COLORS } from "./asciiPill";
 
 interface BiosScreenProps {
   onCheat?: () => void;
@@ -7,6 +8,41 @@ interface BiosScreenProps {
 }
 
 const CHEAT = "AEZAKMI";
+
+// Tinte della palette BIOS a 16 colori, per codice colore della pillola ASCII
+const PILL_PALETTES = {
+  blue: ["", "#000066", "#3f8fff", "#55ffff", "#ffffff", "#aaaaaa", "#ffffff"],
+  red: ["", "#000066", "#e03a3a", "#ff7a6a", "#ffffff", "#aaaaaa", "#ffffff"],
+};
+const MIRROR: Record<string, string> = { "<": ">", ">": "<", "'": "`", "`": "'", "/": "\\", "\\": "/", "(": ")", ")": "(" };
+
+// Disegna la pillola raggruppando i caratteri consecutivi dello stesso colore
+function AsciiPill({ color, mirror }: { color: "blue" | "red"; mirror?: boolean }) {
+  const palette = PILL_PALETTES[color];
+  return (
+    <pre className={styles.asciiPill} aria-hidden="true">
+      {PILL_ROWS.map((row, r) => {
+        const chars = mirror ? row.split("").reverse().map((ch) => MIRROR[ch] || ch) : row.split("");
+        const codes = mirror ? PILL_COLORS[r].split("").reverse() : PILL_COLORS[r].split("");
+        const runs: { text: string; code: string }[] = [];
+        chars.forEach((ch, i) => {
+          const last = runs[runs.length - 1];
+          if (last && last.code === codes[i]) last.text += ch;
+          else runs.push({ text: ch, code: codes[i] });
+        });
+        return (
+          <div key={r}>
+            {runs.map((run, i) => (
+              <span key={i} style={{ color: palette[Number(run.code)] || "transparent" }}>
+                {run.text}
+              </span>
+            ))}
+          </div>
+        );
+      })}
+    </pre>
+  );
+}
 
 export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
   const [cveIndex, setCveIndex] = useState(0);
@@ -95,11 +131,13 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
         {/* Su telefono non c'è tastiera: le due pillole stanno in alto, subito visibili */}
         {isTouch && (
           <div className={styles.pills}>
-            <button className={`${styles.pill} ${styles.bluePill}`} onClick={onDismiss}>
-              GO BACK TO WINDOWS
+            <button className={styles.pillButton} onClick={onDismiss}>
+              <AsciiPill color="blue" />
+              <span className={styles.pillLabel}>[ GO BACK TO WINDOWS ]</span>
             </button>
-            <button className={`${styles.pill} ${styles.redPill}`} onClick={onCheat}>
-              LOS TUFELLOS
+            <button className={styles.pillButton} onClick={onCheat}>
+              <AsciiPill color="red" mirror />
+              <span className={`${styles.pillLabel} ${styles.redLabel}`}>[ LOS TUFELLOS ]</span>
             </button>
           </div>
         )}
