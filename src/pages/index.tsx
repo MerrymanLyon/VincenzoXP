@@ -5,7 +5,16 @@ import BiosScreen from "components/BiosScreen/BiosScreen";
 import StartBar from "components/StartBar/StartBar";
 import DesktopIcon from "components/DesktopIcon/DesktopIcon";
 import WinForm from "components/WinForm/WinForm";
+import MsgBox from "components/MsgBox/MsgBox";
 import CveError from "@/programs/CveError";
+import Outlook from "@/programs/Outlook";
+import MyWork from "@/programs/MyWork";
+import Welcome from "@/programs/Welcome";
+import MyGallery from "@/programs/MyGallery";
+import InternetExplorer from "@/programs/InternetExplorer";
+import Education from "@/programs/Education";
+import RecyclingBin from "@/programs/RecyclingBin";
+import WhyXP from "@/programs/WhyXP";
 import "xp.css/dist/XP.css";
 import styles from "../styles/Home.module.css";
 import mycomputer from "../../assets/mycomputer.png";
@@ -18,8 +27,11 @@ import store from "@/redux/store";
 import { addTab, removeTab } from "@/redux/tabSlice";
 import { useSelector } from "react-redux";
 import { App, RootState, Tab } from "@/types";
+import { AppDirectory } from "@/appData";
 
-type Stage = "BOOT" | "DESKTOP_FLASH" | "BIOS" | "DESKTOP_LOCKED";
+type Stage = "BOOT" | "DESKTOP_FLASH" | "BIOS" | "DESKTOP";
+
+const CVE_TITLE = "System Error - CVE Breach";
 
 // Dimensioni stimate del pop-up CVE (WinForm in modalità prompt)
 const POPUP_WIDTH = 450;
@@ -44,7 +56,9 @@ export default function Home() {
   const [positions, setPositions] = useState<Record<number, { x: number; y: number }>>({});
 
   const Tabs = useSelector((state: RootState) => state.tab.tray);
-  const cveTabs = Tabs.filter((tab) => tab.program === App.ERROR);
+  const currTabID = useSelector((state: RootState) => state.tab.id);
+  const isCveTab = (tab: Tab) => tab.program === App.ERROR && tab.title === CVE_TITLE;
+  const cveTabs = Tabs.filter(isCveTab);
   const prevCveIds = useRef<number[]>([]);
 
   // Transizione dal Desktop al BIOS dopo 1 secondo di flash
@@ -71,7 +85,7 @@ export default function Home() {
 
     const errorTab: Tab = {
       id: newId,
-      title: "System Error - CVE Breach",
+      title: CVE_TITLE,
       message: "",
       Icon: errorIcon,
       isMinimized: false,
@@ -85,9 +99,33 @@ export default function Home() {
     store.dispatch(addTab(errorTab));
   };
 
+  const handleRunApp = (e: number) => {
+    const appConfig = AppDirectory.get(e);
+    if (appConfig) {
+      const newTab: Tab = {
+        ...appConfig,
+        id: Date.now(),
+        zIndex: currTabID,
+      };
+      store.dispatch(addTab(newTab));
+    }
+  };
+
+  const handleOpenLinkedin = () => {
+    window.open(
+      "https://www.linkedin.com/in/vincenzo-reina/",
+      "_blank",
+      "noreferrer"
+    );
+  };
+
+  const handleOpenResume = () => {
+    window.open(encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf"));
+  };
+
   // Quando l'utente esce dal BIOS
   const handleDismissBios = () => {
-    setStage("DESKTOP_LOCKED");
+    setStage("DESKTOP");
     spawnCveErrorTab();
   };
 
@@ -110,7 +148,7 @@ export default function Home() {
   // POPUP STORM: ogni finestra CVE chiusa (X della finestra o Cancel) ne fa spawnare una nuova
   useEffect(() => {
     const currentIds = cveTabs.map((tab) => tab.id);
-    if (stage === "DESKTOP_LOCKED") {
+    if (stage === "DESKTOP") {
       prevCveIds.current
         .filter((id) => !currentIds.includes(id))
         .forEach(() => {
@@ -173,20 +211,69 @@ export default function Home() {
       {/* 3. BIOS SCREEN */}
       {stage === "BIOS" && <BiosScreen />}
 
-      {/* 4. DESKTOP BLOCCATO CON POPUP STORM */}
-      {stage === "DESKTOP_LOCKED" && (
+      {/* 4. DESKTOP FUNZIONANTE + POPUP STORM CVE */}
+      {stage === "DESKTOP" && (
         <main className={styles.main}>
           <div style={{ position: "relative", width: "100%", height: "100%" }}>
-            <DesktopIcon appID={1} doubleClick={() => {}} title="Control Panel" img={{ src: "/IMG_0698.webp", height: 48, width: 48 }} />
-            <DesktopIcon appID={2} doubleClick={() => {}} title="Recycling Bin" img={bin} />
-            <DesktopIcon appID={3} doubleClick={() => {}} title="My Resume" img={pdf} />
-            <DesktopIcon appID={4} doubleClick={() => {}} title="My LinkedIn" img={linkedin} />
-            <DesktopIcon appID={5} doubleClick={() => {}} title="My Computer" img={mycomputer} />
-            <DesktopIcon appID={6} doubleClick={() => {}} title="My Work" img={cmd} />
+            <DesktopIcon
+              appID={1}
+              doubleClick={() => handleRunApp(0)}
+              title="Control Panel"
+              img={{ src: "/IMG_0698.webp", height: 48, width: 48 }}
+            />
+            <DesktopIcon appID={2} doubleClick={() => handleRunApp(3)} title="Recycling Bin" img={bin} />
+            <DesktopIcon appID={3} doubleClick={handleOpenResume} title="My Resume" img={pdf} />
+            <DesktopIcon appID={4} doubleClick={handleOpenLinkedin} title="My LinkedIn" img={linkedin} />
+            <DesktopIcon appID={5} doubleClick={() => handleRunApp(11)} title="My Computer" img={mycomputer} />
+            <DesktopIcon appID={6} doubleClick={() => handleRunApp(2)} title="My Work" img={cmd} />
 
-            {/* Rendering di tutte le finestre CVE spawnate, ognuna in una posizione casuale */}
+            {/* Finestre normali del sito */}
+            {Tabs.map((tab) => {
+              if (tab.isMinimized || isCveTab(tab)) return <React.Fragment key={tab.id}></React.Fragment>;
+              return (
+                <WinForm
+                  key={tab.id}
+                  id={tab.id}
+                  title={tab.title}
+                  message={tab.message || ""}
+                  icon={tab.Icon}
+                  zIndex={tab.zIndex}
+                  programType={tab.program}
+                  prompt={tab.prompt}
+                >
+                  {tab.program === App.MYWORK ? (
+                    <MyWork id={tab.id} />
+                  ) : tab.program === App.OUTLOOK ? (
+                    <Outlook />
+                  ) : tab.program === App.WELCOME ? (
+                    <Welcome id={tab.id} />
+                  ) : tab.program === App.MYGALLERY ? (
+                    <MyGallery id={tab.id} />
+                  ) : tab.program === App.INTERNET_EXPLORER ? (
+                    <InternetExplorer id={tab.id} />
+                  ) : tab.program === App.EDUCATION ? (
+                    <Education id={tab.id} />
+                  ) : tab.program === App.RECYCLING_BIN ? (
+                    <RecyclingBin id={tab.id} />
+                  ) : tab.program === App.WHY_XP ? (
+                    <WhyXP id={tab.id} />
+                  ) : tab.program === App.ERROR ? (
+                    <p>{tab.message}</p>
+                  ) : tab.program === App.INFO ? (
+                    <MsgBox id={tab.id} message={tab.message || ""} icon={tab.Icon} />
+                  ) : tab.program === App.WARNING ? (
+                    <p>{tab.message}</p>
+                  ) : tab.program === App.HELP ? (
+                    <p>{tab.message}</p>
+                  ) : null}
+                </WinForm>
+              );
+            })}
+
+            {/* Finestre CVE, ognuna in una posizione casuale */}
             <style>{cvePopupCss}</style>
             {cveTabs.map((tab) => {
+              if (tab.isMinimized) return <React.Fragment key={tab.id}></React.Fragment>;
               const pos = positions[tab.id] || { x: 100, y: 100 };
               return (
                 <div
