@@ -8,7 +8,9 @@ interface BiosScreenProps {
 }
 
 const CHEAT = "AEZAKMI";
-export const PHONE_QUERY = "(pointer: coarse) and (max-width: 500px), (pointer: coarse) and (max-height: 500px)";
+// Solo touch, senza mouse né trackpad (smartphone, iPad senza tastiera): niente tastiera per il trucco
+export const isTouchOnly = () =>
+  window.matchMedia("(pointer: coarse)").matches && !window.matchMedia("(any-pointer: fine)").matches;
 
 // Tinte della palette BIOS a 16 colori, per codice colore della pillola ASCII
 const PILL_PALETTES = {
@@ -63,14 +65,15 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
   // Garantisce che le animazioni e i numeri casuali partano SOLO lato Client
   useEffect(() => {
     setIsMounted(true);
-    // smartphone = schermo touch con il lato corto sotto i 500px (l'iPad resta "desktop")
-    setIsTouch(window.matchMedia(PHONE_QUERY).matches);
+    setIsTouch(isTouchOnly());
   }, []);
 
   // Il trucco di GTA San Andreas: le lettere digitate riempiono il buffer, AEZAKMI apre il gioco
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!/^[a-zA-Z]$/.test(e.key)) return;
+      // un tasto fisico vuol dire tastiera attaccata (es. iPad): si passa alla versione con il trucco
+      setIsTouch(false);
       setCheatBuffer((prev) => {
         const next = (prev + e.key.toUpperCase()).slice(-CHEAT.length);
         if (next === CHEAT) {

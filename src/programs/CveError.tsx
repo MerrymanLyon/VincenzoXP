@@ -22,7 +22,7 @@ export default function CveError({ onClose }: CveErrorProps) {
           }}
         />
         <div>
-          <strong style={{ fontSize: "13px" }}>Critical Security Breach (CVE-2026-45102)</strong>
+          <strong style={{ fontSize: "13px" }}>Critical Security Breach (CVE-AEZAKMI)</strong>
           <p style={{ margin: "8px 0 0 0", lineHeight: "1.4" }}>
             A critical vulnerability has compromised <code>vincenzoxp.com</code>. The legacy personal branding runtime has been halted.
           </p>

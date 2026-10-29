@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import BootScreen from "components/BootScreen/BootScreen";
-import BiosScreen, { PHONE_QUERY } from "components/BiosScreen/BiosScreen";
+import BiosScreen, { isTouchOnly } from "components/BiosScreen/BiosScreen";
 import StartBar from "components/StartBar/StartBar";
 import DesktopIcon from "components/DesktopIcon/DesktopIcon";
 import WinForm from "components/WinForm/WinForm";
@@ -139,15 +139,15 @@ export default function Home() {
     }
   }, []);
 
-  // Il BIOS si chiude con Invio/Esc (le lettere servono per il trucco) o con un clic/tap fuori dagli smartphone;
-  // sugli smartphone ci sono le due pillole
+  // Il BIOS si chiude con Invio/Esc (le lettere servono per il trucco) o con un clic/tap fuori dai dispositivi solo touch;
+  // sui dispositivi solo touch ci sono le due pillole
   useEffect(() => {
     if (stage !== "BIOS" || gameOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Enter" || e.key === "Escape") handleDismissBios();
     };
     const onClick = (e: MouseEvent) => {
-      if (window.matchMedia(PHONE_QUERY).matches) return;
+      if (isTouchOnly()) return;
       if ((e.target as HTMLElement).closest("a, button")) return;
       handleDismissBios();
     };
