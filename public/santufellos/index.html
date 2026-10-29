@@ -12,25 +12,33 @@
 :root { --fg: #efe4d0; --accent: #f07a3c; --display: "Pixelify Sans", "Courier New", monospace; color-scheme: dark; }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; background: #0d0b11; color: var(--fg); overflow: hidden; }
-.stage { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 6px; touch-action: none; user-select: none; -webkit-user-select: none; }
+.stage { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; touch-action: none; user-select: none; -webkit-user-select: none; }
 canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
 canvas:focus { outline: none; }
-.pad { display: none; width: 100%; max-width: 520px; justify-content: space-between; gap: 8px; }
-.pad div { display: flex; gap: 8px; }
+/* on-screen controls laid over the game, mobile-racer style: steer under the left thumb, gas under the right */
+.pad { display: none; position: absolute; inset: 0; touch-action: none; }
+.touch .stage.show-pad .pad { display: block; }
 .pad button {
-  width: 62px; height: 62px; border: 2px solid #1b1424; border-bottom-width: 5px; background: #2a2333; color: var(--fg);
-  font-family: var(--display); font-size: 0.85rem; touch-action: none; border-radius: 0;
+  position: absolute; display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.12); border: 2px solid rgba(255, 255, 255, 0.38); color: rgba(255, 255, 255, 0.85);
+  font-family: var(--display); font-size: 0.8rem; letter-spacing: 0.04em; border-radius: 18px; padding: 0;
+  -webkit-tap-highlight-color: transparent; transition: background 80ms ease-out, transform 80ms ease-out;
 }
-.pad button.on { background: var(--accent); color: #17131d; transform: translateY(2px); border-bottom-width: 3px; }
-.touch .stage.show-pad .pad { display: flex; }
+.pad button.on { background: rgba(240, 122, 60, 0.55); border-color: rgba(255, 210, 160, 0.8); color: #fff; transform: scale(0.94); }
+.pad [data-k="left"], .pad [data-k="right"] { width: 78px; height: 78px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); font-size: 1.6rem; }
+.pad [data-k="left"] { left: calc(14px + env(safe-area-inset-left, 0px)); }
+.pad [data-k="right"] { left: calc(102px + env(safe-area-inset-left, 0px)); }
+.pad [data-k="up"] { width: 104px; height: 104px; border-radius: 50%; right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); font-size: 1.1rem; }
+.pad [data-k="hb"] { width: 74px; height: 50px; right: calc(29px + env(safe-area-inset-right, 0px)); bottom: calc(134px + env(safe-area-inset-bottom, 0px)); }
+.pad [data-k="down"] { width: 62px; height: 50px; right: calc(128px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
   <canvas id="game" tabindex="0" aria-label="San Tufellos game"></canvas>
   <div class="pad" id="pad">
-    <div><button data-k="left" aria-label="Steer left">◀</button><button data-k="right" aria-label="Steer right">▶</button></div>
-    <div><button data-k="hb">DRIFT</button><button data-k="down">BRAKE</button><button data-k="up">GAS</button></div>
+    <button data-k="left" aria-label="Steer left">◀</button><button data-k="right" aria-label="Steer right">▶</button>
+    <button data-k="up">GAS</button><button data-k="down">BRAKE</button><button data-k="hb">DRIFT</button>
   </div>
 </div>
 
@@ -640,7 +648,7 @@ canvas:focus { outline: none; }
   const stage = document.getElementById("stage");
   let VW = 320, VH = 200;
   const fit = () => {
-    const padH = touch ? 80 : 0, aw = stage.clientWidth - 12, ah = stage.clientHeight - 12 - padH;
+    const aw = stage.clientWidth - 12, ah = stage.clientHeight - 12;
     const scale = Math.max(2, Math.floor(Math.min(aw / 300, ah / 190)));
     VW = Math.max(160, Math.floor(aw / scale)); VH = Math.max(150, Math.floor(ah / scale));
     canvas.width = VW; canvas.height = VH;
@@ -661,7 +669,7 @@ canvas:focus { outline: none; }
   const stars = () => Math.min(5, 1 + deliveries);
 
   // touch buttons change meaning on the initials screen
-  const padLabels = { play: ["◀", "▶", "DRIFT", "BRAKE", "GAS"], initials: ["◀", "▶", "OK", "▼", "▲"] };
+  const padLabels = { play: ["◀", "▶", "GAS", "BRAKE", "DRIFT"], initials: ["◀", "▶", "▲", "▼", "OK"] };
   const padBtns = [...document.querySelectorAll("#pad button")];
   const go = (s) => {
     state = s; st = 0;
@@ -696,22 +704,30 @@ canvas:focus { outline: none; }
   });
   window.addEventListener("keyup", (e) => { if (keyMap[e.code]) keys[keyMap[e.code]] = false; });
   canvas.addEventListener("pointerdown", () => { canvas.focus(); if (state !== "play" && state !== "initials") advance(); });
-  padBtns.forEach((b) => {
-    const k = b.dataset.k;
-    const press = (v) => (e) => {
-      e.preventDefault(); b.classList.toggle("on", v);
-      if (state === "initials") {
-        if (!v) return;
-        if (k === "up") letter(1); else if (k === "down") letter(-1);
-        else if (k === "left") slot = Math.max(0, slot - 1); else if (k === "right") slot = Math.min(2, slot + 1);
-        else if (k === "hb") advance();
-        return;
-      }
-      keys[k] = v;
-    };
-    b.addEventListener("pointerdown", press(true)); b.addEventListener("pointerup", press(false));
-    b.addEventListener("pointercancel", press(false)); b.addEventListener("pointerleave", press(false));
+  const padEl = document.getElementById("pad"), fingers = new Map();
+  const keyAt = (x, y) => { const el = document.elementFromPoint(x, y), b = el && el.closest ? el.closest("#pad button") : null; return b ? b.dataset.k : null; };
+  const syncPad = () => {
+    const held = new Set(fingers.values());
+    padBtns.forEach((b) => b.classList.toggle("on", held.has(b.dataset.k)));
+    if (state === "play") ["up", "down", "left", "right", "hb"].forEach((k) => { keys[k] = held.has(k); });
+  };
+  const initialsTap = (k) => {
+    if (k === "up") letter(1); else if (k === "down") letter(-1);
+    else if (k === "left") slot = Math.max(0, slot - 1); else if (k === "right") slot = Math.min(2, slot + 1);
+    else if (k === "hb") advance();
+  };
+  padEl.addEventListener("pointerdown", (e) => {
+    e.preventDefault(); const k = keyAt(e.clientX, e.clientY); fingers.set(e.pointerId, k);
+    if (state === "initials" && k) initialsTap(k);
+    syncPad();
   });
+  padEl.addEventListener("pointermove", (e) => {
+    if (!fingers.has(e.pointerId) || state !== "play") return;
+    const k = keyAt(e.clientX, e.clientY);
+    if (k !== fingers.get(e.pointerId)) { fingers.set(e.pointerId, k); syncPad(); }
+  });
+  const lift = (e) => { fingers.delete(e.pointerId); syncPad(); };
+  ["pointerup", "pointercancel"].forEach((ev) => padEl.addEventListener(ev, lift));
 
   const newCar = (x, y, a, max) => ({ x, y, a, vx: 0, vy: 0, max, lat: 0, stuck: 0, rev: 0, boost: 0, wreck: 0 });
   const farRoadPoint = (from, min) => {
@@ -1011,9 +1027,10 @@ canvas:focus { outline: none; }
           key(kx + 20, y0, 18, 14, "↑", on.up); key(kx, y0 + 16, 18, 14, "<", on.left); key(kx + 20, y0 + 16, 18, 14, "↓", on.down); key(kx + 40, y0 + 16, 18, 14, ">", on.right);
           key(kx + 66, y0 + 16, 58, 14, "SPACE", on.hb);
         } else {
-          const bx = Math.round(VW / 2 - 78);
-          key(bx, y0 + 8, 22, 18, "<", on.left); key(bx + 24, y0 + 8, 22, 18, ">", on.right);
-          key(bx + 62, y0 + 8, 32, 18, "DRIFT", on.hb); key(bx + 96, y0 + 8, 30, 18, "BRAKE", on.down); key(bx + 128, y0 + 8, 28, 18, "GAS", on.up);
+          // same layout as the buttons on screen: steering bottom left, big gas bottom right
+          const bx = Math.round(VW / 2 - 80);
+          key(bx, y0 + 18, 22, 20, "<", on.left); key(bx + 24, y0 + 18, 22, 20, ">", on.right);
+          key(bx + 126, y0, 34, 14, "DRIFT", on.hb); key(bx + 92, y0 + 24, 30, 14, "BRAKE", on.down); key(bx + 126, y0 + 16, 34, 24, "GAS", on.up);
         }
         // demo car on a strip of road
         const cx = Math.round(VW / 2), cy = y0 + 66;
