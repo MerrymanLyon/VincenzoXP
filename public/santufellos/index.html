@@ -31,6 +31,11 @@ canvas:focus { outline: none; }
 .pad [data-k="up"] { width: 104px; height: 104px; border-radius: 50%; right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); font-size: 1.1rem; }
 .pad [data-k="hb"] { width: 74px; height: 50px; right: calc(29px + env(safe-area-inset-right, 0px)); bottom: calc(134px + env(safe-area-inset-bottom, 0px)); }
 .pad [data-k="down"] { width: 62px; height: 50px; right: calc(128px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+/* initials screen: same buttons reshaped for picking letters; ◀ ▶ choose the letter, ▲ ▼ change it, big OK saves */
+.stage.initials .pad [data-k="up"], .stage.initials .pad [data-k="down"] { width: 72px; height: 66px; border-radius: 18px; right: calc(132px + env(safe-area-inset-right, 0px)); font-size: 1.5rem; }
+.stage.initials .pad [data-k="up"] { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+.stage.initials .pad [data-k="down"] { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+.stage.initials .pad [data-k="hb"] { width: 104px; height: 104px; border-radius: 50%; right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); font-size: 1.3rem; background: rgba(240, 122, 60, 0.45); }
 </style>
 </head>
 <body>
@@ -688,7 +693,8 @@ canvas:focus { outline: none; }
   const padBtns = [...document.querySelectorAll("#pad button")];
   const go = (s) => {
     state = s; st = 0;
-    stage.classList.toggle("show-pad", s === "play");
+    stage.classList.toggle("show-pad", s === "play" || s === "initials");
+    stage.classList.toggle("initials", s === "initials");
     if (padLabels[s]) padBtns.forEach((b, i) => { b.textContent = padLabels[s][i]; });
   };
   // one "next" action for keyboard, click and tap
@@ -746,7 +752,7 @@ canvas:focus { outline: none; }
   };
   padEl.addEventListener("pointerdown", (e) => {
     e.preventDefault(); const k = keyAt(e.clientX, e.clientY); fingers.set(e.pointerId, k);
-    if (state === "initials" && k) initialsTap(k);
+    if (state === "initials") { if (k) initialsTap(k); else initialsTouch(e); }
     syncPad();
   });
   padEl.addEventListener("pointermove", (e) => {
@@ -1139,9 +1145,12 @@ canvas:focus { outline: none; }
         text(ctx, "↓", x + 4, L.y + 5 * L.k + 6, 2, sel ? "#f07a3c" : "#8a8094");
       });
       const o = L.ok;
+      if (!touch) {
       px(ctx, o.x, o.y + 2, K, o.w, o.h); px(ctx, o.x, o.y, K, o.w, o.h); px(ctx, o.x + 1, o.y + 1, "#f07a3c", o.w - 2, o.h - 2); px(ctx, o.x + 1, o.y + 1, "#ffb070", o.w - 2, 1);
       text(ctx, "OK", Math.round(o.x + (o.w - textW("OK", 2)) / 2), o.y + 5, 2, "#17131d", false);
-      centered(touch ? "TAP THE ARROWS, THEN OK" : "TYPE OR USE ARROWS, THEN ENTER", VH - 14, 1, "#b3a593");
+      }
+      if (touch) { centered("< > PICK A LETTER", o.y + 2, 1, "#b3a593"); centered("↑ ↓ CHANGE IT, THEN OK", o.y + 12, 1, "#b3a593"); }
+      else centered("TYPE OR USE ARROWS, THEN ENTER", VH - 14, 1, "#b3a593");
     }
   };
 

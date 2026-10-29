@@ -142,7 +142,7 @@ export default function BiosScreen({ onCheat, onDismiss }: BiosScreenProps) {
             </button>
             <button className={styles.pillButton} onClick={onCheat}>
               <AsciiPill color="red" mirror />
-              <span className={`${styles.pillLabel} ${styles.redLabel}`}>[ LOS TUFELLOS ]</span>
+              <span className={`${styles.pillLabel} ${styles.redLabel}`}>[ SAN TUFELLOS ]</span>
             </button>
           </div>
         )}
