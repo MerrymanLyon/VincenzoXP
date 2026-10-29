@@ -166,6 +166,21 @@ canvas:focus { outline: none; }
   const GAZZ = [0, 1].map((s) => rotations(carSprite(carPal(R.gazzella, "#c8202a"), s)));
   const WRECK = rotations(carSprite(carPal(["#101018", "#1a1a26", "#2a2a38", "#3a3a4a", "#5a5a6a"], "#4a1418")));
   const SHADOW = rotations(carSprite(carPal(R.panda)), true);
+  const TANK = rotations((() => {
+    const c = makeCanvas(20, 34), x = c.getContext("2d"), O = ["#1e2410", "#36421c", "#4e5e28", "#6c7e36", "#98aa52"];
+    for (const tx of [0, 15]) { px(x, tx, 4, K, 5, 30); px(x, tx + 1, 5, "#3a3a30", 3, 28); for (let y = 6; y < 33; y += 3) px(x, tx + 1, y, "#5e5e4c", 3, 1); }
+    px(x, 4, 6, K, 12, 26);
+    for (let y = 7; y < 31; y++) for (let i = 5; i < 15; i++) px(x, i, y, O[i < 7 ? 3 : i > 12 ? 1 : 2]);
+    px(x, 5, 7, O[4], 10, 1);
+    for (let y = 26; y < 30; y += 2) px(x, 6, y, O[0], 8, 1); // engine grille
+    for (let y = 12; y < 26; y++) for (let i = 3; i < 17; i++) {
+      const d = Math.hypot(i - 9.5, y - 18.5), l = (i - 9.5) + (y - 18.5);
+      if (d <= 6) px(x, i, y, d > 5.1 ? K : l < -2 ? O[4] : l < 2 ? O[3] : O[2]);
+    }
+    px(x, 11, 20, K, 2, 2);
+    px(x, 9, 0, K, 3, 13); px(x, 10, 1, "#7a7a6a", 1, 11); px(x, 8, 0, K, 5, 2); // the gun
+    return c;
+  })());
 
   // ---------- floppy with "CVE" crossed out, Ghostbusters style ----------
   const FLOPPY = (() => {
@@ -664,7 +679,7 @@ canvas:focus { outline: none; }
   const keys = { up: false, down: false, left: false, right: false, hb: false };
   const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let state = "title", player = null, cops = [], floppy = null, carrying = false, score = 0, deliveries = 0, banner = null, shake = 0, t = 0, st = 0, bustT = 0;
-  let markFlash = 0, timeLeft = 0, endReason = "", charge = 0, driftPts = 0, initials = [0, 0, 0], slot = 0, board = loadBoard(), lastEntry = -1;
+  let dying = 0, markFlash = 0, timeLeft = 0, endReason = "", charge = 0, driftPts = 0, initials = [0, 0, 0], slot = 0, board = loadBoard(), lastEntry = -1;
   const parts = [];
   const stars = () => Math.min(5, 1 + deliveries);
 
@@ -673,7 +688,7 @@ canvas:focus { outline: none; }
   const padBtns = [...document.querySelectorAll("#pad button")];
   const go = (s) => {
     state = s; st = 0;
-    stage.classList.toggle("show-pad", s === "play" || s === "initials");
+    stage.classList.toggle("show-pad", s === "play");
     if (padLabels[s]) padBtns.forEach((b, i) => { b.textContent = padLabels[s][i]; });
   };
   // one "next" action for keyboard, click and tap
@@ -703,7 +718,20 @@ canvas:focus { outline: none; }
     if (e.code === "Enter" && state !== "play") advance();
   });
   window.addEventListener("keyup", (e) => { if (keyMap[e.code]) keys[keyMap[e.code]] = false; });
-  canvas.addEventListener("pointerdown", () => { canvas.focus(); if (state !== "play" && state !== "initials") advance(); });
+  const initialsLayout = () => {
+    const k = 5, gap = 12, cw = 3 * k, y = 86;
+    return { k, cw, gap, y, x0: Math.round((VW - (3 * cw + 2 * gap)) / 2), ok: { x: Math.round(VW / 2 - 24), y: y + 5 * k + 26, w: 48, h: 20 } };
+  };
+  const initialsTouch = (e) => {
+    const r = canvas.getBoundingClientRect(), x = ((e.clientX - r.left) / r.width) * VW, y = ((e.clientY - r.top) / r.height) * VH, L = initialsLayout();
+    if (x >= L.ok.x - 4 && x <= L.ok.x + L.ok.w + 4 && y >= L.ok.y - 4 && y <= L.ok.y + L.ok.h + 4) { advance(); return; }
+    for (let i = 0; i < 3; i++) {
+      const lx = L.x0 + i * (L.cw + L.gap);
+      // top half of a letter (and its arrow) goes forward through the alphabet, bottom half goes back
+      if (x >= lx - 6 && x <= lx + L.cw + 6 && y >= L.y - 22 && y <= L.y + 5 * L.k + 22) { slot = i; letter(y < L.y + (5 * L.k) / 2 ? 1 : -1); return; }
+    }
+  };
+  canvas.addEventListener("pointerdown", (e) => { canvas.focus(); if (state === "initials") initialsTouch(e); else if (state !== "play") advance(); });
   const padEl = document.getElementById("pad"), fingers = new Map();
   const keyAt = (x, y) => { const el = document.elementFromPoint(x, y), b = el && el.closest ? el.closest("#pad button") : null; return b ? b.dataset.k : null; };
   const syncPad = () => {
@@ -736,13 +764,25 @@ canvas:focus { outline: none; }
   };
   const placeFloppy = () => { const p = farRoadPoint(HQ, 450); floppy = { x: p.x, y: p.y }; };
   const copMax = () => Math.round(VMAX * (0.88 + 0.03 * stars()));
-  const spawnCops = () => { while (cops.length < stars() + 1) { const p = farRoadPoint(player, 260); cops.push(newCar(p.x, p.y, 0, copMax())); } cops.forEach((c) => { c.max = copMax(); }); };
+  const spawnCops = () => {
+    if (stars() >= 5) {
+      // five stars: three tanks take over from the cops; one touch and the Panda blows up
+      if (!cops.some((c) => c.tank)) {
+        const tank = (x, y, a) => Object.assign(newCar(x, y, a, Math.round(VMAX * 0.72)), { tank: true });
+        cops = cops.slice(0, 3).map((c) => tank(c.x, c.y, c.a));
+        while (cops.length < 3) { const p = farRoadPoint(player, 300); cops.push(tank(p.x, p.y, 0)); }
+        pop("5 STARS!", "TANKS ARE COMING. DON'T TOUCH THEM", 140);
+      }
+      return;
+    }
+    while (cops.length < stars() + 1) { const p = farRoadPoint(player, 260); cops.push(newCar(p.x, p.y, 0, copMax())); } cops.forEach((c) => { c.max = copMax(); });
+  };
   let camX = JONIO.x, camY = JONIO.y, camA = 0;
   function start() {
     tuneSpeed();
     player = newCar(...P(1000, 332), -Math.PI / 2, VMAX);
     camX = player.x; camY = player.y; camA = player.a;
-    cops = []; deliveries = 0; score = 0; carrying = false; bustT = 0; parts.length = 0; slot = 0; lastEntry = -1; charge = 0; driftPts = 0; timeLeft = 75;
+    cops = []; deliveries = 0; score = 0; carrying = false; dying = 0; bustT = 0; parts.length = 0; slot = 0; lastEntry = -1; charge = 0; driftPts = 0; timeLeft = 75;
     placeFloppy(); spawnCops(); flowFrom(player.x, player.y);
     go("brief"); canvas.focus();
   }
@@ -806,6 +846,10 @@ canvas:focus { outline: none; }
   const SMOKE = ["#d8d0c8", "#a8a0a8", "#6e6878", "#403a4a"], SPARK = ["#ffffff", "#ffe27a", "#f07a3c", "#9a2430"];
   const FIRE = ["#fff6c0", "#ffd040", "#ff8a20", "#d02010", "#4a1020"], BLUE = ["#ffffff", "#bfe0ff", "#5a86d0", "#2f4aa0"], ORANGE = ["#ffffff", "#ffe27a", "#f07a3c", "#d0402e"];
   const pop = (s, sub, tt = 70) => { banner = { text: s, sub, t: tt }; };
+  const explode = () => {
+    dying = 70; endReason = "WASTED"; banner = null; shake = 12; player.vx = player.vy = 0;
+    burst(player.x, player.y, 70, FIRE, 170, 30); burst(player.x, player.y, 30, SMOKE, 60, 45);
+  };
 
   const update = (dt) => {
     t++; st++;
@@ -814,6 +858,14 @@ canvas:focus { outline: none; }
     if (state === "controls" && st > 480) go("count");
     if (state === "count" && st >= 180) { go("play"); banner = { text: "GRAB THE CVE PATCH!", t: 90 }; }
     if (state !== "play") { if (state === "title") { camA += 0.0025; camX = HQ.x + Math.sin(t / 300) * 300; camY = HQ.y - 150 + Math.cos(t / 380) * 220; } return; }
+    if (dying > 0) {
+      // the Panda burns for a moment before the game over screen
+      dying--; if (t % 3 === 0) burst(player.x, player.y, 2, t % 6 ? FIRE : SMOKE, 40, 25);
+      parts.forEach((p) => { p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.92; p.vy *= 0.92; p.life--; });
+      for (let i = parts.length - 1; i >= 0; i--) if (parts[i].life <= 0) parts.splice(i, 1);
+      shake *= 0.9; if (dying === 0) go("over");
+      return;
+    }
     timeLeft -= dt;
     const imp = stepCar(player, keys, dt);
     if (imp > VMAX * 0.3) { shake = Math.min(7, imp / 25); burst(player.x, player.y, 8, SPARK, 110); charge = 0; }
@@ -862,10 +914,11 @@ canvas:focus { outline: none; }
       if (c.rev > 0) { c.rev -= dt; hit = stepCar(c, { down: true, left: diff > 0, right: diff < 0 }, dt); }
       else hit = stepCar(c, { up: true, left: diff < -0.06, right: diff > 0.06, hb: Math.abs(diff) > 1.0 && cs > VMAX * 0.55 }, dt);
       // a cop that slams into a wall near you is a takedown; far away it just wrecks
-      if (hit > VMAX * 0.75) { c.wreck = 4; burst(c.x, c.y, 20, FIRE, 120, 25); if (d0 < 140) { score += 500; pop("TAKEDOWN!", "+500", 60); shake = 6; } return; }
+      if (hit > VMAX * 0.75 && !c.tank) { c.wreck = 4; burst(c.x, c.y, 20, FIRE, 120, 25); if (d0 < 140) { score += 500; pop("TAKEDOWN!", "+500", 60); shake = 6; } return; }
       c.stuck = cs < 15 ? c.stuck + dt : 0;
       if (c.stuck > 0.6) { c.rev = 0.5; c.stuck = 0; }
       const dx = c.x - player.x, dy = c.y - player.y, dist2 = Math.hypot(dx, dy);
+      if (c.tank && dist2 < 22 && !dying) { explode(); return; }
       if (dist2 < 20) {
         const nx = dx / (dist2 || 1), ny = dy / (dist2 || 1), push = (20 - dist2) / 2;
         c.x += nx * push; c.y += ny * push; player.x -= nx * push; player.y -= ny * push;
@@ -875,6 +928,7 @@ canvas:focus { outline: none; }
       }
       cops.forEach((o, oi) => { if (oi <= ci || o.wreck > 0) return; const ex = o.x - c.x, ey = o.y - c.y, e = Math.hypot(ex, ey); if (e < 20 && e > 0) { o.x += ex / e * (20 - e) / 2; o.y += ey / e * (20 - e) / 2; c.x -= ex / e * (20 - e) / 2; c.y -= ey / e * (20 - e) / 2; } });
     });
+    if (dying) return;
     // they catch you if they stay in contact while you are slow; breaking free takes time
     bustT = touching && speed < VMAX * 0.4 ? bustT + dt : Math.max(0, bustT - dt * 0.5);
     if (bustT > 1.2 || timeLeft <= 0) { endReason = timeLeft <= 0 ? "TIME UP" : "BUSTED"; timeLeft = Math.max(0, timeLeft); banner = null; go("over"); }
@@ -984,8 +1038,8 @@ canvas:focus { outline: none; }
         const p = toS(HQ.x, HQ.y);
         if (vis(p, 80)) { for (let y = 0; y < 80; y++) px(ctx, p[0] - 10, p[1] - y, `rgba(60,240,106,${(0.3 * (1 - y / 80)).toFixed(2)})`, 20, 1); text(ctx, "HQ", p[0] - 7, p[1] - 92 + (Math.floor(t / 15) % 2), 2, "#3cf06a"); }
       }
-      cops.forEach((c) => drawCar(c, c.wreck > 0 ? WRECK : GAZZ[Math.floor(t / 6) % 2]));
-      drawCar(player, PANDA);
+      cops.forEach((c) => drawCar(c, c.tank ? TANK : c.wreck > 0 ? WRECK : GAZZ[Math.floor(t / 6) % 2]));
+      drawCar(player, dying > 0 ? WRECK : PANDA);
       if (carrying) { const p = toS(player.x, player.y); ctx.drawImage(FLOPPY, 0, 0, 26, 26, p[0] - 6, p[1] - 32, 13, 13); }
       parts.forEach((q) => { if (q.big) return; const col = q.cols[Math.min(q.cols.length - 1, Math.floor((1 - q.life / q.max) * q.cols.length))]; const p = toS(q.x, q.y); px(ctx, p[0], p[1], col, 2, 2); });
     }
@@ -1005,7 +1059,7 @@ canvas:focus { outline: none; }
       if (state === "brief") {
         // the briefing types itself out, then shows what to grab and where to take it
         centered("MISSION BRIEFING", 10, 2, "#ffe27a");
-        const L = ["A CVE IS LOOSE IN SAN TUFELLOS.", "", "GRAB THE PATCH FLOPPY,", "TAKE IT TO HQ, THE OLD VILLA,", "AND DRIVE INTO THE GREEN CIRCLE", "AT ITS GATE.", "", "DON'T LET THE COPS BOX YOU IN.", "BEAT THE CLOCK."];
+        const L = ["A CVE IS LOOSE IN SAN TUFELLOS.", "", "GRAB THE PATCH FLOPPY,", "TAKE IT TO HQ, THE OLD VILLA,", "AND DRIVE INTO THE GREEN CIRCLE", "AT ITS GATE.", "", "DON'T LET THE COPS BOX YOU IN.", "AT FIVE STARS: TANKS. DON'T TOUCH.", "BEAT THE CLOCK."];
         let n = Math.floor(st / 1.5), y = 32;
         L.forEach((ln) => { const show = ln.slice(0, Math.max(0, n)); n -= ln.length + 4; if (show) centered(show, y, 1, "#fff2d0"); y += 9; });
         if (st > 60) ctx.drawImage(FLOPPY, Math.round(VW / 2 - 44), y + 2);
@@ -1077,14 +1131,17 @@ canvas:focus { outline: none; }
       centered("NEW SCORE", 14, 2, "#ffe27a");
       centered(String(score), 34, 2, "#fff2d0");
       centered("ENTER YOUR INITIALS", 58, 1, "#b3a593");
-      const k = 5, gap = 8, cw = 3 * k, x0 = Math.round((VW - (3 * cw + 2 * gap)) / 2);
+      const L = initialsLayout();
       initials.forEach((li, i) => {
-        const x = x0 + i * (cw + gap);
-        text(ctx, LETTERS[li], x, 78, k, i === slot ? "#ffe27a" : "#fff2d0");
-        if (i === slot && Math.floor(t / 15) % 2 === 0) px(ctx, x, 78 + 5 * k + 4, "#ffe27a", cw, 2);
+        const x = L.x0 + i * (L.cw + L.gap), sel = i === slot, col = sel ? "#ffe27a" : "#fff2d0";
+        text(ctx, "↑", x + 4, L.y - 16, 2, sel ? "#f07a3c" : "#8a8094");
+        text(ctx, LETTERS[li], x, L.y, L.k, col);
+        text(ctx, "↓", x + 4, L.y + 5 * L.k + 6, 2, sel ? "#f07a3c" : "#8a8094");
       });
-      centered("KEYS: TYPE OR ARROWS, ENTER", VH - 26, 1, "#b3a593");
-      centered("TOUCH: ARROWS, THEN OK", VH - 16, 1, "#b3a593");
+      const o = L.ok;
+      px(ctx, o.x, o.y + 2, K, o.w, o.h); px(ctx, o.x, o.y, K, o.w, o.h); px(ctx, o.x + 1, o.y + 1, "#f07a3c", o.w - 2, o.h - 2); px(ctx, o.x + 1, o.y + 1, "#ffb070", o.w - 2, 1);
+      text(ctx, "OK", Math.round(o.x + (o.w - textW("OK", 2)) / 2), o.y + 5, 2, "#17131d", false);
+      centered(touch ? "TAP THE ARROWS, THEN OK" : "TYPE OR USE ARROWS, THEN ENTER", VH - 14, 1, "#b3a593");
     }
   };
 
