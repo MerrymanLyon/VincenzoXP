@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>The Good, the Bad &amp; the Zero-Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rye&display=swap">
+<style>
+/* Full-window game. The page itself never scrolls or zooms: every touch belongs to the game. */
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; overscroll-behavior: none; touch-action: none; position: fixed; inset: 0; }
+body { display: flex; align-items: center; justify-content: center; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; touch-action: none; }
+canvas:focus { outline: none; }
+</style>
+</head>
+<body>
+<canvas id="game" tabindex="0" aria-label="The Good, the Bad and the Zero-Day"></canvas>
+<script>
+(() => {
+  // =====================================================================
+  // helpers
+  // =====================================================================
+  const K = "#140c08";
+  const px = (ctx, x, y, c, w = 1, h = 1) => { ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); };
+  const makeCanvas = (w, h) => { const c = document.createElement("canvas"); c.width = w; c.height = h; return c; };
+  const hash = (x, y) => { let h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+  const lerpBand = (bands, t, x, y) => { const f = clamp(t, 0, 1) * (bands.length - 1), i = Math.min(bands.length - 2, Math.floor(f)); return f - i > BAYER[y & 3][x & 3] / 16 ? bands[i + 1] : bands[i]; };
+  const touch = window.matchMedia("(pointer: coarse)").matches || (navigator.maxTouchPoints > 0 && !window.matchMedia("(any-pointer: fine)").matches);
+
+  // ---------- 3x5 pixel font ----------
+  const G = {
+    A:"010101111101101",B:"110101110101110",C:"011100100100011",D:"110101101101110",E:"111100110100111",F:"111100110100100",
+    G:"011100101101011",H:"101101111101101",I:"111010010010111",J:"001001001101010",K:"101101110101101",L:"100100100100111",
+    M:"101111111101101",N:"110101101101101",O:"010101101101010",P:"110101110100100",Q:"010101101111011",R:"110101110101101",
+    S:"011100010001110",T:"111010010010010",U:"101101101101111",V:"101101101101010",W:"101101111111101",X:"101101010101101",
+    Y:"101101010010010",Z:"111001010100111","0":"111101101101111","1":"010110010010111","2":"110001010100111","3":"110001010001110",
+    "4":"101101111001001","5":"111100110001110","6":"011100110101010","7":"111001010010010","8":"010101010101010","9":"010101011001110",
+    "!":"010010010000010","+":"000010111010000","-":"000000111000000",":":"000010000010000","/":"001001010100100",".":"000000000000010"," ":"000000000000000",
+    "<":"001010100010001",">":"100010001010100","=":"000111000111000","'":"010010000000000",",":"000000000010100","?":"110001010000010",
+    "↑":"010111010010010","↓":"010010010111010","&":"010101010101011",
+  };
+  const textW = (s, k = 1) => s.length * 4 * k - k;
+  const text = (ctx, s, x, y, k, col, outlined = true) => {
+    const draw = (ox, oy, c) => [...s].forEach((ch, i) => { const g = G[ch] || G[ch.toUpperCase()] || G[" "]; for (let j = 0; j < 15; j++) if (g[j] === "1") px(ctx, ox + (i * 4 + (j % 3)) * k, oy + Math.floor(j / 3) * k, c, k, k); });
+    if (outlined) for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1], [1, 1]]) draw(x + dx * k, y + dy * k, K);
+    draw(x, y, col);
+  };
+
+  // =====================================================================
+  // the stage: skies per level, mountains, forest, cemetery, stone ring
+  // =====================================================================
+  const SKIES = [
+    { sky: ["#f4e2b8", "#efd4a0", "#e7c088", "#dcaa72"], sun: "#fff6dc", far: "#b8957c", near: "#987462", forest: "#3e4836", ground: ["#d0a466", "#c09256", "#ab7d46", "#8e6436"] },
+    { sky: ["#e9d6b0", "#e2c294", "#d9aa7a", "#cc9468"], sun: "#fff0cc", far: "#a98a7c", near: "#8a6a5e", forest: "#3a4234", ground: ["#c69a5e", "#b4884e", "#9e7440", "#825a32"] },
+    { sky: ["#f0c47a", "#e8a85e", "#de8c4a", "#cc6e3c"], sun: "#ffe2a0", far: "#9a6e5e", near: "#7a5048", forest: "#33362a", ground: ["#c4874c", "#b0743e", "#975e34", "#7a482a"] },
+    { sky: ["#5a3a5e", "#a0485a", "#d8644a", "#f09a52"], sun: "#ffd07a", far: "#6a3e4e", near: "#4e2c3e", forest: "#22202a", ground: ["#9a5a42", "#844a38", "#6c3a30", "#542c28"] },
+    { sky: ["#0e1428", "#18203c", "#24304e", "#344262"], sun: "#e8eef8", far: "#2c3650", near: "#1e2640", forest: "#121624", ground: ["#4a4a5a", "#3c3c4c", "#30303e", "#242430"] },
+  ];
+  const paintStage = (ctx, S, w, h, hz, ring = true) => {
+    const img = ctx.createImageData(w, h), d = img.data, hex = {};
+    const put = (x, y, c) => { const v = hex[c] || (hex[c] = [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)]), o = (y * w + x) * 4; d[o] = v[0]; d[o + 1] = v[1]; d[o + 2] = v[2]; d[o + 3] = 255; };
+    for (let y = 0; y < hz; y++) for (let x = 0; x < w; x++) put(x, y, lerpBand(S.sky, y / hz, x, y));
+    const sx = Math.round(w * 0.74), sy = Math.round(hz * 0.32);
+    for (let y = -16; y <= 16; y++) for (let x = -16; x <= 16; x++) {
+      const dd = Math.hypot(x, y), X = sx + x, Y = sy + y;
+      if (X >= 0 && X < w && Y >= 0 && Y < hz && (dd < 8 || (dd < 14 && (dd - 8) / 6 < BAYER[(y + 32) & 3][(x + 32) & 3] / 16))) put(X, Y, S.sun);
+    }
+    for (let x = 0; x < w; x++) {
+      const far = hz - 13 - Math.round(9 * Math.sin(x / 23) + 5 * Math.sin(x / 9 + 2) + 3 * Math.sin(x / 4.3));
+      const near = hz - 5 - Math.round(4 * Math.sin(x / 17 + 1) + 2 * Math.sin(x / 6.1));
+      for (let y = Math.max(0, far); y < hz; y++) put(x, y, y >= near ? S.near : S.far);
+    }
+    for (let x = 0; x < w; x += 3) {
+      const th = 4 + Math.floor(hash(x, 7) * 6);
+      for (let k = 0; k < th; k++) for (let i = 0; i < 1 + 2 * Math.floor(k / 3); i++) { const X = x + 1 - Math.floor(k / 3) + i; if (X >= 0 && X < w) put(X, hz - th + k, S.forest); }
+    }
+    for (let y = hz; y < Math.min(h, hz + 3); y++) for (let x = 0; x < w; x++) put(x, y, S.forest);
+    for (let y = hz + 3; y < h; y++) for (let x = 0; x < w; x++) {
+      let c = lerpBand(S.ground, 1 - (y - hz) / (h - hz), x, y);
+      if (hash(x, y) < 0.025) c = S.ground[3];
+      if (hash(y, x) < 0.012) c = S.ground[0];
+      put(x, y, c);
+    }
+    ctx.putImageData(img, 0, 0);
+    for (let n = 0; n < Math.round(w * 0.4); n++) {
+      const x = Math.floor(hash(n, 1) * w), y = hz + 4 + Math.floor(hash(n, 2) ** 1.8 * 12);
+      const s = 1 + (y - hz) / 10;
+      if (hash(n, 3) < 0.6) {
+        const hh = Math.round(4 * s), aw = Math.round(1.5 * s);
+        px(ctx, x, y - hh, "#5a3e2a", 1, hh); px(ctx, x - aw, y - hh + Math.round(hh / 3), "#5a3e2a", aw * 2 + 1, 1); px(ctx, x, y - hh, "#8a6444");
+      } else {
+        const sw = Math.max(2, Math.round(2 * s)), sh = Math.max(2, Math.round(2.4 * s));
+        px(ctx, x, y - sh, "#8c8478", sw, sh); px(ctx, x, y - sh, "#b0a898", sw, 1); px(ctx, x + sw - 1, y - sh + 1, "#6a6258", 1, sh - 1);
+      }
+    }
+    if (!ring) return;
+    const rcx = w * 0.62, rcy = hz + (h - hz) * 0.75, rx = w * 0.78, ry = (h - hz) * 0.62;
+    for (let y = hz + 6; y < h; y++) for (let x = 0; x < w; x++) {
+      const r = ((x - rcx) / rx) ** 2 + ((y - rcy) / ry) ** 2;
+      if (r < 0.9) { if (hash(x, y) < 0.3) px(ctx, x, y, S.ground[0]); }
+      else if (r < 1.08) { const stone = hash(Math.floor(x / 5), Math.floor(y / 3)); px(ctx, x, y, (y % 3 === 0 || x % 5 === 0) ? "#6a6258" : stone < 0.5 ? "#b4a898" : "#988c7e"); }
+    }
+  };
+
+  // =====================================================================
+  // rivals: front view, light from the right like the sun
+  // =====================================================================
+  const outline = (c) => {
+    const x = c.getContext("2d"), d = x.getImageData(0, 0, c.width, c.height).data, w = c.width, h = c.height, out = [];
+    const on = (i, j) => i >= 0 && j >= 0 && i < w && j < h && d[(j * w + i) * 4 + 3] > 0;
+    for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) if (!on(i, j) && (on(i - 1, j) || on(i + 1, j) || on(i, j - 1) || on(i, j + 1))) out.push([i, j]);
+    out.forEach(([i, j]) => px(x, i, j, K));
+    return c;
+  };
+  const SKIN = { warm: ["#7a4a30", "#a8704c", "#d09a6e"], pale: ["#8c8478", "#b4ac9c", "#d8d0c0"], tan: ["#6a4028", "#946040", "#ba8458"] };
+  const makeGunslinger = (S) => {
+    const c = makeCanvas(26, 46), x = c.getContext("2d");
+    const R = (x0, y0, w, h, col) => px(x, x0 + 1, y0 + 1, col, w, h);
+    const sh = (x0, y0, w, h, r) => { R(x0, y0, w, h, r[1]); R(x0, y0, 1, h, r[0]); R(x0 + w - 1, y0, 1, h, r[2]); };
+    const skin = SKIN[S.skin];
+    sh(7, 40, 4, 4, S.boots); sh(13, 40, 4, 4, S.boots); R(7, 43, 4, 1, K); R(13, 43, 4, 1, K);
+    if (S.dress) { for (let y = 16; y < 41; y++) { const w = 12 + Math.floor((y - 16) / 3) * 2; sh(12 - w / 2, y, w, 1, S.coat); } }
+    else {
+      sh(8, 31, 3, 9, S.pants); sh(13, 31, 3, 9, S.pants); sh(6, 16, 12, 12, S.shirt);
+      if (S.duster) { sh(5, 17, 3, 20, S.coat); sh(16, 17, 3, 20, S.coat); sh(6, 16, 12, 2, S.coat); }
+      if (S.vest) { sh(6, 17, 4, 10, S.vest); sh(14, 17, 4, 10, S.vest); }
+    }
+    R(6, 27, 12, 1, "#3a2418"); R(11, 27, 2, 1, "#e8c060");
+    sh(17, 28, 2, 5, ["#3a2418", "#5a3820", "#7a5030"]); R(17, 26, 2, 2, "#e8dcc0");
+    if (S.twin) { sh(5, 28, 2, 5, ["#3a2418", "#5a3820", "#7a5030"]); R(5, 26, 2, 2, "#e8dcc0"); }
+    const arm = S.duster || S.dress ? S.coat : S.shirt;
+    sh(4, 17, 2, 11, arm); sh(18, 17, 2, 9, arm);
+    R(4, 28, 2, 2, skin[1]); R(18, 26, 2, 2, skin[2]);
+    R(11, 15, 2, 1, skin[0]); sh(9, 9, 6, 6, skin); R(9, 9, 6, 1, skin[0]);
+    R(10, 12, 1, 1, K); R(13, 12, 1, 1, K);
+    const Hh = S.hatCol;
+    if (S.hat === "wide") { R(4, 8, 16, 2, Hh[1]); R(12, 8, 8, 1, Hh[2]); R(8, 3, 8, 5, Hh[1]); R(15, 3, 1, 5, Hh[2]); R(11, 3, 2, 1, Hh[0]); R(8, 7, 8, 1, Hh[0]); }
+    if (S.hat === "top") { R(6, 8, 12, 1, Hh[1]); R(8, 0, 8, 8, Hh[1]); R(15, 0, 1, 8, Hh[2]); R(8, 6, 8, 1, "#5a1a1a"); }
+    if (S.hat === "flat") { R(3, 8, 18, 1, Hh[1]); R(12, 8, 9, 1, Hh[2]); R(5, 9, 14, 1, Hh[0]); R(8, 5, 8, 3, Hh[1]); R(15, 5, 1, 3, Hh[2]); }
+    if (S.hat === "kepi") { R(9, 3, 6, 1, Hh[1]); R(8, 4, 8, 5, Hh[1]); R(15, 4, 1, 5, Hh[2]); R(8, 7, 8, 1, "#c8a040"); R(8, 9, 9, 1, K); }
+    if (S.bandana) { R(9, 15, 6, 2, "#b02a2a"); R(11, 17, 2, 1, "#b02a2a"); R(14, 15, 1, 1, "#e05a4a"); }
+    if (S.veil) for (let j = 10; j < 16; j++) for (let i = 9; i < 15; i++) if ((i + j) % 2 === 0) R(i, j, 1, 1, "#241a20");
+    if (S.flower) { R(15, 6, 2, 2, "#d03030"); R(16, 6, 1, 1, "#ff7a6a"); }
+    if (S.collar) R(10, 16, 4, 1, "#f0ece0");
+    if (S.epaulettes) { R(4, 16, 4, 2, "#e8c060"); R(16, 16, 4, 2, "#e8c060"); R(4, 18, 4, 1, "#a88030"); R(16, 18, 4, 1, "#a88030"); }
+    if (S.mustache) { R(10, 13, 4, 1, "#2a1a10"); R(9, 14, 1, 1, "#2a1a10"); R(14, 14, 1, 1, "#2a1a10"); }
+    if (S.sash) for (let k = 0; k < 11; k++) R(7 + k, 17 + k, 2, 1, "#a82828");
+    if (S.bandolier) for (let k = 0; k < 10; k++) { R(16 - k, 17 + k, 2, 1, "#5a3820"); if (k % 2 === 0) R(16 - k, 17 + k, 1, 1, "#e8c060"); }
+    if (S.scar) R(13, 11, 1, 3, skin[0]);
+    if (S.tape) R(4, 21, 1, 6, "#e8d080");
+    return outline(c);
+  };
+  // reaction = how long after the red crow each rival needs to shoot, in milliseconds
+  const CHARACTERS = [
+    { name: "THE KID", ms: 900, hat: "wide", hatCol: ["#8a6a40", "#b08a56", "#d0aa70"], skin: "warm", shirt: ["#5a7a9a", "#7a9aba", "#9abad6"], vest: ["#4a3020", "#6a4630", "#8a5e40"], pants: ["#3a4a6a", "#4e6086", "#6a7ca0"], boots: ["#3a2418", "#5a3820", "#7a5030"], bandana: true, young: true },
+    { name: "LA VIUDA", ms: 760, hat: "flat", hatCol: ["#140c10", "#2a1c22", "#46323a"], skin: "pale", coat: ["#140c10", "#2a1c22", "#46323a"], boots: ["#140c10", "#2a1c22", "#46323a"], dress: true, veil: true, flower: true, twin: true },
+    { name: "THE UNDERTAKER", ms: 620, hat: "top", hatCol: ["#101010", "#242428", "#3e3e46"], skin: "pale", shirt: ["#a8a49c", "#d0ccc4", "#f0ece4"], coat: ["#101012", "#22222a", "#3a3a44"], pants: ["#1a1a20", "#2a2a32", "#40404a"], boots: ["#101010", "#222226", "#3a3a40"], duster: true, collar: true, tape: true },
+    { name: "THE PREACHER", ms: 480, hat: "flat", hatCol: ["#2a2018", "#46382a", "#6a5640"], skin: "tan", shirt: ["#2a2420", "#3e3630", "#5a5046"], coat: ["#241c16", "#3a2e22", "#544432"], pants: ["#2a2420", "#3e3630", "#5a5046"], boots: ["#241810", "#3e2a1c", "#5a3e2a"], duster: true, collar: true, bandolier: true, scar: true },
+    { name: "THE COLONEL", ms: 340, hat: "kepi", hatCol: ["#1e2a40", "#2e3e5e", "#46587c"], skin: "warm", shirt: ["#1e2a40", "#2e3e5e", "#46587c"], coat: ["#1a2438", "#2a3852", "#405274"], pants: ["#3a3a46", "#50505e", "#6a6a7a"], boots: ["#101010", "#242428", "#3e3e46"], duster: true, epaulettes: true, sash: true, mustache: true },
+  ];
+  CHARACTERS.forEach((c) => { c.sprite = makeGunslinger(c); });
+
+  // Leone-style extreme close-up on the eyes, one strip per rival
+  const makeEyes = (C) => {
+    const c = makeCanvas(64, 16), x = c.getContext("2d"), skin = SKIN[C.skin];
+    for (let j = 0; j < 16; j++) for (let i = 0; i < 64; i++) px(x, i, j, lerpBand([skin[2], skin[1], skin[0]], Math.abs(i - 32) / 40 + (j < 6 ? 0.25 : 0), i, j));
+    for (let j = 0; j < 4; j++) for (let i = 0; i < 64; i++) if (j < 2 || (j - 2) / 2 < BAYER[j & 3][i & 3] / 16) px(x, i, j, C.hatCol[0]);
+    for (const ex of [18, 46]) {
+      const dir = ex < 32 ? 1 : -1;
+      for (let k = -6; k <= 6; k++) px(x, ex + k, 6 + Math.round(Math.abs(k) * 0.15) + (k * dir > 2 ? 1 : 0), "#2a1a10"); // brow, angled to the nose
+      for (let k = -5; k <= 5; k++) { const hh = Math.abs(k) < 3 ? 2 : 1; px(x, ex + k, 9, "#efe6d6", 1, hh); }
+      px(x, ex - 1, 9, "#3a2414", 3, 2); px(x, ex, 9, "#120a06"); px(x, ex + 1, 9, "#fff8ec");
+      px(x, ex - 5, 8, K, 11, 1); px(x, ex - 4, 11, skin[0], 9, 1);
+      if (!C.young) { px(x, ex + 7 * dir, 9, skin[0], 2, 1); px(x, ex + 7 * dir, 11, skin[0], 2, 1); }
+    }
+    if (C.scar) for (let j = 5; j < 14; j++) px(x, 44 + (j % 2), j, "#5a2e20");
+    if (C.veil) for (let j = 0; j < 16; j++) for (let i = 0; i < 64; i++) if ((i + j) % 2 === 0) px(x, i, j, "rgba(24,14,20,0.7)");
+    return c;
+  };
+  CHARACTERS.forEach((c) => { c.eyes = makeEyes(c); });
+
+  // =====================================================================
+  // you: modelled as shapes with depth, lit, then quantised into pixels
+  // materials: 0 duster, 1 hat, 2 hat band, 3 hair, 4 skin, 5 leather, 6 walnut, 7 metal, 8 glove, 9 cape, 10 scarf
+  // =====================================================================
+  const RAMPS = [
+    ["#100c0a", "#1a1512", "#262019", "#342b22", "#463a2e", "#5c4c3c"],
+    ["#2c1a10", "#4a2c18", "#6c4224", "#8e5a32", "#b47a44", "#d49a5c"],
+    ["#0e0806", "#1c120c", "#2c1c12", "#3e2a1a"],
+    ["#0c0806", "#181009", "#24180e", "#342214", "#4a3220"],
+    ["#3c2218", "#5a3424", "#7a4a32", "#9c6444", "#c08458", "#e0a878"],
+    ["#1c100a", "#2e1a0e", "#462814", "#62381c", "#7e4c28"],
+    ["#2a160c", "#4a2a16", "#6e4224", "#9a6234", "#c48a50"],
+    ["#5a5248", "#8c8476", "#c8c0b0", "#f4eee2"],
+    ["#1a100a", "#2c1a10", "#40281a", "#583a24", "#744c30"],
+    ["#2a160e", "#45261a", "#633a24", "#83522f", "#a86d3c", "#c98c50"],
+    ["#3a0c10", "#5e1418", "#86201f", "#ae3628", "#d0543a"],
+  ];
+  const RIM = { 0: "#e8b880", 1: "#ffd49a", 3: "#d8a070", 8: "#d8a070", 9: "#ffd49a", 10: "#ff8a5a" };
+  const renderPlayer = (breath, flutter) => {
+    const PW = 132, PH = 150, c = makeCanvas(PW, PH), ctx = c.getContext("2d");
+    const mat = new Int8Array(PW * PH).fill(-1), val = new Float32Array(PW * PH);
+    const set = (i, j, m, v) => { i = Math.round(i); j = Math.round(j); if (i < 0 || j < 0 || i >= PW || j >= PH) return; mat[j * PW + i] = m; val[j * PW + i] = v; };
+    const cx = 60, b = breath;
+    // long dark duster with folds and a vent up the back
+    for (let j = 74 + b; j < PH; j++) {
+      const hw = 40 + (j - 74) * 0.22;
+      for (let i = 0; i < PW; i++) {
+        const dx = (i - cx) / hw; if (Math.abs(dx) > 1) continue;
+        let v = 0.4 + 0.4 * dx + 0.12 * Math.sin(i / 4.2 + j / 55) + (j > 100 ? 0.08 * Math.sin(i / 2.2 + 1) : 0) - 0.16 * (j - 74) / 80;
+        if (j > 118 && Math.abs(i - (cx - 2)) < 1) v -= 0.3;
+        set(i, j, 0, v);
+      }
+    }
+    // gun belt with brass cartridge loops showing on the right hip
+    for (let j = 104; j <= 109; j++) for (let i = cx + 22; i <= cx + 47; i++) set(i, j, 5, 0.35 + 0.4 * (i - cx - 22) / 25 + (j === 104 ? 0.15 : 0));
+    for (let i = cx + 24; i <= cx + 38; i += 3) for (let j = 105; j <= 107; j++) set(i, j, 7, j === 105 ? 0.95 : 0.6);
+    // right arm in the duster sleeve, crease at the elbow
+    for (let j = 66 + b; j <= 97; j++) {
+      const t = (j - 66) / 31, ac = cx + 37 + 7 * t, aw = 7.5 - t * 1.4;
+      for (let i = Math.floor(ac - aw); i <= ac + aw; i++) {
+        const dx = (i - ac) / aw; let v = 0.5 + 0.42 * dx - 0.3 * Math.exp(-(((j - 86) / 2.2) ** 2)) * (1 - Math.abs(dx));
+        if (i <= ac - aw + 0.6) v = 0.05;
+        set(i, j, 0, v);
+      }
+    }
+    // holster, walnut grip with brass, gloved hand hovering above it with the fingers loose
+    for (let j = 124; j < PH; j++) for (let i = cx + 40; i <= cx + 49; i++) set(i, j, 5, 0.35 + 0.45 * (i - cx - 40) / 9 - (i === cx + 47 && j % 3 === 0 ? 0.25 : 0));
+    for (let j = 116; j <= 126; j++) for (let i = cx + 39 + (j < 119 ? 2 : 0); i <= cx + 48; i++) set(i, j, 6, 0.35 + 0.5 * (i - cx - 39) / 9 + (j === 117 ? 0.2 : 0));
+    set(cx + 47, 115, 7, 0.3); set(cx + 48, 115, 7, 0.55); set(cx + 41, 120, 7, 0.9); set(cx + 46, 120, 7, 0.9);
+    for (let j = 97; j <= 100; j++) for (let i = cx + 40; i <= cx + 54; i++) set(i, j, 8, 0.25 + 0.4 * (i - cx - 40) / 14 + (j === 97 ? 0.2 : 0)); // gauntlet cuff
+    for (let j = 101; j <= 108; j++) for (let i = cx + 42; i <= cx + 54; i++) set(i, j, 8, 0.4 + 0.45 * (i - cx - 42) / 12 + (j === 102 ? 0.12 : 0) - (j === 108 ? 0.15 : 0));
+    for (let k = 0; k < 4; k++) { const fx = cx + 43 + k * 3; for (let j = 109; j <= 115 - (k === 3 ? 2 : 0); j++) { set(fx, j, 8, 0.3 + 0.1 * k); set(fx + 1, j, 8, 0.5 + 0.1 * k); } }
+    for (let j = 103; j <= 111; j++) { set(cx + 41, j, 8, 0.22); set(cx + 40, j + 1, 8, 0.2); }
+    // layered leather cape: an upper collar layer and a lower layer with a fringed hem
+    const capeLayer = (top, hemBase, widthMax, grow, base) => {
+      for (let j = top + b; j < hemBase + 6; j++) for (let i = 0; i < PW; i++) {
+        const fringe = (i % 3 === 0 ? 3 : i % 3 === 1 ? 1 : 2), hem = hemBase + 2 * Math.sin(i / 4) + fringe;
+        const hw = Math.min(widthMax, 10 + (j - top - b) * grow), dx = (i - (cx + 2)) / hw;
+        if (j > hem || Math.abs(dx) > 1) continue;
+        let v = base + 0.36 * dx + 0.12 * Math.sin((i - cx) / 6.5) - (j - top) / 130;
+        if (j > hem - fringe - 1) v -= 0.22;
+        set(i, j, 9, v);
+      }
+    };
+    capeLayer(52, 86, 43, 2.3, 0.55);
+    capeLayer(50, 66, 34, 2.6, 0.68);
+    // red scarf: wrapped round the neck, knotted at the nape, two tails lifting in the wind
+    for (let j = 45 + b; j <= 53 + b; j++) { const hw = 12 - (j - 45) * 0.1; for (let i = Math.floor(cx + 1 - hw); i <= cx + 1 + hw; i++) set(i, j, 10, 0.35 + 0.45 * (i - cx - 1) / hw + (j === 45 + b ? 0.2 : 0) + 0.1 * Math.sin(i / 1.5)); }
+    for (let j = 50 + b; j <= 56 + b; j++) for (let i = cx + 1; i <= cx + 7; i++) if (((i - cx - 4) / 3.5) ** 2 + ((j - 53 - b) / 3.5) ** 2 <= 1) set(i, j, 10, 0.55 + 0.3 * (i - cx - 4) / 3.5);
+    const tail = (len, ang, w0) => {
+      for (let s = 0; s < len; s++) {
+        const wob = Math.sin(s / 3 + flutter * 1.6) * 1.5, tx = cx + 6 + s * Math.cos(ang), ty = 55 + b + s * Math.sin(ang) + wob, w = Math.max(1, w0 - s * 0.2);
+        for (let k = -w; k <= w; k++) set(tx - k * Math.sin(ang) * 0.6, ty + k * 0.8, 10, 0.35 + 0.25 * (k / w) + 0.15 * Math.sin(s / 2));
+      }
+    };
+    tail(16, 0.55 + flutter * 0.15, 2.4); tail(12, 0.95 - flutter * 0.1, 2);
+    // neck, back of the head, ear
+    for (let j = 40; j <= 46; j++) for (let i = cx - 5; i <= cx + 8; i++) set(i, j, 4, 0.25 + 0.35 * (i - cx + 5) / 13 - (j < 42 ? 0.15 : 0));
+    for (let j = 26; j <= 44; j++) for (let i = cx - 11; i <= cx + 13; i++) {
+      const nx = (i - cx - 1) / 11, ny = (j - 36) / 9.5;
+      if (nx * nx + ny * ny > 1 || (j > 41 && hash(i, 3) < 0.45)) continue;
+      set(i, j, 3, 0.3 + 0.45 * nx + 0.12 * Math.sin(i * 1.7 + j * 0.35));
+    }
+    for (let j = 34; j <= 42; j++) for (let i = cx + 11; i <= cx + 14; i++) { const e = ((i - cx - 12.5) / 2) ** 2 + ((j - 38) / 4) ** 2; if (e <= 1) set(i, j, 4, e < 0.35 ? 0.3 : 0.7); }
+    // hat: brim seen slightly from below, sides curling up, crown with a centre crease, band and concho
+    for (let j = 18; j <= 40; j++) for (let i = cx - 44; i <= cx + 44; i++) {
+      const u = (i - cx) / 42, curl = -(u ** 4) * 5;
+      if (u * u + ((j - 31 - curl) / 6.5) ** 2 > 1) continue;
+      set(i, j, 1, j > 31 + curl ? 0.12 + 0.22 * u : 0.5 + 0.38 * u + (j < 28 + curl ? 0.1 : 0));
+    }
+    for (let i = cx - 16; i <= cx + 16; i++) {
+      const u = (i - cx) / 14, top = 6 + 4 * u * u + 2.4 * Math.exp(-(((i - cx - 1) / 3) ** 2));
+      for (let j = Math.ceil(top); j <= 28; j++) {
+        const hw = 14 + (j - 6) * 0.1; if (Math.abs(i - cx) > hw) continue;
+        if (j >= 24) { set(i, j, 2, 0.3 + 0.3 * (i - cx) / hw); continue; }
+        set(i, j, 1, 0.42 + 0.46 * (i - cx) / hw - (Math.abs(i - cx - 1) < 1 && j < 15 ? 0.25 : 0));
+      }
+    }
+    for (let i = cx + 7; i <= cx + 9; i++) for (let j = 25; j <= 27; j++) set(i, j, 7, i === cx + 8 && j === 25 ? 1 : 0.7);
+    // quantise with a light ordered dither, rim light on the sun side, coloured outlines
+    const at = (i, j) => (i < 0 || j < 0 || i >= PW || j >= PH ? -1 : mat[j * PW + i]);
+    for (let j = 0; j < PH; j++) for (let i = 0; i < PW; i++) {
+      const m = at(i, j);
+      if (m < 0) {
+        const left = at(i - 1, j), any = [left, at(i + 1, j), at(i, j - 1), at(i, j + 1)].find((q) => q >= 0);
+        if (any !== undefined) px(ctx, i, j, left >= 0 && RIM[left] ? RAMPS[left][1] : RAMPS[any][0]);
+        continue;
+      }
+      const ramp = RAMPS[m], n = ramp.length, v = val[j * PW + i];
+      let idx = clamp(Math.round((v + (BAYER[j & 3][i & 3] / 16 - 0.5) * 0.12) * (n - 1)), 0, n - 1);
+      const up = at(i, j - 1);
+      if (up >= 0 && up !== m) idx = Math.max(0, idx - 1);
+      let col = ramp[idx];
+      if (RIM[m] && v > 0.3 && (at(i + 1, j) < 0 || at(i + 1, j - 1) < 0 || (at(i, j - 1) < 0 && v > 0.5))) col = RIM[m];
+      px(ctx, i, j, col);
+    }
+    return c;
+  };
+  const PLAYER = [renderPlayer(0, 0), renderPlayer(0, 1), renderPlayer(1, 0), renderPlayer(1, 1)];
+  const HAND = { x: 104, y: 112 }; // where the gun clears leather, in sprite coordinates
+
+  // =====================================================================
+  // decoys, the signal, honour stars, cylinder buttons, coin
+  // =====================================================================
+  const crow = (ctx, x, y, frame, col, light, k = 1) => {
+    const up = ["X.....X", ".X...X.", "..XXX..", "...X..."], flat = [".......", "XXX.XXX", "..XXX..", "...X..."];
+    (frame ? up : flat).forEach((row, j) => [...row].forEach((ch, i) => { if (ch === "X") px(ctx, x + i * k, y + j * k, j === 2 && i === 4 ? light : col, k, k); }));
+  };
+  const tumbleweed = (ctx, x, y, a) => { for (let n = 0; n < 26; n++) { const t = a + n * 0.9, r = 2 + (n % 4); px(ctx, x + Math.cos(t) * r, y + Math.sin(t * 1.3) * r * 0.8, n % 3 ? "#8a6a3a" : "#b08a52"); } };
+  const mouse = (ctx, x, y, f, dir) => { px(ctx, x, y, "#6a6258", 4, 2); px(ctx, x + (dir > 0 ? 4 : -1), y, "#8c8478", 1, 1); px(ctx, x + (dir > 0 ? -2 : 4), y + 1, "#4a443e", 2, 1); if (f) px(ctx, x + 1, y + 2, "#4a443e", 2, 1); };
+  const puff = (ctx, x, y, age, life, light = "#f2dcae", dark = "#dcbc86") => {
+    const t = age / life, r = 1.5 + t * 4.5;
+    for (let j = -r; j <= r; j++) for (let i = -r * 1.3; i <= r * 1.3; i++) {
+      if ((i / 1.3) ** 2 + j * j > r * r || t > 0.35 + 0.65 * (1 - BAYER[(Math.round(j) + 40) & 3][(Math.round(i) + 40) & 3] / 16)) continue;
+      px(ctx, x + i, y + j * 0.7, j < -r * 0.3 ? light : dark);
+    }
+  };
+  const tri = (px0, py0, ax, ay, bx, by, cx2, cy2) => { const s = (ax - cx2) * (py0 - cy2) - (ay - cy2) * (px0 - cx2), t = (bx - ax) * (py0 - ay) - (by - ay) * (px0 - ax), u = (cx2 - bx) * (py0 - by) - (cy2 - by) * (px0 - bx); return (s >= 0 && t >= 0 && u >= 0) || (s <= 0 && t <= 0 && u <= 0); };
+  const STAR = [true, false].map((on) => {
+    const c = makeCanvas(13, 13), x = c.getContext("2d"), P = on ? ["#7a5418", "#b08830", "#e8c060", "#fff2c0"] : ["#2a2622", "#4a443e", "#6a625a", "#8c847a"];
+    for (let j = 0; j < 13; j++) for (let i = 0; i < 13; i++) {
+      const X = i + 0.5, Y = j + 0.5;
+      const inside = tri(X, Y, 6.5, 0.5, 1, 9.5, 12, 9.5) || tri(X, Y, 6.5, 12.5, 1, 3.5, 12, 3.5);
+      if (inside) px(x, i, j, Math.hypot(i - 6, j - 6) < 2 ? P[3] : i + j < 11 ? P[2] : P[1]);
+    }
+    for (const [a, b2] of [[6, 0], [1, 3], [11, 3], [1, 9], [11, 9], [6, 12]]) px(x, a, b2, P[3]);
+    return outline(c);
+  });
+  // a revolver cylinder seen from behind, six cartridges loaded; it glows red on the signal
+  const drawCylinder = (ctx, cx, cy, r, hot, pressed) => {
+    const steel = hot ? ["#4a1418", "#8a2a2a", "#c84a3a", "#ff8a6a"] : ["#26282e", "#3c4048", "#6a707a", "#b4bac4"];
+    for (let j = -r; j <= r; j++) for (let i = -r; i <= r; i++) {
+      const d = Math.hypot(i, j); if (d > r) continue;
+      const a = Math.atan2(j, i), lit = -(i + j) / (r * 1.4);
+      let col = d > r - 1.2 ? K : d > r - 3 ? (lit > 0.1 ? steel[3] : steel[1]) : lit > 0.25 ? steel[2] : steel[1];
+      if (d > r * 0.55 && Math.abs(Math.sin(a * 3 + Math.PI / 2)) < 0.12) col = steel[0]; // flutes between the chambers
+      px(ctx, cx + i, cy + j, col);
+    }
+    for (let k = 0; k < 6; k++) {
+      const a = -Math.PI / 2 + k * Math.PI / 3, ox = cx + Math.cos(a) * r * 0.5, oy = cy + Math.sin(a) * r * 0.5, cr = r * 0.25;
+      for (let j = -cr; j <= cr; j++) for (let i = -cr; i <= cr; i++) {
+        const d = Math.hypot(i, j); if (d > cr) continue;
+        px(ctx, ox + i, oy + j, d > cr - 1 ? "#3a2810" : d > cr * 0.55 ? (i + j < 0 ? "#f0d080" : "#c89a40") : hot ? "#ff5a3a" : d < cr * 0.25 ? "#fff0c0" : "#b07028");
+      }
+    }
+    const pr = Math.max(2, r * 0.13);
+    for (let j = -pr; j <= pr; j++) for (let i = -pr; i <= pr; i++) if (Math.hypot(i, j) <= pr) px(ctx, cx + i, cy + j, i + j < -1 ? "#8c929c" : "#1e2026");
+    if (pressed) for (let j = -r; j <= r; j++) for (let i = -r; i <= r; i++) if (Math.hypot(i, j) <= r) px(ctx, cx + i, cy + j, "rgba(255,240,200,0.25)");
+  };
+  const COIN = [10, 6, 2, 6].map((w) => {
+    const c = makeCanvas(12, 12), x = c.getContext("2d"), l = 6 - w / 2;
+    px(x, l - 1, 1, K, w + 2, 10); px(x, l, 0, K, w, 12); px(x, l, 1, "#f0a030", w, 10);
+    if (w > 2) px(x, l, 1, "#ffe27a", Math.max(1, w - 3), 9);
+    if (w > 6) px(x, l + 4, 3, "#c87820", 2, 6);
+    return c;
+  });
+
+  // =====================================================================
+  // audio: all synthesised, nothing sampled
+  // =====================================================================
+  let AC = null, master = null, noiseBuf = null, muted = false;
+  try { muted = localStorage.getItem("zeroday-muted") === "1"; } catch (e) { /* storage unavailable */ }
+  const audioInit = () => {
+    if (AC) { if (AC.state === "suspended") AC.resume(); return; }
+    const Ctor = window.AudioContext || window.webkitAudioContext; if (!Ctor) return;
+    AC = new Ctor(); master = AC.createGain(); master.gain.value = muted ? 0 : 0.7; master.connect(AC.destination);
+    noiseBuf = AC.createBuffer(1, AC.sampleRate * 2, AC.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    // wind: looping noise through a slowly wandering band-pass
+    const src = AC.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
+    const bp = AC.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 450; bp.Q.value = 0.7;
+    const wg = AC.createGain(); wg.gain.value = 0.05;
+    src.connect(bp).connect(wg).connect(master); src.start();
+    const l1 = AC.createOscillator(), g1 = AC.createGain(); l1.frequency.value = 0.11; g1.gain.value = 0.035; l1.connect(g1).connect(wg.gain); l1.start();
+    const l2 = AC.createOscillator(), g2 = AC.createGain(); l2.frequency.value = 0.07; g2.gain.value = 220; l2.connect(g2).connect(bp.frequency); l2.start();
+  };
+  const setMuted = (m) => { muted = m; if (master) master.gain.value = m ? 0 : 0.7; try { localStorage.setItem("zeroday-muted", m ? "1" : "0"); } catch (e) { /* storage unavailable */ } };
+  const tone = (type, f0, f1, t0, dur, peak, dest) => {
+    const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f0, t0); if (f1) o.frequency.exponentialRampToValueAtTime(f1, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(dest || master); o.start(t0); o.stop(t0 + dur + 0.05);
+  };
+  const noise = (t0, dur, peak, freq, type = "lowpass") => {
+    const s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = noiseBuf; f.type = type; f.frequency.value = freq;
+    g.gain.setValueAtTime(peak, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    s.connect(f).connect(g).connect(master); s.start(t0, Math.random()); s.stop(t0 + dur + 0.05);
+  };
+  const sfx = {
+    bell: () => { if (!AC) return; const t = AC.currentTime; [[196, 0.25, 4], [392, 0.12, 3], [470, 0.1, 2.5], [588, 0.07, 2], [823, 0.05, 1.5]].forEach(([f, p, d]) => tone("sine", f, 0, t, d, p)); },
+    heart: () => { if (!AC) return; const t = AC.currentTime; tone("sine", 70, 42, t, 0.16, 0.5); tone("sine", 62, 40, t + 0.17, 0.14, 0.32); },
+    shot: (far) => { if (!AC) return; const t = AC.currentTime; noise(t, far ? 0.35 : 0.45, far ? 0.45 : 0.9, far ? 1600 : 3200); tone("sine", 110, 38, t, 0.25, far ? 0.3 : 0.6); },
+    caw: () => { if (!AC) return; const t = AC.currentTime, f = AC.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 1300; f.Q.value = 2; f.connect(master); for (let k = 0; k < 2; k++) tone("sawtooth", 760, 520, t + k * 0.16, 0.12, 0.18, f); },
+    click: () => { if (!AC) return; const t = AC.currentTime; tone("square", 180, 90, t, 0.09, 0.12); tone("sine", 98, 0, t + 0.12, 0.6, 0.18); },
+    coin: () => { if (!AC) return; const t = AC.currentTime; tone("square", 988, 0, t, 0.08, 0.1); tone("square", 1319, 0, t + 0.08, 0.3, 0.1); },
+    tick: () => { if (!AC) return; tone("square", 660, 0, AC.currentTime, 0.04, 0.06); },
+  };
+
+  // =====================================================================
+  // logo: THE GOOD, THE BAD & THE ZERO-DAY, big and a small version
+  // =====================================================================
+  const LOGO = makeCanvas(260, 110), LOGO_S = makeCanvas(176, 82);
+  const logoInto = (cv, small) => {
+    const Wd = cv.width, Hd = cv.height, L = cv.getContext("2d"); L.clearRect(0, 0, Wd, Hd);
+    const mask = (draw) => { const c = makeCanvas(Wd, Hd), x = c.getContext("2d"); draw(x); const a = x.getImageData(0, 0, Wd, Hd).data, m = new Uint8Array(Wd * Hd); for (let n = 0; n < m.length; n++) m[n] = a[n * 4 + 3] > 110 ? 1 : 0; return m; };
+    const grow = (m) => { const o = m.slice(); for (let y = 1; y < Hd - 1; y++) for (let x = 1; x < Wd - 1; x++) { const n = y * Wd + x; if (!m[n] && (m[n - 1] || m[n + 1] || m[n - Wd] || m[n + Wd] || m[n - Wd - 1] || m[n + Wd + 1] || m[n - Wd + 1] || m[n + Wd - 1])) o[n] = 1; } return o; };
+    const paint = (m, colAt) => { for (let y = 0; y < Hd; y++) for (let x = 0; x < Wd; x++) if (m[y * Wd + x]) { const c = colAt(x, y); if (c) px(L, x, y, c); } };
+    const font = (sz) => `${sz}px Rye, "Bowlby One", Georgia, serif`;
+    const fit = (x, s, maxW, sz) => { x.font = font(sz); while (x.measureText(s).width > maxW && sz > 6) x.font = font(--sz); return x.measureText(s).width; };
+    const centerText = (x, s, y, sz) => { const w = fit(x, s, Wd - 12, sz); x.fillText(s, Math.round((Wd - w) / 2), y); };
+    const top = mask((x) => { x.fillStyle = "#000"; x.textBaseline = "alphabetic"; centerText(x, "THE GOOD, THE BAD", small ? 18 : 22, small ? 13 : 17); centerText(x, "& THE", small ? 31 : 39, small ? 10 : 13); });
+    const big = mask((x) => { x.fillStyle = "#000"; x.textBaseline = "alphabetic"; centerText(x, "ZERO-DAY", Hd - (small ? 10 : 12), small ? 36 : 52); });
+    // wood-type poster lettering: worn cream for the top lines, a burnt red-orange for ZERO-DAY
+    const t1 = grow(top); paint(grow(t1), () => K); paint(t1, () => K);
+    paint(top, (x, y) => (hash(x, y) < 0.07 ? "#b8a07a" : y % 7 < 2 ? "#fff4dc" : "#efe2c8"));
+    const b1 = grow(big), b2 = grow(b1), b3 = grow(b2);
+    for (let y = 0; y < Hd - 2; y++) for (let x = 0; x < Wd - 2; x++) if (b3[y * Wd + x]) px(L, x + 2, y + 2, K);
+    paint(b3, () => K); paint(b2, () => "#efe2c8"); paint(b1, () => K);
+    const bands = ["#ffd27a", "#f6a24a", "#e8702e", "#d04a24", "#a82a1c", "#7a1a14"];
+    let y0 = Hd, y1 = 0; for (let n = 0; n < big.length; n++) if (big[n]) { const yy = Math.floor(n / Wd); y0 = Math.min(y0, yy); y1 = Math.max(y1, yy); }
+    paint(big, (x, y) => (hash(x * 3, y) < 0.06 ? "#5a140e" : bands[clamp(Math.floor(((y - y0) / Math.max(1, y1 - y0)) * bands.length + ((x + y) % 2) * 0.35), 0, bands.length - 1)]));
+    // a small red crow perched on the D
+    crow(L, Wd - (small ? 30 : 40), Hd - (small ? 44 : 64), 1, "#c8202a", "#ff7a6a", small ? 1 : 2);
+  };
+  const buildLogo = () => { logoInto(LOGO, false); logoInto(LOGO_S, true); };
+  buildLogo();
+  if (document.fonts) document.fonts.load('40px "Rye"').then(buildLogo).catch(() => {});
+
+  // =====================================================================
+  // high scores: level reached, then the fastest clean double kill
+  // =====================================================================
+  // shortcut: scores live in this browser only; a shared board needs a database
+  const SEED = [["VXP", 8, 412], ["DAY", 6, 488], ["CRW", 5, 530], ["SEC", 3, 640], ["CVE", 2, 790]];
+  const loadBoard = () => { try { const b = JSON.parse(localStorage.getItem("zeroday-board")); if (Array.isArray(b) && b.length) return b; } catch (e) { /* storage unavailable */ } return SEED.slice(); };
+  const saveScore = (name, level, ms) => {
+    const b = loadBoard(); b.push([name, level, ms]); b.sort((p, q) => q[1] - p[1] || p[2] - q[2]); b.length = Math.min(b.length, 10);
+    try { localStorage.setItem("zeroday-board", JSON.stringify(b)); } catch (e) { /* storage unavailable */ }
+    return b;
+  };
+
+  // =====================================================================
+  // screen, layout per orientation
+  // =====================================================================
+  const canvas = document.getElementById("game"), ctx = canvas.getContext("2d");
+  let VW = 320, VH = 136, SCALE = 2, L = null, bg = null, bgWide = null, skyIdx = -1;
+  const layoutFor = () => {
+    const land = VW >= VH;
+    if (land) {
+      const hz = Math.round(VH * 0.56);
+      return { land, hz, oppY: hz - 10, lx: Math.round(VW * 0.49), rx: Math.round(VW * 0.84), pX: Math.round(-VW * 0.04), pY: VH - 128,
+        btns: touch ? [{ key: "Q", x: Math.round(VW * 0.42), y: VH - 24, r: 19 }, { key: "E", x: Math.round(VW * 0.88), y: VH - 24, r: 19 }] : [] };
+    }
+    const hz = Math.round(VH * 0.53);
+    return { land, hz, oppY: hz - 12, lx: Math.round(VW * 0.53), rx: Math.round(VW * 0.84), pX: Math.round(-VW * 0.24), pY: VH - 124,
+      btns: [{ key: "Q", x: Math.round(VW * 0.3), y: Math.round(VH * 0.89), r: 22 }, { key: "E", x: Math.round(VW * 0.76), y: Math.round(VH * 0.89), r: 22 }] };
+  };
+  const repaint = () => {
+    const S = SKIES[skyIdx];
+    bg = makeCanvas(VW, VH); paintStage(bg.getContext("2d"), S, VW, VH, L.hz);
+    bgWide = makeCanvas(Math.round(VW * 1.8), VH); paintStage(bgWide.getContext("2d"), S, bgWide.width, VH, L.hz, false);
+  };
+  const setSky = (i) => { if (i !== skyIdx) { skyIdx = i; if (L) repaint(); } };
+  const fit = () => {
+    const aw = window.innerWidth, ah = window.innerHeight, land = aw >= ah;
+    SCALE = Math.max(1, Math.floor(land ? Math.min(aw / 300, ah / 128) : Math.min(aw / 180, ah / 300)));
+    VW = Math.floor(aw / SCALE); VH = Math.floor(ah / SCALE);
+    if (land) VH = Math.min(VH, Math.round(VW / 1.6)); // keep a wide, cinematic frame
+    canvas.width = VW; canvas.height = VH; canvas.style.width = VW * SCALE + "px"; canvas.style.height = VH * SCALE + "px";
+    L = layoutFor(); if (skyIdx < 0) skyIdx = 0; repaint();
+  };
+  fit(); window.addEventListener("resize", fit);
+  // the page must never scroll or zoom under a finger
+  ["touchmove", "gesturestart", "dblclick"].forEach((ev) => document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
+
+  // =====================================================================
+  // game state
+  // =====================================================================
+  const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let state = "title", t = 0, st = 0, level = 1, honor = 3, events = [], nextDecoy = 60, signalAt = 0, signalT = 0, sinceRed = 0;
+  let rivals = [], result = null, bestMs = 0, beat = 0, flash = 0, shake = 0, initials = [0, 0, 0], slot = 0, board = loadBoard(), lastEntry = -1;
+  let pressedBtn = { Q: 0, E: 0 }, muzzle = null, smoke = [];
+  const go = (s) => { state = s; st = 0; };
+  // two different rivals per duel: the right one is always a step ahead in the line-up
+  const charFor = (side) => CHARACTERS[Math.min(4, Math.floor((level - 1 + side * 2) / 2))];
+  const reactionFor = (C) => {
+    const loop = Math.max(0, level - 10), base = C.ms - ((level - 1) % 2) * 50;
+    return Math.max(220, Math.round(base * Math.pow(0.92, loop) + (Math.random() - 0.5) * 60));
+  };
+  const startLevel = () => {
+    setSky(Math.min(4, Math.floor((level - 1) / 2)));
+    rivals = [0, 1].map((side) => { const C = charFor(side); return { C, side, alive: true, fireAt: 0, fall: 0, hit: 0, ms: reactionFor(C) }; });
+    events = []; smoke = []; muzzle = null; result = null; sinceRed = 0;
+    go("intro"); sfx.bell();
+  };
+  const newGame = () => { level = 1; honor = 3; bestMs = 0; rivals = []; events = []; setSky(0); go("brief"); };
+  const startStandoff = () => { go("wait"); signalAt = 150 + Math.floor(Math.random() * Math.max(120, 330 - level * 10)); nextDecoy = 40; };
+
+  const decoyGap = () => Math.max(16, 70 - level * 5) + Math.floor(Math.random() * Math.max(20, 90 - level * 6));
+  const spawnDecoy = () => {
+    const dir = Math.random() < 0.5 ? 1 : -1, fromForest = () => ({ x: VW * (0.45 + Math.random() * 0.45), y: L.hz - 2, dir: -1 });
+    const kinds = level >= 3 ? ["weed", "crow", "crowrise", "crowrise", "dust", "mouse"] : ["weed", "crow", "crowrise", "dust", "mouse"];
+    const kind = kinds[Math.floor(Math.random() * kinds.length)];
+    if (kind === "weed") events.push({ type: kind, x: dir > 0 ? -10 : VW + 10, y: L.hz + 14 + Math.random() * 12, dir, t: 0 });
+    if (kind === "crow") { events.push({ type: kind, x: dir > 0 ? -10 : VW + 10, y: L.hz * (0.2 + Math.random() * 0.4), dir, t: 0 }); if (Math.random() < 0.5) sfx.caw(); }
+    if (kind === "crowrise") { events.push({ type: kind, ...fromForest(), t: 0 }); sfx.caw(); }
+    if (kind === "dust") events.push({ type: kind, x: dir > 0 ? -6 : VW + 6, y: L.hz + 16 + Math.random() * 14, dir, t: 0, puffs: [] });
+    if (kind === "mouse") events.push({ type: kind, x: dir > 0 ? VW * 0.3 : VW + 4, y: VH - 10 - Math.random() * 6, dir, t: 0 });
+  };
+  const stepEvents = () => {
+    events.forEach((e) => {
+      e.t++;
+      if (e.type === "weed") e.x += 0.9 * e.dir;
+      if (e.type === "crow") e.x += 1.3 * e.dir;
+      if (e.type === "mouse") e.x += 1.6 * e.dir;
+      if (e.type === "dust") {
+        e.x += 1.8 * e.dir;
+        if (e.t % 3 === 0) e.puffs.push({ x: e.x + (Math.random() - 0.5) * 6, y: e.y + (Math.random() - 0.5) * 4, age: 0 });
+        e.puffs.forEach((p) => { p.age++; p.x += 0.5 * e.dir; p.y -= 0.08; }); e.puffs = e.puffs.filter((p) => p.age < 34);
+      }
+    });
+    events = events.filter((e) => e.x > -40 && e.x < VW + 40 && e.t < (e.type === "red" || e.type === "crowrise" ? 70 : e.type === "dust" ? 300 : 600));
+    smoke.forEach((p) => { p.age++; p.x += p.vx; p.y -= 0.2; }); smoke = smoke.filter((p) => p.age < 30);
+  };
+
+  // ---------- shooting ----------
+  const rivalPos = (r) => ({ x: r.side ? L.rx : L.lx, y: L.oppY });
+  const fire = (key) => {
+    if (state === "wait") {
+      // false start: honour lost, the level starts again
+      sfx.click(); honor--; flash = 6; go("early"); return;
+    }
+    if (state !== "draw") return;
+    const r = rivals[key === "Q" ? 0 : 1];
+    pressedBtn[key] = 8;
+    sfx.shot(false); shake = 4; muzzle = { t: 5 };
+    smoke.push({ x: L.pX + HAND.x, y: L.pY + HAND.y - 4, vx: 0.4, age: 0 });
+    if (!r.alive) return;
+    r.alive = false; r.hit = performance.now() - signalT; r.fall = 1;
+    if (!rivals.some((q) => q.alive)) {
+      const ms = Math.round(Math.max(...rivals.map((q) => q.hit)));
+      bestMs = bestMs ? Math.min(bestMs, ms) : ms; result = { ms }; go("won");
+    }
+  };
+  const rivalsShoot = () => {
+    const now = performance.now();
+    for (const r of rivals) if (r.alive && now - signalT >= r.ms) {
+      const p = rivalPos(r); sfx.shot(true); smoke.push({ x: p.x + 7, y: p.y + 26, vx: -0.2, age: 0 }); r.flash = 5;
+      flash = 10; shake = 6; result = { by: r.C.name }; go("dead"); return;
+    }
+  };
+
+  // =====================================================================
+  // input
+  // =====================================================================
+  const advance = () => {
+    audioInit();
+    if (state === "title") newGame();
+    else if (state === "brief") go("controls");
+    else if (state === "controls") startLevel();
+    else if (state === "intro") startStandoff();
+    else if (state === "over" && st > 50) go(level > 1 || bestMs ? "initials" : "scores");
+    else if (state === "initials") { const name = initials.map((i) => LETTERS[i]).join(""); board = saveScore(name, level, bestMs || 999); lastEntry = board.findIndex((e) => e[0] === name && e[1] === level); go("scores"); }
+    else if (state === "scores" && st > 30) { go("coin"); sfx.coin(); }
+  };
+  const letter = (d) => { initials[slot] = (initials[slot] + d + LETTERS.length) % LETTERS.length; sfx.tick(); };
+  const backToArcade = () => { try { if (window.top !== window) window.location.href = "/arcade/index.html"; } catch (e) { /* not embedded */ } };
+  window.addEventListener("keydown", (e) => {
+    audioInit();
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space", "Enter"].includes(e.code)) e.preventDefault();
+    if (e.code === "KeyM") { setMuted(!muted); return; }
+    if (e.code === "Escape" && (state === "title" || state === "scores")) { backToArcade(); return; }
+    if (state === "initials") {
+      if (e.code === "ArrowUp") letter(1); else if (e.code === "ArrowDown") letter(-1);
+      else if (e.code === "ArrowLeft") slot = Math.max(0, slot - 1); else if (e.code === "ArrowRight") slot = Math.min(2, slot + 1);
+      else if (e.code === "Enter") advance();
+      else if (/^Key[A-Z]$/.test(e.code)) { initials[slot] = LETTERS.indexOf(e.code[3]); slot = Math.min(2, slot + 1); sfx.tick(); }
+      return;
+    }
+    if ((e.code === "KeyQ" || e.code === "KeyE") && !e.repeat && (state === "wait" || state === "draw")) { fire(e.code[3]); return; }
+    if (e.code === "Enter" || e.code === "Space") advance();
+  });
+  // touch and mouse: everything drawn on the canvas is hit-tested here, several fingers at once
+  let uiButtons = [];
+  canvas.addEventListener("pointerdown", (e) => {
+    e.preventDefault(); canvas.focus(); audioInit();
+    const r = canvas.getBoundingClientRect(), x = ((e.clientX - r.left) / r.width) * VW, y = ((e.clientY - r.top) / r.height) * VH;
+    const hitUi = uiButtons.find((b) => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h);
+    if (hitUi) { hitUi.act(); return; }
+    if (state === "wait" || state === "draw") {
+      const b = L.btns.find((q) => Math.hypot(x - q.x, y - q.y) <= q.r + 6);
+      if (b) fire(b.key);
+      return;
+    }
+    if (state === "initials") return;
+    advance();
+  });
+
+  // =====================================================================
+  // update
+  // =====================================================================
+  const update = () => {
+    t++; st++;
+    stepEvents();
+    if (pressedBtn.Q > 0) pressedBtn.Q--; if (pressedBtn.E > 0) pressedBtn.E--;
+    if (muzzle && --muzzle.t <= 0) muzzle = null;
+    if (flash > 0) flash--; shake *= 0.85;
+    rivals.forEach((r) => { if (!r.alive && r.fall < 12) r.fall++; if (r.flash > 0) r.flash--; });
+    if (state === "title" || state === "brief" || state === "controls") return;
+    if (state === "intro") { if (st >= 150) startStandoff(); return; }
+    if (state === "wait" || state === "draw") {
+      if (--nextDecoy <= 0) { spawnDecoy(); nextDecoy = decoyGap(); }
+      beat++; if (beat >= Math.max(26, 52 - level * 2)) { beat = 0; sfx.heart(); }
+    }
+    if (state === "wait" && st >= signalAt) {
+      events.push({ type: "red", x: VW * (0.45 + Math.random() * 0.45), y: L.hz - 2, dir: -1, t: 0 }); sfx.caw();
+      // the clock starts the moment the red crow clears the treeline
+      go("draw"); signalT = performance.now() + 160;
+    }
+    if (state === "draw" && performance.now() >= signalT) rivalsShoot();
+    if (state === "won" && st >= 120) { level++; startLevel(); }
+    if (state === "early" && st >= 110) { if (honor <= 0) { result = { early: true }; go("over"); } else startLevel(); }
+    if (state === "dead" && st >= 90) go("over");
+    if (state === "coin" && st >= 50) newGame();
+  };
+
+  // =====================================================================
+  // render
+  // =====================================================================
+  const centered = (s, y, k, col) => { while (k > 1 && textW(s, k) > VW - 8) k--; text(ctx, s, Math.round((VW - textW(s, k)) / 2), y, k, col); };
+  const panel = (alpha = 0.82) => { px(ctx, 0, 0, `rgba(12,8,6,${alpha})`, VW, VH); for (let y = 0; y < VH; y += 2) px(ctx, 0, y, "rgba(0,0,0,0.2)", VW, 1); };
+  const uiButton = (label, x, y, w, h, act, hot) => {
+    px(ctx, x, y + 2, K, w, h); px(ctx, x, y, K, w, h); px(ctx, x + 1, y + 1, hot ? "#c8342a" : "#3a2c22", w - 2, h - 2); px(ctx, x + 1, y + 1, hot ? "#ff7a6a" : "#5a4636", w - 2, 1);
+    text(ctx, label, Math.round(x + (w - textW(label)) / 2), y + Math.round((h - 5) / 2), 1, "#efe2c8", false);
+    uiButtons.push({ x, y, w, h, act });
+  };
+  const drawPan = () => { const off = Math.round(((Math.sin(t / 420) + 1) / 2) * (bgWide.width - VW)); ctx.drawImage(bgWide, off, 0, VW, VH, 0, 0, VW, VH); return off; };
+  const drawEvents = () => {
+    events.forEach((e) => {
+      if (e.type === "weed") tumbleweed(ctx, e.x, e.y - Math.abs(Math.sin(e.t / 9)) * 5, (e.t / 6) * e.dir);
+      if (e.type === "crow") crow(ctx, e.x, e.y + Math.sin(e.t / 10) * 2, Math.floor(e.t / 8) % 2, "#1e1820", "#3a3240");
+      if (e.type === "dust") e.puffs.forEach((p) => puff(ctx, p.x, p.y, p.age, 34));
+      if (e.type === "mouse") mouse(ctx, e.x, e.y, Math.floor(e.t / 3) % 2, e.dir);
+      if (e.type === "crowrise" || e.type === "red") {
+        const k = Math.min(3, 1 + Math.floor(e.t / 18));
+        crow(ctx, e.x - e.t * 0.7, e.y - e.t * 0.9, Math.floor(e.t / 5) % 2, e.type === "red" ? "#c8202a" : "#1e1820", e.type === "red" ? "#ff7a6a" : "#3a3240", k);
+      }
+    });
+  };
+  const drawRival = (r) => {
+    const p = rivalPos(r), s = r.C.sprite;
+    px(ctx, p.x - 9, p.y + 44, "rgba(20,12,8,0.35)", 18, 2);
+    if (r.alive || r.fall < 4) {
+      ctx.drawImage(s, p.x - 13, p.y);
+      if (r.flash > 0) { px(ctx, p.x + 6, p.y + 25, "#fff4c0", 4, 3); px(ctx, p.x + 9, p.y + 24, "#ffd060", 3, 5); }
+      if (!r.alive) px(ctx, p.x - 13, p.y, "rgba(255,255,255,0.5)", 26, 46);
+    } else {
+      // fallen: lying on the ground, the hat rolled away
+      ctx.save(); ctx.translate(p.x, p.y + 44); ctx.rotate((r.side ? 1 : -1) * Math.PI / 2); ctx.drawImage(s, -23, -26); ctx.restore();
+      if (r.fall < 12) puff(ctx, p.x, p.y + 40, r.fall * 2, 24);
+    }
+  };
+  const drawHud = () => {
+    text(ctx, "LV " + level, 4, 4, 2, "#efe2c8");
+    for (let i = 0; i < 3; i++) ctx.drawImage(STAR[i < honor ? 0 : 1], VW - 16 - (2 - i) * 15, 3);
+    // sound on / off
+    const sx = 4, sy = 16;
+    px(ctx, sx, sy + 2, "#efe2c8", 2, 3); px(ctx, sx + 2, sy + 1, "#efe2c8", 1, 5); px(ctx, sx + 3, sy, "#efe2c8", 1, 7);
+    if (muted) { px(ctx, sx + 5, sy + 1, "#c8342a"); px(ctx, sx + 6, sy + 2, "#c8342a"); px(ctx, sx + 7, sy + 3, "#c8342a"); px(ctx, sx + 6, sy + 4, "#c8342a"); px(ctx, sx + 5, sy + 5, "#c8342a"); px(ctx, sx + 7, sy + 1, "#c8342a"); px(ctx, sx + 5, sy + 3, "#c8342a"); px(ctx, sx + 7, sy + 5, "#c8342a"); }
+    else { px(ctx, sx + 5, sy + 2, "#efe2c8", 1, 3); px(ctx, sx + 7, sy + 1, "#efe2c8", 1, 5); }
+    uiButtons.push({ x: 0, y: sy - 3, w: 14, h: 13, act: () => setMuted(!muted) });
+  };
+  const drawTriggers = (hot) => {
+    if (L.btns.length) L.btns.forEach((b) => drawCylinder(ctx, b.x, b.y, b.r, hot, pressedBtn[b.key] > 0));
+    else rivals.forEach((r) => {
+      const p = rivalPos(r), key = r.side ? "E" : "Q", bob = Math.floor(t / 20) % 2, kx = p.x - 5, ky = p.y - 15 - bob;
+      if (!r.alive) return;
+      px(ctx, kx, ky + 2, K, 11, 11); px(ctx, kx, ky, K, 11, 11); px(ctx, kx + 1, ky + 1, hot ? "#c8202a" : "#efe2c8", 9, 9);
+      text(ctx, key, kx + 4, ky + 3, 1, hot ? "#fff4dc" : "#3a2418", false);
+    });
+  };
+  const drawScene = () => {
+    const sx = Math.round((Math.random() - 0.5) * shake), sy = Math.round((Math.random() - 0.5) * shake);
+    ctx.save(); ctx.translate(sx, sy);
+    ctx.drawImage(bg, 0, 0); drawEvents(); rivals.forEach(drawRival);
+    ctx.drawImage(PLAYER[(Math.floor(t / 90) % 2) * 2 + (Math.floor(t / 14) % 2)], L.pX, L.pY);
+    if (muzzle) { const mx = L.pX + HAND.x, my = L.pY + HAND.y - 6; for (let k = 0; k < 6; k++) px(ctx, mx + k * 2, my - k, k < 2 ? "#fff8d0" : "#ffb040", 3, 3); }
+    smoke.forEach((p) => puff(ctx, p.x, p.y, p.age, 30, "#e8e0d0", "#b8b0a0"));
+    ctx.restore();
+  };
+
+  const renderScores = () => {
+    px(ctx, 0, 0, "#0c0806", VW, VH);
+    const lg = VW >= 270 ? LOGO_S : null;
+    let y = 6;
+    if (lg) { ctx.drawImage(lg, 0, 0, lg.width, lg.height, Math.round((VW - lg.width / 2) / 2), y, Math.round(lg.width / 2), Math.round(lg.height / 2)); y += Math.round(lg.height / 2) + 4; }
+    centered("HIGH SCORES", y, 2, "#e8c060"); y += 16;
+    const line = (i, n, lv, ms) => String(i + 1).padStart(2, " ") + " " + n + " LV" + String(lv).padStart(2, " ") + " " + (ms / 1000).toFixed(3) + "S";
+    const k = VW >= 260 ? 2 : 1, rowH = k === 2 ? 13 : 10, x0 = Math.round(VW / 2 - textW(line(9, "AAA", 10, 999), k) / 2);
+    board.forEach(([n, lv, ms], i) => { if (i === lastEntry && Math.floor(t / 10) % 2) return; text(ctx, line(i, n, lv, ms), x0, y + i * rowH, k, i === 0 ? "#e8c060" : i === lastEntry ? "#ff7a6a" : "#efe2c8"); });
+    const yC = Math.min(VH - 30, y + board.length * rowH + 6);
+    if (state === "scores") {
+      if (Math.floor(t / 25) % 2 === 0) centered("INSERT COIN", yC, 2, "#e8c060");
+      ctx.drawImage(COIN[Math.floor(t / 6) % 4], Math.round(VW / 2 - textW("INSERT COIN", 2) / 2) - 16, yC - 1);
+      centered("PRESS ENTER OR TAP TO PLAY AGAIN", yC + 18, 1, "#b6a184");
+      if (touch) uiButton("< ARCADE", 4, 4, 40, 12, backToArcade);
+    } else {
+      const slotY = yC + 8; px(ctx, VW / 2 - 9, slotY, K, 18, 4); px(ctx, VW / 2 - 7, slotY + 1, "#000", 14, 2);
+      if (st < 30) ctx.drawImage(COIN[0], Math.round(VW / 2 - 6), Math.round(Math.min(slotY - 8, yC - 30 + st * 1.4)));
+      else centered("CREDIT 1", yC - 6, 2, "#e8c060");
+    }
+    // CRT: scanlines, rolling band, dark corners
+    for (let yy = 0; yy < VH; yy += 2) px(ctx, 0, yy, "rgba(0,0,0,0.32)", VW, 1);
+    px(ctx, 0, (t * 1.5) % (VH + 40) - 20, "rgba(255,240,210,0.05)", VW, 14);
+    const g = ctx.createRadialGradient(VW / 2, VH / 2, Math.min(VW, VH) * 0.35, VW / 2, VH / 2, Math.max(VW, VH) * 0.75);
+    g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,0.65)"); ctx.fillStyle = g; ctx.fillRect(0, 0, VW, VH);
+  };
+
+  const render = () => {
+    uiButtons = [];
+    ctx.imageSmoothingEnabled = false;
+    if (state === "scores" || state === "coin") { renderScores(); return; }
+
+    if (state === "title") {
+      drawPan(); px(ctx, 0, 0, "rgba(12,8,6,0.45)", VW, VH);
+      const lg = VW >= 280 ? LOGO : LOGO_S, reveal = Math.min(1, st / 50);
+      const lx = Math.round((VW - lg.width) / 2), ly = Math.max(4, Math.round(VH * 0.38 - lg.height / 2));
+      if (reveal >= 1) ctx.drawImage(lg, lx, ly);
+      else { // the logo burns in through a dither
+        const tmp = makeCanvas(lg.width, lg.height), tx = tmp.getContext("2d"); tx.drawImage(lg, 0, 0);
+        const im = tx.getImageData(0, 0, lg.width, lg.height); for (let y = 0; y < lg.height; y++) for (let x = 0; x < lg.width; x++) if (BAYER[y & 3][x & 3] / 16 > reveal) im.data[(y * lg.width + x) * 4 + 3] = 0;
+        tx.putImageData(im, 0, 0); ctx.drawImage(tmp, lx, ly);
+      }
+      if (st > 50 && Math.floor(t / 30) % 2 === 0) centered("PRESS ENTER OR TAP", VH - 30, 1, "#efe2c8");
+      centered("HI-SCORE " + board[0][0] + " LV " + board[0][1], VH - 16, 1, "#e8c060");
+      if (touch) uiButton("< ARCADE", 4, 4, 40, 12, backToArcade);
+      return;
+    }
+
+    if (state === "brief" || state === "controls") {
+      drawPan(); panel();
+      if (state === "brief") {
+        centered("HOW TO SURVIVE", 8, 2, "#e8c060");
+        const lines = ["THREE GUNS, ONE GRAVEYARD.", "", "WAIT FOR THE RED CROW.", "EVERYTHING ELSE IS A DECOY:", "TUMBLEWEEDS, DUST, BLACK CROWS.", "", "THEN SHOOT BOTH RIVALS, FAST.", "", "SHOOT TOO EARLY: LOSE A STAR.", "LOSE 3 STARS OR GET SHOT: GAME OVER."];
+        let n = Math.floor(st / 1.4), y = 28;
+        lines.forEach((ln) => { const show = ln.slice(0, Math.max(0, n)); n -= ln.length + 4; if (show) centered(show, y, 1, ln.startsWith("WAIT") || ln.startsWith("THEN") ? "#ff7a6a" : "#efe2c8"); y += 9; });
+        if (st > 100) { for (let i = 0; i < 3; i++) ctx.drawImage(STAR[0], Math.round(VW / 2 - 22 + i * 15), y + 4); }
+      } else {
+        centered("CONTROLS", 8, 2, "#e8c060");
+        const phase = Math.floor(st / 50) % 3, hot = phase > 0, y0 = 30;
+        crow(ctx, Math.round(VW / 2 - 10), y0, Math.floor(st / 5) % 2, hot ? "#c8202a" : "#1e1820", hot ? "#ff7a6a" : "#3a3240", 3);
+        centered(hot ? "RED CROW: SHOOT!" : "BLACK CROW: WAIT", y0 + 18, 1, hot ? "#ff7a6a" : "#b6a184");
+        if (touch) {
+          drawCylinder(ctx, Math.round(VW * 0.3), y0 + 52, 18, hot, phase === 1); drawCylinder(ctx, Math.round(VW * 0.7), y0 + 52, 18, hot, phase === 2);
+          centered("TAP LEFT GUN: LEFT RIVAL", y0 + 78, 1, "#efe2c8"); centered("TAP RIGHT GUN: RIGHT RIVAL", y0 + 88, 1, "#efe2c8");
+        } else {
+          for (const [k, x] of [["Q", VW / 2 - 26], ["E", VW / 2 + 8]]) {
+            const on = hot && ((k === "Q" && phase === 1) || (k === "E" && phase === 2)), d = on ? 2 : 0;
+            px(ctx, x, y0 + 32 + 2, K, 18, 18); px(ctx, x, y0 + 32 + d, K, 18, 18); px(ctx, x + 1, y0 + 33 + d, on ? "#c8202a" : "#efe2c8", 16, 16);
+            text(ctx, k, x + 6, y0 + 37 + d, 2, on ? "#fff4dc" : "#3a2418", false);
+          }
+          centered("Q: LEFT RIVAL   E: RIGHT RIVAL", y0 + 60, 1, "#efe2c8"); centered("M: SOUND ON / OFF", y0 + 72, 1, "#b6a184");
+        }
+      }
+      if (Math.floor(t / 30) % 2 === 0) centered(state === "brief" ? "ENTER OR TAP: NEXT" : "ENTER OR TAP: DUEL", VH - 12, 1, "#e8c060");
+      return;
+    }
+
+    if (state === "intro") {
+      // three cuts: left rival's eyes, right rival's eyes, your hand over the holster
+      px(ctx, 0, 0, "#000", VW, VH);
+      const cut = Math.min(2, Math.floor(st / 50)), k = Math.max(2, Math.floor(VW / 64)), w = 64 * k, h = 16 * k, x = Math.round((VW - w) / 2), y = Math.round((VH - h) / 2);
+      if (cut < 2) ctx.drawImage(rivals[cut].C.eyes, 0, 0, 64, 16, x, y, w, h);
+      else ctx.drawImage(PLAYER[0], 88, 92, 40, 30, Math.round((VW - 40 * k / 2) / 2), Math.round((VH - 30 * k / 2) / 2), Math.round(40 * k / 2), Math.round(30 * k / 2));
+      centered(cut < 2 ? rivals[cut].C.name : "YOU", y + h + 8, 1, "#b6a184");
+      centered("LEVEL " + level, Math.max(4, y - 16), 2, "#e8c060");
+      return;
+    }
+
+    drawScene();
+    const hot = state === "draw";
+    if (state === "wait" || state === "draw") drawTriggers(hot);
+    if (state === "draw" && st > 10 && st < 60) text(ctx, "DRAW", Math.round(VW / 2 - 7), VH - 12, 1, "#ff7a6a");
+    drawHud();
+    if (flash > 0) px(ctx, 0, 0, state === "dead" || state === "early" ? "rgba(200,40,30,0.35)" : "rgba(255,240,200,0.4)", VW, VH);
+    if (state === "won") { centered("CLEAN SHOT", Math.round(VH * 0.18), 2, "#e8c060"); centered((result.ms / 1000).toFixed(3) + " S", Math.round(VH * 0.18) + 16, 2, "#efe2c8"); }
+    if (state === "early") { centered("TOO EARLY!", Math.round(VH * 0.2), 3, "#ff7a6a"); centered(honor > 0 ? "-1 STAR. THE DUEL STARTS AGAIN" : "NO STARS LEFT", Math.round(VH * 0.2) + 22, 1, "#efe2c8"); }
+    if (state === "dead") { px(ctx, 0, 0, "rgba(90,10,8,0.35)", VW, VH); centered("YOU'RE DEAD", Math.round(VH * 0.25), 3, "#ff7a6a"); centered("SHOT BY " + result.by, Math.round(VH * 0.25) + 22, 1, "#efe2c8"); }
+    if (state === "over") {
+      panel(0.7);
+      centered("GAME OVER", Math.round(VH / 2 - 26), 3, "#ff7a6a");
+      centered("YOU REACHED LEVEL " + level, Math.round(VH / 2 - 2), 1, "#efe2c8");
+      if (bestMs) centered("BEST DOUBLE KILL " + (bestMs / 1000).toFixed(3) + " S", Math.round(VH / 2 + 10), 1, "#e8c060");
+      if (st > 50 && Math.floor(t / 30) % 2 === 0) centered("PRESS ENTER OR TAP", Math.round(VH / 2 + 26), 1, "#efe2c8");
+    }
+    if (state === "initials") {
+      panel(0.92);
+      centered("NEW SCORE", 8, 2, "#e8c060");
+      centered("LEVEL " + level + (bestMs ? "  " + (bestMs / 1000).toFixed(3) + "S" : ""), 26, 1, "#efe2c8");
+      const kk = 5, cw = 15, gap = 12, x0 = Math.round((VW - (3 * cw + 2 * gap)) / 2), ly = 52;
+      initials.forEach((li, i) => {
+        const x = x0 + i * (cw + gap), sel = i === slot;
+        text(ctx, "↑", x + 4, ly - 16, 2, sel ? "#ff7a6a" : "#6a5a48");
+        text(ctx, LETTERS[li], x, ly, kk, sel ? "#e8c060" : "#efe2c8");
+        text(ctx, "↓", x + 4, ly + 31, 2, sel ? "#ff7a6a" : "#6a5a48");
+        // tap the top half of a letter to go forward, the bottom half to go back
+        uiButtons.push({ x: x - 6, y: ly - 20, w: cw + 12, h: 32, act: () => { slot = i; letter(1); } });
+        uiButtons.push({ x: x - 6, y: ly + 12, w: cw + 12, h: 32, act: () => { slot = i; letter(-1); } });
+      });
+      if (touch) {
+        // the same chunky buttons as in play, reshaped for picking letters
+        const by = VH - 30, bw = 28;
+        uiButton("<", 6, by, bw, 24, () => { slot = Math.max(0, slot - 1); });
+        uiButton(">", 6 + bw + 4, by, bw, 24, () => { slot = Math.min(2, slot + 1); });
+        uiButton("↑", VW - 6 - 44 - 4 - bw * 2 - 4, by, bw, 24, () => letter(1));
+        uiButton("↓", VW - 6 - 44 - 4 - bw, by, bw, 24, () => letter(-1));
+        uiButton("OK", VW - 6 - 44, by, 44, 24, advance, true);
+      } else {
+        uiButton("OK", Math.round(VW / 2 - 20), ly + 50, 40, 16, advance, true);
+        centered("TYPE OR USE ARROWS, THEN ENTER", VH - 12, 1, "#b6a184");
+      }
+    }
+  };
+
+  // =====================================================================
+  // loop
+  // =====================================================================
+  let last = performance.now(), acc = 0;
+  const loop = (now) => {
+    acc = Math.min(acc + (now - last) / 1000, 0.1); last = now;
+    while (acc >= 1 / 60) { update(); acc -= 1 / 60; }
+    render();
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

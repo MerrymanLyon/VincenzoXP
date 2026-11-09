@@ -52,8 +52,10 @@ const cvePopupCss = `
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("BOOT");
-  // il minigioco San Tufellos, aperto in una finestra sopra il BIOS
-  const [gameOpen, setGameOpen] = useState(false);
+  // la sala giochi (o un gioco preciso), aperta in una finestra sopra il BIOS
+  const [gameOpen, setGameOpen] = useState<string | null>(null);
+  // la finestra "minacce rilevate" che compare sopra il BIOS
+  const [threatOpen, setThreatOpen] = useState(false);
   // Posizione casuale (in px) di ogni pop-up
   const [positions, setPositions] = useState<Record<number, { x: number; y: number }>>({});
 
@@ -131,16 +133,25 @@ export default function Home() {
     spawnCveErrorTab();
   };
 
-  // Link segreto vincenzoxp.com/#aezakmi: salta il boot e apre il BIOS con il trucco già attivo
+  // Link segreti: #aezakmi apre San Tufellos, #zeroday il duello, #arcade la sala giochi; saltano il boot
   useEffect(() => {
-    if (window.location.hash.toLowerCase() === "#aezakmi") {
+    const games: Record<string, string> = { "#aezakmi": "/santufellos/index.html", "#zeroday": "/zeroday/index.html", "#arcade": "/arcade/index.html" };
+    const target = games[window.location.hash.toLowerCase()];
+    if (target) {
       setStage("BIOS");
-      setGameOpen(true);
+      setGameOpen(target);
     }
   }, []);
 
+  // Qualche secondo dopo il BIOS compare la finestra delle minacce
+  useEffect(() => {
+    if (stage !== "BIOS" || gameOpen) return;
+    const timer = setTimeout(() => setThreatOpen(true), 2600);
+    return () => clearTimeout(timer);
+  }, [stage, gameOpen]);
+
   // Il BIOS si chiude con Invio/Esc (le lettere servono per il trucco) o con un clic/tap fuori dai dispositivi solo touch;
-  // sui dispositivi solo touch ci sono le due pillole
+  // sui dispositivi solo touch si sceglie dalla finestra delle minacce
   useEffect(() => {
     if (stage !== "BIOS" || gameOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -223,9 +234,49 @@ export default function Home() {
       )}
 
       {/* 3. BIOS SCREEN */}
-      {stage === "BIOS" && <BiosScreen onCheat={() => setGameOpen(true)} onDismiss={handleDismissBios} />}
+      {stage === "BIOS" && <BiosScreen onCheat={() => setGameOpen("/santufellos/index.html")} />}
 
-      {/* 3b. SAN TUFELLOS: il gioco in una finestra XP sopra il BIOS */}
+      {/* 3a. MINACCE RILEVATE: stessa finestra di errore del desktop, con due scelte */}
+      {stage === "BIOS" && threatOpen && !gameOpen && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 100000, display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
+          <div className="window" style={{ width: "min(430px, 100%)" }}>
+            <div className="title-bar">
+              <div className="title-bar-text">System Error - Multiple Threats</div>
+              <div className="title-bar-controls">
+                <button aria-label="Close" onClick={handleDismissBios} />
+              </div>
+            </div>
+            <div className="window-body" style={{ padding: "12px", fontSize: "12px", fontFamily: "Tahoma, sans-serif" }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "16px" }}>
+                <img src={errorIcon.src} alt="Error" style={{ width: "32px", height: "32px" }} />
+                <div>
+                  <strong style={{ fontSize: "13px" }}>Multiple threats detected</strong>
+                  <p style={{ margin: "8px 0 0 0", lineHeight: "1.4" }}>
+                    Several active exploits were found on <code>vincenzoxp.com</code>, including CVE-AEZAKMI.
+                  </p>
+                  <p style={{ margin: "8px 0 0 0", lineHeight: "1.4", color: "#666" }}>
+                    Go back to the desktop and ignore them, or resolve them now.
+                  </p>
+                </div>
+              </div>
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", flexWrap: "wrap" }}>
+                <button className="xp-button" onClick={handleDismissBios} style={{ padding: "4px 10px" }}>
+                  Back to desktop
+                </button>
+                <button
+                  className="xp-button"
+                  onClick={() => { setThreatOpen(false); setGameOpen("/arcade/index.html"); }}
+                  style={{ fontWeight: "bold", padding: "4px 12px" }}
+                >
+                  Resolve threats
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3b. SALA GIOCHI: finestra XP sopra il BIOS, a tutto schermo sul telefono */}
       {stage === "BIOS" && gameOpen && (
         <div
           style={{
@@ -238,17 +289,24 @@ export default function Home() {
             background: "rgba(0, 0, 40, 0.35)",
           }}
         >
-          <div className="window" style={{ width: "min(860px, 96vw)", height: "min(620px, 90vh)", display: "flex", flexDirection: "column" }}>
+          <div
+            className="window"
+            style={
+              typeof window !== "undefined" && window.innerWidth < 700
+                ? { width: "100vw", height: "100dvh", display: "flex", flexDirection: "column", margin: 0 }
+                : { width: "min(860px, 96vw)", height: "min(620px, 90vh)", display: "flex", flexDirection: "column" }
+            }
+          >
             <div className="title-bar">
-              <div className="title-bar-text">San Tufellos.exe</div>
+              <div className="title-bar-text">Threat Resolver.exe</div>
               <div className="title-bar-controls">
-                <button aria-label="Close" onClick={() => setGameOpen(false)} />
+                <button aria-label="Close" onClick={() => setGameOpen(null)} />
               </div>
             </div>
             <div className="window-body" style={{ flex: 1, margin: 0, padding: 0, display: "flex", minHeight: 0 }}>
               <iframe
-                src="/santufellos/index.html"
-                title="San Tufellos"
+                src={gameOpen}
+                title="Arcade"
                 style={{ border: 0, width: "100%", height: "100%", flex: 1, display: "block" }}
                 onLoad={(e) => (e.target as HTMLIFrameElement).contentWindow?.focus()}
               />
