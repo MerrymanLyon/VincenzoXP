@@ -286,11 +286,11 @@ canvas:focus { outline: none; }
   // arms and guns live under the cape: they only come out when you shoot (sprite coordinates of the shoulders)
   // the arms come out from under the cape at belt height. From behind the right forearm and fist show past the hip,
   // of the left gun only the tip shows. ARM_POSES[side] = { from: hidden start, hand: final grip, len: barrel }
-  const ARMS = (new URLSearchParams(location.search).get("arms") || "B").toUpperCase();
+  const ARMS = (new URLSearchParams(location.search).get("arms") || "C").toUpperCase();
   const ARM_POSES = {
     A: [{ from: [80, 102], hand: [92, 100], len: 24 }, { from: [96, 108], hand: [122, 98], len: 11 }],
     B: [{ from: [82, 106], hand: [94, 103], len: 24 }, { from: [92, 114], hand: [126, 108], len: 12 }],
-    C: [{ from: [82, 110], hand: [94, 108], len: 23 }, { from: [94, 120], hand: [124, 120], len: 12 }],
+    C: [{ from: [82, 110], hand: [94, 108], len: 23 }, { from: [92, 120], hand: [116, 120], len: 10 }],
   }[ARMS] || null;
 
   // =====================================================================
@@ -523,12 +523,16 @@ canvas:focus { outline: none; }
   // the two revolvers: from the shoulder out towards each rival (where they stood when the duel began)
   const gunGeo = (side) => {
     const P = ARM_POSES[side], out = Math.min(1, (t - guns.t) / 3);
-    const sx = L.pX + P.from[0], sy = L.pY + P.from[1];
-    const hx = sx + (L.pX + P.hand[0] - sx) * out, hy = sy + (L.pY + P.hand[1] - sy) * out;
+    // on a tall phone the hip sits on the bottom edge: lift the arms just enough to keep the fist on screen
+    const lift = Math.min(0, VH - 12 - (L.pY + ARM_POSES[1].hand[1]));
+    const sx = L.pX + P.from[0], sy = L.pY + P.from[1] + lift;
+    const hx = sx + (L.pX + P.hand[0] - sx) * out, hy = sy + (L.pY + P.hand[1] + lift - sy) * out;
     let ux, uy;
     if (P.dir) { ux = P.dir[0]; uy = P.dir[1]; }
     else { const tx = side ? L.rx : L.lx, ty = L.oppY + 22, d = Math.hypot(tx - hx, ty - hy) || 1; ux = (tx - hx) / d; uy = (ty - hy) / d; }
-    return { sx, sy, hx, hy, ux, uy, tipX: hx + ux * P.len, tipY: hy - 1 + uy * P.len };
+    // in portrait the rivals sit higher, so the hidden left barrel needs a little more length to peek out
+    const len = P.len + (side === 0 && !L.land ? 16 : 0);
+    return { sx, sy, hx, hy, ux, uy, tipX: hx + ux * len, tipY: hy - 1 + uy * len };
   };
   const shoot = (key) => {
     const side = key === "Q" ? 0 : 1;
