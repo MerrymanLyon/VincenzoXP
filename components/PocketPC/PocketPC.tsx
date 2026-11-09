@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./PocketPC.module.css";
+import AiBadges from "components/AiBadges/AiBadges";
 import Image from "next/image";
 
 // Import degli asset del progetto
@@ -472,7 +473,7 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <div className={styles.cardDesc}>
               Built as a hands-on technical experiment, this Web App demonstrates modern product execution through human-AI pair programming.
               <div className={styles.cardBullet}>
-                Role Division: As Brand Manager, I defined the product vision, UI/UX architecture, copy, and visual assets, leveraging Gemini as an AI technical partner to engineer Next.js, React, and Redux logic.
+                Role Division: As Brand Manager, I defined the product vision, UI/UX architecture, copy, and visual assets. Vibecoded with <AiBadges /> as AI technical partners engineering the Next.js, React, and Redux logic.
               </div>
               <div className={styles.cardBullet}>
                 Implementation Steps: Built custom windowing managers, integrated EmailJS REST endpoints, implemented adaptive viewports, and created a Pocket PC (Windows Mobile 2003) interface specifically engineered for mobile devices.

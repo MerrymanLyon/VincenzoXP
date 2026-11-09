@@ -3,6 +3,7 @@ import Image from "next/image";
 import WinAccordion from "components/WinAccordion/WinAccordion";
 import emptyfile from "../../assets/workaccordion/emptyfile.png";
 import styles from "./WhyXP.module.css";
+import AiBadges from "components/AiBadges/AiBadges";
 
 interface WhyXPProps {
   id?: number;
@@ -137,7 +138,7 @@ const WhyXP: React.FC<WhyXPProps> = () => {
                 Windows XP was my very first computer—a nostalgic gateway that shaped my digital mindset. Access to such an intuitive interface during my childhood introduced me to the web early on, sparking an early passion for HTML coding, video editing, and graphic design throughout my teenage years. In the early 2000s, Windows XP represented a pivotal milestone, granting an entire generation its first meaningful access to personal computing and digital tools.
               </p>
               <p style={{ margin: 0 }}>
-                Recreating this operating system as a web application served as a hands-on technical experiment. Engineered through human-AI pair programming with Gemini, this project allowed me to master modern frontend architectures—leveraging React, Next.js, and Redux logic to build dynamic window managers, custom responsive viewports (like the mobile Pocket PC interface), and REST API integrations.
+                Recreating this operating system as a web application served as a hands-on technical experiment. Vibecoded with <AiBadges /> through human-AI pair programming, this project allowed me to master modern frontend architectures—leveraging React, Next.js, and Redux logic to build dynamic window managers, custom responsive viewports (like the mobile Pocket PC interface), and REST API integrations.
               </p>
             </div>
 

@@ -105,3 +105,12 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Il sito è sempre "chiaro": senza un colore esplicito i pulsanti XP prendono il colore di sistema,
+   che con il tema scuro di Android/Chrome diventa bianco su fondo chiaro */
+:root {
+  color-scheme: only light;
+}
+button {
+  color: #222;
+}
