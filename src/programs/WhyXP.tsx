@@ -240,6 +240,10 @@ const WhyXP: React.FC<WhyXPProps> = () => {
               Threat Resolver: Two Games Built with Claude Code
             </h2>
 
+            <div className={styles.imagePreviewContainer} style={{ marginTop: 0, marginBottom: "16px" }}>
+              <img src="/whyxp/hack-fiction.jpg" alt="Hack Fiction" className={styles.previewImage} />
+            </div>
+
             <div style={{ marginBottom: "16px" }}>
               <h3 style={{ fontSize: "13px", color: "#000080", marginBottom: "6px" }}>
                 The Concept: When the Hack Becomes a Game

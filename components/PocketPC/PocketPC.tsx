@@ -437,6 +437,13 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
             <div className={styles.cardTitle}>
               Arcade Games: Built with Claude Code
             </div>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "8px", marginBottom: "10px" }}>
+              <img
+                src="/whyxp/hack-fiction.jpg"
+                alt="Hack Fiction"
+                style={{ width: "100%", maxWidth: "300px", height: "auto", borderRadius: "4px", border: "1px solid #7f9db9" }}
+              />
+            </div>
             <div className={styles.cardDesc}>
               The site boots, then gets &ldquo;hacked&rdquo;: the BIOS reports a breach, and resolving the threats opens an arcade with two original minigames. <strong>San Tufellos</strong> is a top-down car chase through a pixel-art version of Rome&apos;s Tufello neighbourhood; <strong>The Good, the Bad &amp; the Zero-Day</strong> is a three-way spaghetti-western standoff where a red crow is the signal to draw.
               <div className={styles.cardBullet}>
