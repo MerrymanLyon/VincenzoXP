@@ -41,7 +41,7 @@ canvas:focus { outline: none; }
     "4":"101101111001001","5":"111100110001110","6":"011100110101010","7":"111001010010010","8":"010101010101010","9":"010101011001110",
     "!":"010010010000010","+":"000010111010000","-":"000000111000000",":":"000010000010000","/":"001001010100100",".":"000000000000010"," ":"000000000000000",
     "<":"001010100010001",">":"100010001010100","=":"000111000111000","'":"010010000000000",",":"000000000010100","?":"110001010000010",
-    "↑":"010111010010010","↓":"010010010111010","&":"010101010101011",
+    "#":"101111101111101","@":"111101111100111","$":"011110010011110","%":"101001010100101","*":"101010111010101","↑":"010111010010010","↓":"010010010111010","&":"010101010101011",
   };
   const textW = (s, k = 1) => s.length * 4 * k - k;
   const text = (ctx, s, x, y, k, col, outlined = true) => {
@@ -216,26 +216,6 @@ canvas:focus { outline: none; }
         set(i, j, 0, v);
       }
     }
-    // gun belt with brass cartridge loops showing on the right hip
-    for (let j = 104; j <= 109; j++) for (let i = cx + 22; i <= cx + 47; i++) set(i, j, 5, 0.35 + 0.4 * (i - cx - 22) / 25 + (j === 104 ? 0.15 : 0));
-    for (let i = cx + 24; i <= cx + 38; i += 3) for (let j = 105; j <= 107; j++) set(i, j, 7, j === 105 ? 0.95 : 0.6);
-    // right arm in the duster sleeve, crease at the elbow
-    for (let j = 66 + b; j <= 97; j++) {
-      const t = (j - 66) / 31, ac = cx + 37 + 7 * t, aw = 7.5 - t * 1.4;
-      for (let i = Math.floor(ac - aw); i <= ac + aw; i++) {
-        const dx = (i - ac) / aw; let v = 0.5 + 0.42 * dx - 0.3 * Math.exp(-(((j - 86) / 2.2) ** 2)) * (1 - Math.abs(dx));
-        if (i <= ac - aw + 0.6) v = 0.05;
-        set(i, j, 0, v);
-      }
-    }
-    // holster, walnut grip with brass, gloved hand hovering above it with the fingers loose
-    for (let j = 124; j < PH; j++) for (let i = cx + 40; i <= cx + 49; i++) set(i, j, 5, 0.35 + 0.45 * (i - cx - 40) / 9 - (i === cx + 47 && j % 3 === 0 ? 0.25 : 0));
-    for (let j = 116; j <= 126; j++) for (let i = cx + 39 + (j < 119 ? 2 : 0); i <= cx + 48; i++) set(i, j, 6, 0.35 + 0.5 * (i - cx - 39) / 9 + (j === 117 ? 0.2 : 0));
-    set(cx + 47, 115, 7, 0.3); set(cx + 48, 115, 7, 0.55); set(cx + 41, 120, 7, 0.9); set(cx + 46, 120, 7, 0.9);
-    for (let j = 97; j <= 100; j++) for (let i = cx + 40; i <= cx + 54; i++) set(i, j, 8, 0.25 + 0.4 * (i - cx - 40) / 14 + (j === 97 ? 0.2 : 0)); // gauntlet cuff
-    for (let j = 101; j <= 108; j++) for (let i = cx + 42; i <= cx + 54; i++) set(i, j, 8, 0.4 + 0.45 * (i - cx - 42) / 12 + (j === 102 ? 0.12 : 0) - (j === 108 ? 0.15 : 0));
-    for (let k = 0; k < 4; k++) { const fx = cx + 43 + k * 3; for (let j = 109; j <= 115 - (k === 3 ? 2 : 0); j++) { set(fx, j, 8, 0.3 + 0.1 * k); set(fx + 1, j, 8, 0.5 + 0.1 * k); } }
-    for (let j = 103; j <= 111; j++) { set(cx + 41, j, 8, 0.22); set(cx + 40, j + 1, 8, 0.2); }
     // layered leather cape: an upper collar layer and a lower layer with a fringed hem
     const capeLayer = (top, hemBase, widthMax, grow, base) => {
       for (let j = top + b; j < hemBase + 6; j++) for (let i = 0; i < PW; i++) {
@@ -302,7 +282,9 @@ canvas:focus { outline: none; }
     return c;
   };
   const PLAYER = [renderPlayer(0, 0), renderPlayer(0, 1), renderPlayer(1, 0), renderPlayer(1, 1)];
-  const HAND = { x: 104, y: 112 }; // where the gun clears leather, in sprite coordinates
+  // arms and guns live under the cape: they only come out when you shoot (sprite coordinates of the shoulders)
+  // arms reach forward, so from behind you only see the fists either side of the head and short, foreshortened barrels
+  const SHOULDER = [{ x: 30, y: 64 }, { x: 94, y: 64 }], FIST = [{ x: 20, y: 50 }, { x: 106, y: 50 }];
 
   // =====================================================================
   // decoys, the signal, honour stars, cylinder buttons, coin
@@ -371,13 +353,6 @@ canvas:focus { outline: none; }
     AC = new Ctor(); master = AC.createGain(); master.gain.value = muted ? 0 : 0.7; master.connect(AC.destination);
     noiseBuf = AC.createBuffer(1, AC.sampleRate * 2, AC.sampleRate);
     const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    // wind: looping noise through a slowly wandering band-pass
-    const src = AC.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
-    const bp = AC.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 450; bp.Q.value = 0.7;
-    const wg = AC.createGain(); wg.gain.value = 0.05;
-    src.connect(bp).connect(wg).connect(master); src.start();
-    const l1 = AC.createOscillator(), g1 = AC.createGain(); l1.frequency.value = 0.11; g1.gain.value = 0.035; l1.connect(g1).connect(wg.gain); l1.start();
-    const l2 = AC.createOscillator(), g2 = AC.createGain(); l2.frequency.value = 0.07; g2.gain.value = 220; l2.connect(g2).connect(bp.frequency); l2.start();
   };
   const setMuted = (m) => { muted = m; if (master) master.gain.value = m ? 0 : 0.7; try { localStorage.setItem("zeroday-muted", m ? "1" : "0"); } catch (e) { /* storage unavailable */ } };
   const tone = (type, f0, f1, t0, dur, peak, dest) => {
@@ -482,7 +457,7 @@ canvas:focus { outline: none; }
   const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let state = "title", t = 0, st = 0, level = 1, honor = 3, events = [], nextDecoy = 60, signalAt = 0, signalT = 0, sinceRed = 0;
   let rivals = [], result = null, bestMs = 0, beat = 0, flash = 0, shake = 0, initials = [0, 0, 0], slot = 0, board = loadBoard(), lastEntry = -1;
-  let pressedBtn = { Q: 0, E: 0 }, muzzle = null, smoke = [];
+  let pressedBtn = { Q: 0, E: 0 }, muzzle = null, smoke = [], wisps = [], guns = null, whiteout = 0;
   const go = (s) => { state = s; st = 0; };
   // two different rivals per duel: the right one is always a step ahead in the line-up
   const charFor = (side) => CHARACTERS[Math.min(4, Math.floor((level - 1 + side * 2) / 2))];
@@ -493,7 +468,7 @@ canvas:focus { outline: none; }
   const startLevel = () => {
     setSky(Math.min(4, Math.floor((level - 1) / 2)));
     rivals = [0, 1].map((side) => { const C = charFor(side); return { C, side, alive: true, fireAt: 0, fall: 0, hit: 0, ms: reactionFor(C) }; });
-    events = []; smoke = []; muzzle = null; result = null; sinceRed = 0;
+    events = []; smoke = []; wisps = []; muzzle = null; guns = null; whiteout = 0; result = null; sinceRed = 0;
     go("intro"); sfx.bell();
   };
   const newGame = () => { level = 1; honor = 3; bestMs = 0; rivals = []; events = []; setSky(0); go("brief"); };
@@ -527,17 +502,34 @@ canvas:focus { outline: none; }
   };
 
   // ---------- shooting ----------
-  const rivalPos = (r) => ({ x: r.side ? L.rx : L.lx, y: L.oppY });
+  const rivalPos = (r) => {
+    // on a false start they throw themselves out of the line of fire
+    const d = state === "early" ? Math.min(1, st / 5) : 0;
+    return { x: Math.min(VW - 14, (r.side ? L.rx : L.lx) + (r.side ? 1 : -1) * Math.round(d * 16)), y: L.oppY - Math.round(Math.sin(Math.PI * Math.min(1, st / 9)) * 5 * d) };
+  };
+  // the two revolvers: from the shoulder out towards each rival (where they stood when the duel began)
+  const gunGeo = (side) => {
+    const sx = L.pX + SHOULDER[side].x, sy = L.pY + SHOULDER[side].y, out = Math.min(1, (t - guns.t) / 3);
+    // on a narrow phone the left shoulder is off screen: the fist still comes into view
+    const fx = Math.max(7, L.pX + FIST[side].x), hx = sx + (fx - sx) * out, hy = sy + (L.pY + FIST[side].y - sy) * out;
+    const tx = side ? L.rx : L.lx, ty = L.oppY + 22, d = Math.hypot(tx - hx, ty - hy) || 1, ux = (tx - hx) / d, uy = (ty - hy) / d;
+    return { sx, sy, hx, hy, ux, uy, tipX: hx + ux * 10, tipY: hy - 2 + uy * 10 };
+  };
+  const shoot = (key) => {
+    const side = key === "Q" ? 0 : 1;
+    pressedBtn[key] = 8;
+    if (!guns) guns = { t, fired: [0, 0] };
+    guns.fired[side] = t; whiteout = 4;
+    sfx.shot(false); shake = 5; muzzle = { t: 6, side };
+  };
   const fire = (key) => {
     if (state === "wait") {
-      // false start: honour lost, the level starts again
-      sfx.click(); honor--; flash = 6; go("early"); return;
+      // false start: you fire too soon, they dodge and curse you from across the field; honour lost, the level starts again
+      shoot(key); honor--; flash = 6; go("early"); return;
     }
     if (state !== "draw") return;
     const r = rivals[key === "Q" ? 0 : 1];
-    pressedBtn[key] = 8;
-    sfx.shot(false); shake = 4; muzzle = { t: 5 };
-    smoke.push({ x: L.pX + HAND.x, y: L.pY + HAND.y - 4, vx: 0.4, age: 0 });
+    shoot(key);
     if (!r.alive) return;
     r.alive = false; r.hit = performance.now() - signalT; r.fall = 1;
     if (!rivals.some((q) => q.alive)) {
@@ -607,6 +599,9 @@ canvas:focus { outline: none; }
     stepEvents();
     if (pressedBtn.Q > 0) pressedBtn.Q--; if (pressedBtn.E > 0) pressedBtn.E--;
     if (muzzle && --muzzle.t <= 0) muzzle = null;
+    if (whiteout > 0) whiteout--;
+    wisps.forEach((w) => { w.age++; w.y -= 0.35; w.x += Math.sin(w.age / 6 + w.ph) * 0.3 + 0.08; }); wisps = wisps.filter((w) => w.age < 46);
+    if (guns && t % 6 === 0) [0, 1].forEach((side) => { if (guns.fired[side] && t - guns.fired[side] > 4) { const g = gunGeo(side); wisps.push({ x: g.tipX, y: g.tipY - 2, age: 0, ph: Math.random() * 6 }); } });
     if (flash > 0) flash--; shake *= 0.85;
     rivals.forEach((r) => { if (!r.alive && r.fall < 12) r.fall++; if (r.flash > 0) r.flash--; });
     if (state === "title" || state === "brief" || state === "controls") return;
@@ -654,6 +649,7 @@ canvas:focus { outline: none; }
     const p = rivalPos(r), s = r.C.sprite;
     px(ctx, p.x - 9, p.y + 44, "rgba(20,12,8,0.35)", 18, 2);
     if (r.alive || r.fall < 4) {
+      if (state === "early" && st < 12) for (let k = 0; k < 4; k++) px(ctx, p.x + (r.side ? -16 - k * 3 : 14), p.y + 10 + k * 8, "rgba(255,244,220,0.7)", 6 + k, 1);
       ctx.drawImage(s, p.x - 13, p.y);
       if (r.flash > 0) { px(ctx, p.x + 6, p.y + 25, "#fff4c0", 4, 3); px(ctx, p.x + 9, p.y + 24, "#ffd060", 3, 5); }
       if (!r.alive) px(ctx, p.x - 13, p.y, "rgba(255,255,255,0.5)", 26, 46);
@@ -682,12 +678,41 @@ canvas:focus { outline: none; }
       text(ctx, key, kx + 4, ky + 3, 1, hot ? "#fff4dc" : "#3a2418", false);
     });
   };
+  const drawGun = (side) => {
+    const g = gunGeo(side), seg = (x0, y0, x1, y1, w, col) => { for (let q = 0; q <= 1; q += 0.06) px(ctx, x0 + (x1 - x0) * q - w / 2, y0 + (y1 - y0) * q - w / 2, col, w, w); };
+    // sleeve coming out from under the cape
+    seg(g.sx, g.sy, g.hx, g.hy + 3, 9, K); seg(g.sx, g.sy, g.hx, g.hy + 3, 7, "#45261a"); seg(g.sx + 1, g.sy - 1, g.hx + 1, g.hy + 2, 3, "#83522f");
+    // revolver: short barrel (it points away from you), cylinder, hammer
+    const bx = g.hx + g.ux * 2, by = g.hy - 2 + g.uy * 2;
+    seg(bx, by, g.tipX, g.tipY, 5, K); seg(bx, by, g.tipX, g.tipY, 3, "#5a5248"); seg(bx, by - 1, g.tipX, g.tipY - 1, 1, "#c8c0b0");
+    px(ctx, g.hx - 3, g.hy - 6, K, 7, 6); px(ctx, g.hx - 2, g.hy - 5, "#8c8476", 5, 4); px(ctx, g.hx - 1, g.hy - 5, "#f4eee2", 2, 1); px(ctx, g.hx - 1, g.hy - 8, K, 2, 3);
+    // gloved fist round the walnut grip
+    px(ctx, g.hx - 4, g.hy - 2, K, 9, 8); px(ctx, g.hx - 3, g.hy - 1, "#583a24", 7, 6); px(ctx, g.hx - 3, g.hy - 1, "#8a5c38", 6, 1); px(ctx, g.hx - 3, g.hy + 4, "#2c1a10", 7, 1);
+  };
+  // far-off cursing: a speech bubble full of scribbles over each rival
+  const drawCurse = (r, i) => {
+    if (state !== "early" || st < 9) return;
+    const p = rivalPos(r), glyphs = "#@$%*!", n = 4, w = n * 4 + 5, h = 11;
+    const bx = clamp(Math.round(p.x - w / 2 + (r.side ? 4 : -4)), 2, VW - w - 2), by = p.y - h - 7 + (Math.floor((t + i * 7) / 6) % 2);
+    px(ctx, bx - 1, by, K, w + 2, h); px(ctx, bx, by - 1, K, w, h + 2);
+    px(ctx, bx, by, "#fff4dc", w, h);
+    px(ctx, p.x - 1, by + h, K, 4, 3); px(ctx, p.x, by + h, "#fff4dc", 2, 2);
+    let str = ""; for (let k = 0; k < n; k++) str += glyphs[(Math.floor(t / 7) + k * 3 + i * 5) % glyphs.length];
+    text(ctx, str, bx + 3, by + 3, 1, k2col(i), false);
+  };
+  const k2col = (i) => (i ? "#a01818" : "#2a1410");
   const drawScene = () => {
     const sx = Math.round((Math.random() - 0.5) * shake), sy = Math.round((Math.random() - 0.5) * shake);
     ctx.save(); ctx.translate(sx, sy);
-    ctx.drawImage(bg, 0, 0); drawEvents(); rivals.forEach(drawRival);
+    ctx.drawImage(bg, 0, 0); drawEvents(); rivals.forEach(drawRival); rivals.forEach(drawCurse);
     ctx.drawImage(PLAYER[(Math.floor(t / 90) % 2) * 2 + (Math.floor(t / 14) % 2)], L.pX, L.pY);
-    if (muzzle) { const mx = L.pX + HAND.x, my = L.pY + HAND.y - 6; for (let k = 0; k < 6; k++) px(ctx, mx + k * 2, my - k, k < 2 ? "#fff8d0" : "#ffb040", 3, 3); }
+    if (guns) [0, 1].forEach(drawGun);
+    wisps.forEach((w) => { const a = 1 - w.age / 46; px(ctx, w.x, w.y, `rgba(236,230,218,${(0.85 * a).toFixed(2)})`, w.age > 20 ? 2 : 1, 2); });
+    if (muzzle && guns) {
+      const g = gunGeo(muzzle.side), mx = g.tipX + g.ux * 3, my = g.tipY + g.uy * 3, k = muzzle.t / 6;
+      for (let a = 0; a < 8; a++) { const an = a * Math.PI / 4 + 0.4, len = (a % 2 ? 5 : 9) * k + 2; for (let s2 = 0; s2 < len; s2++) px(ctx, mx + Math.cos(an) * s2 - 1, my + Math.sin(an) * s2 - 1, s2 < len * 0.5 ? "#fff8d0" : "#ffb040", 2, 2); }
+      px(ctx, mx - 3, my - 3, "#ffffff", 7, 7);
+    }
     smoke.forEach((p) => puff(ctx, p.x, p.y, p.age, 30, "#e8e0d0", "#b8b0a0"));
     ctx.restore();
   };
@@ -770,11 +795,11 @@ canvas:focus { outline: none; }
     }
 
     if (state === "intro") {
-      // three cuts: left rival's eyes, right rival's eyes, your hand over the holster
+      // three cuts: left rival's eyes, right rival's eyes, your hat and the back of your neck
       px(ctx, 0, 0, "#000", VW, VH);
       const cut = Math.min(2, Math.floor(st / 50)), k = Math.max(2, Math.floor(VW / 64)), w = 64 * k, h = 16 * k, x = Math.round((VW - w) / 2), y = Math.round((VH - h) / 2);
       if (cut < 2) ctx.drawImage(rivals[cut].C.eyes, 0, 0, 64, 16, x, y, w, h);
-      else ctx.drawImage(PLAYER[0], 88, 92, 40, 30, Math.round((VW - 40 * k / 2) / 2), Math.round((VH - 30 * k / 2) / 2), Math.round(40 * k / 2), Math.round(30 * k / 2));
+      else { const z = Math.max(1, Math.floor(Math.min(VW * 0.9 / 96, VH * 0.45 / 54))); ctx.drawImage(PLAYER[(Math.floor(st / 14) % 2)], 12, 4, 96, 54, Math.round((VW - 96 * z) / 2), Math.round(y + h - 54 * z), 96 * z, 54 * z); }
       centered(cut < 2 ? rivals[cut].C.name : "YOU", y + h + 8, 1, "#b6a184");
       centered("LEVEL " + level, Math.max(4, y - 16), 2, "#e8c060");
       return;
@@ -785,9 +810,10 @@ canvas:focus { outline: none; }
     if (state === "wait" || state === "draw") drawTriggers(hot);
     if (state === "draw" && st > 10 && st < 60) text(ctx, "DRAW", Math.round(VW / 2 - 7), VH - 12, 1, "#ff7a6a");
     drawHud();
-    if (flash > 0) px(ctx, 0, 0, state === "dead" || state === "early" ? "rgba(200,40,30,0.35)" : "rgba(255,240,200,0.4)", VW, VH);
+    if (whiteout > 0) px(ctx, 0, 0, `rgba(255,252,240,${(0.3 + whiteout * 0.17).toFixed(2)})`, VW, VH);
+    else if (flash > 0) px(ctx, 0, 0, state === "dead" || state === "early" ? "rgba(200,40,30,0.35)" : "rgba(255,240,200,0.4)", VW, VH);
     if (state === "won") { centered("CLEAN SHOT", Math.round(VH * 0.18), 2, "#e8c060"); centered((result.ms / 1000).toFixed(3) + " S", Math.round(VH * 0.18) + 16, 2, "#efe2c8"); }
-    if (state === "early") { centered("TOO EARLY!", Math.round(VH * 0.2), 3, "#ff7a6a"); centered(honor > 0 ? "-1 STAR. THE DUEL STARTS AGAIN" : "NO STARS LEFT", Math.round(VH * 0.2) + 22, 1, "#efe2c8"); }
+    if (state === "early") { const ey = L.land ? 4 : Math.round(VH * 0.2); centered("TOO EARLY!", ey, 3, "#ff7a6a"); centered(honor > 0 ? "-1 STAR. THE DUEL STARTS AGAIN" : "NO STARS LEFT", ey + 20, 1, "#efe2c8"); }
     if (state === "dead") { px(ctx, 0, 0, "rgba(90,10,8,0.35)", VW, VH); centered("YOU'RE DEAD", Math.round(VH * 0.25), 3, "#ff7a6a"); centered("SHOT BY " + result.by, Math.round(VH * 0.25) + 22, 1, "#efe2c8"); }
     if (state === "over") {
       panel(0.7);

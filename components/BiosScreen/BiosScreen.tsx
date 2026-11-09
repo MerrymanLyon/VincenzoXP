@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BiosScreen.module.css";
 
-interface BiosScreenProps {
-  onCheat?: () => void;
-}
-
-const CHEAT = "AEZAKMI";
-// Solo touch, senza mouse né trackpad (smartphone, iPad senza tastiera): niente tastiera per il trucco
-export const isTouchOnly = () =>
-  window.matchMedia("(pointer: coarse)").matches && !window.matchMedia("(any-pointer: fine)").matches;
-
-export default function BiosScreen({ onCheat }: BiosScreenProps) {
+export default function BiosScreen() {
   const [cveIndex, setCveIndex] = useState(0);
-  const [cheatBuffer, setCheatBuffer] = useState("");
-  const [isTouch, setIsTouch] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -28,27 +17,7 @@ export default function BiosScreen({ onCheat }: BiosScreenProps) {
   // Garantisce che le animazioni e i numeri casuali partano SOLO lato Client
   useEffect(() => {
     setIsMounted(true);
-    setIsTouch(isTouchOnly());
   }, []);
-
-  // Il trucco di GTA San Andreas: le lettere digitate riempiono il buffer, AEZAKMI apre il gioco
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!/^[a-zA-Z]$/.test(e.key)) return;
-      // un tasto fisico vuol dire tastiera attaccata (es. iPad): si passa alla versione con il trucco
-      setIsTouch(false);
-      setCheatBuffer((prev) => {
-        const next = (prev + e.key.toUpperCase()).slice(-CHEAT.length);
-        if (next === CHEAT) {
-          onCheat?.();
-          return "";
-        }
-        return next;
-      });
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onCheat]);
 
   // Sequenza di comparsa delle CVE
   useEffect(() => {
@@ -121,18 +90,6 @@ export default function BiosScreen({ onCheat }: BiosScreenProps) {
         <div>STACK_INTEGRITY    : 0% CORRUPTED</div>
         <div>EXECUTION_THREAD   : TERMINATED_BY_SYSTEM</div>
         <div>NEXT_CHAPTER_STATUS: INITIALIZING_NEW_BRAND...</div>
-        {!isTouch && (
-          <>
-            <div>
-              CHEAT_INPUT_BUFFER : [{cheatBuffer.padEnd(CHEAT.length, "_")}]{" "}
-              <span className={styles.blinking}>AWAITING CODE</span>
-            </div>
-            <br />
-            <div className={styles.warningTitle}>
-              HINT: TYPE THE SAN ANDREAS CHEAT THAT CLEARS YOUR WANTED LEVEL.
-            </div>
-          </>
-        )}
         <br />
 
         {/* BARRA LOADING ANIMATA BUGGATA */}
@@ -158,11 +115,6 @@ export default function BiosScreen({ onCheat }: BiosScreenProps) {
 
         <br />
         <br />
-        {!isTouch && (
-          <div className={styles.footer}>
-            Press ENTER to return to the desktop and ignore the threat <span className={styles.blinking}>_</span>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -785,6 +785,7 @@ canvas:focus { outline: none; }
   };
   let camX = JONIO.x, camY = JONIO.y, camA = 0;
   function start() {
+    sfx.coin();
     tuneSpeed();
     player = newCar(...P(1000, 332), -Math.PI / 2, VMAX);
     camX = player.x; camY = player.y; camA = player.a;
@@ -853,15 +854,88 @@ canvas:focus { outline: none; }
   const FIRE = ["#fff6c0", "#ffd040", "#ff8a20", "#d02010", "#4a1020"], BLUE = ["#ffffff", "#bfe0ff", "#5a86d0", "#2f4aa0"], ORANGE = ["#ffffff", "#ffe27a", "#f07a3c", "#d0402e"];
   const pop = (s, sub, tt = 70) => { banner = { text: s, sub, t: tt }; };
   const explode = () => {
-    dying = 70; endReason = "WASTED"; banner = null; shake = 12; player.vx = player.vy = 0;
+    dying = 70; endReason = "WASTED"; banner = null; shake = 12; player.vx = player.vy = 0; sfx.wasted();
     burst(player.x, player.y, 70, FIRE, 170, 30); burst(player.x, player.y, 30, SMOKE, 60, 45);
   };
+
+  // =====================================================================
+  // sound: all synthesised, no background hiss. Engine, tyres and sirens follow the game; M mutes
+  // =====================================================================
+  let AC = null, master = null, noiseBuf = null, muted = false, eng = null, lastSec = 0;
+  try { muted = localStorage.getItem("santufellos-muted") === "1"; } catch (e) { /* storage unavailable */ }
+  const audioInit = () => {
+    if (AC) { if (AC.state === "suspended") AC.resume(); return; }
+    const Ctor = window.AudioContext || window.webkitAudioContext; if (!Ctor) return;
+    AC = new Ctor(); master = AC.createGain(); master.gain.value = muted ? 0 : 0.6; master.connect(AC.destination);
+    noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    // the Panda's little engine: two detuned saws and a sub, through a low-pass that opens with the revs
+    const lp = AC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 500; lp.Q.value = 3;
+    const eg = AC.createGain(); eg.gain.value = 0; lp.connect(eg).connect(master);
+    const o1 = AC.createOscillator(), o2 = AC.createOscillator(), o3 = AC.createOscillator();
+    o1.type = "sawtooth"; o2.type = "sawtooth"; o3.type = "square"; o2.detune.value = 14;
+    const sub = AC.createGain(); sub.gain.value = 0.5; o3.connect(sub).connect(lp); o1.connect(lp); o2.connect(lp);
+    [o1, o2, o3].forEach((o) => o.start());
+    // tyres: a narrow band of noise, only heard while sliding
+    const tn = AC.createBufferSource(); tn.buffer = noiseBuf; tn.loop = true;
+    const tb = AC.createBiquadFilter(); tb.type = "bandpass"; tb.frequency.value = 2400; tb.Q.value = 9;
+    const tg = AC.createGain(); tg.gain.value = 0; tn.connect(tb).connect(tg).connect(master); tn.start();
+    // police siren: a square wave switching between two notes
+    const so = AC.createOscillator(); so.type = "square"; so.frequency.value = 700;
+    const sf = AC.createBiquadFilter(); sf.type = "lowpass"; sf.frequency.value = 1800;
+    const sg = AC.createGain(); sg.gain.value = 0; so.connect(sf).connect(sg).connect(master); so.start();
+    eng = { o1, o2, o3, lp, eg, tg, so, sg };
+  };
+  const setMuted = (m) => { muted = m; if (master) master.gain.value = m ? 0 : 0.6; try { localStorage.setItem("santufellos-muted", m ? "1" : "0"); } catch (e) { /* storage unavailable */ } };
+  const glide = (param, v, k = 0.06) => { if (AC) param.setTargetAtTime(v, AC.currentTime, k); };
+  const tone = (type, f0, f1, t0, dur, peak) => {
+    const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f0, t0); if (f1) o.frequency.exponentialRampToValueAtTime(f1, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(master); o.start(t0); o.stop(t0 + dur + 0.05);
+  };
+  const noise = (t0, dur, peak, freq) => {
+    const s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = noiseBuf; f.type = "lowpass"; f.frequency.value = freq;
+    g.gain.setValueAtTime(peak, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    s.connect(f).connect(g).connect(master); s.start(t0, Math.random() * 0.5); s.stop(t0 + dur + 0.05);
+  };
+  const notes = (seq, type = "square", peak = 0.09) => { const t0 = AC.currentTime; seq.forEach(([f, at, dur]) => tone(type, f, 0, t0 + at, dur, peak)); };
+  const sfx = {
+    coin: () => AC && notes([[988, 0, 0.08], [1319, 0.08, 0.3]]),
+    beep: (hi) => AC && tone("square", hi ? 1046 : 523, 0, AC.currentTime, hi ? 0.45 : 0.18, 0.1),
+    crash: (k = 1) => { if (!AC) return; const t0 = AC.currentTime; noise(t0, 0.25 + 0.2 * k, 0.5 * k, 900); tone("sine", 90, 40, t0, 0.22, 0.4 * k); tone("square", 260, 120, t0, 0.08, 0.05 * k); },
+    boost: () => { if (!AC) return; const t0 = AC.currentTime; tone("sawtooth", 180, 720, t0, 0.35, 0.08); noise(t0, 0.3, 0.12, 3000); },
+    turbo: (big) => AC && notes(big ? [[660, 0, 0.07], [880, 0.07, 0.07], [1320, 0.14, 0.2]] : [[660, 0, 0.07], [990, 0.07, 0.15]], "square", 0.07),
+    pickup: () => AC && notes([[784, 0, 0.07], [988, 0.06, 0.07], [1175, 0.12, 0.07], [1568, 0.18, 0.2]], "square", 0.08),
+    passed: () => AC && notes([[523, 0, 0.14], [659, 0.14, 0.14], [784, 0.28, 0.14], [1046, 0.42, 0.5], [784, 0.42, 0.5], [659, 0.42, 0.5]], "triangle", 0.16),
+    takedown: () => { if (!AC) return; sfx.crash(1.2); notes([[1175, 0.12, 0.08], [1568, 0.2, 0.25]], "square", 0.07); },
+    tick: () => AC && tone("square", 1400, 0, AC.currentTime, 0.04, 0.05),
+    busted: () => AC && notes([[392, 0, 0.2], [330, 0.2, 0.2], [262, 0.4, 0.2], [196, 0.6, 0.7]], "sawtooth", 0.08),
+    wasted: () => { if (!AC) return; const t0 = AC.currentTime; noise(t0, 1.4, 0.9, 700); tone("sine", 70, 30, t0, 1.2, 0.6); notes([[220, 0.5, 0.4], [196, 0.9, 0.4], [147, 1.3, 1.0]], "triangle", 0.12); },
+  };
+  // the continuous sounds follow the car every frame
+  const audioFrame = (speed, drifting) => {
+    if (!eng) return;
+    const live = state === "play" && !dying;
+    const rev = clamp(speed / VMAX, 0, 1.5), f = 48 + rev * 95 + (player && player.boost > 0 ? 30 : 0) + (keys.up ? 8 : 0);
+    glide(eng.o1.frequency, f); glide(eng.o2.frequency, f); glide(eng.o3.frequency, f / 2);
+    glide(eng.lp.frequency, 380 + rev * 1500 + (keys.up ? 300 : 0));
+    glide(eng.eg.gain, live ? 0.07 + rev * 0.05 : 0, 0.1);
+    glide(eng.tg.gain, live && drifting ? 0.05 : 0, 0.04);
+    let near = 9999; if (live) cops.forEach((c) => { if (!c.tank && c.wreck <= 0) near = Math.min(near, Math.hypot(c.x - player.x, c.y - player.y)); });
+    glide(eng.sg.gain, near < 260 ? 0.035 * (1 - near / 260) : 0, 0.15);
+    eng.so.frequency.setValueAtTime(Math.floor(t / 22) % 2 ? 960 : 720, AC.currentTime);
+    if (live && timeLeft < 10 && Math.ceil(timeLeft) !== lastSec) { lastSec = Math.ceil(timeLeft); sfx.tick(); }
+  };
+  ["pointerdown", "keydown", "touchstart"].forEach((ev) => window.addEventListener(ev, audioInit, { passive: true }));
+  window.addEventListener("keydown", (e) => { if (e.code === "KeyM" && state !== "initials") setMuted(!muted); });
 
   const update = (dt) => {
     t++; st++;
     if (state === "coin" && st > 50) { start(); return; }
     if (state === "brief" && st > 420) go("controls");
     if (state === "controls" && st > 480) go("count");
+    if (state === "count" && (st === 1 || st === 46 || st === 91 || st === 136)) sfx.beep(st === 136);
+    if (state !== "play" || dying) audioFrame(0, false);
     if (state === "count" && st >= 180) { go("play"); banner = { text: "GRAB THE CVE PATCH!", t: 90 }; }
     if (state !== "play") { if (state === "title") { camA += 0.0025; camX = HQ.x + Math.sin(t / 300) * 300; camY = HQ.y - 150 + Math.cos(t / 380) * 220; } return; }
     if (dying > 0) {
@@ -874,11 +948,12 @@ canvas:focus { outline: none; }
     }
     timeLeft -= dt;
     const imp = stepCar(player, keys, dt);
-    if (imp > VMAX * 0.3) { shake = Math.min(7, imp / 25); burst(player.x, player.y, 8, SPARK, 110); charge = 0; }
+    if (imp > VMAX * 0.3) { shake = Math.min(7, imp / 25); burst(player.x, player.y, 8, SPARK, 110); charge = 0; sfx.crash(Math.min(1, imp / VMAX)); }
     const speed = Math.hypot(player.vx, player.vy);
     const rearX = player.x - Math.sin(player.a) * 13, rearY = player.y + Math.cos(player.a) * 13;
     const sx = Math.cos(player.a) * 6, sy = Math.sin(player.a) * 6;
     const drifting = Math.abs(player.lat) > VMAX * 0.22 && speed > VMAX * 0.35;
+    audioFrame(speed, drifting);
     if (drifting) {
       wc.fillStyle = "#16141e"; wc.fillRect(Math.round(rearX - sx), Math.round(rearY - sy), 2, 2); wc.fillRect(Math.round(rearX + sx), Math.round(rearY + sy), 2, 2);
       charge += dt; driftPts += Math.abs(player.lat) * dt * 2;
@@ -886,7 +961,7 @@ canvas:focus { outline: none; }
       burst(rearX - sx, rearY - sy, 1, cols, 30, 8); burst(rearX + sx, rearY + sy, 1, cols, 30, 8);
     } else if (charge > 0) {
       // mini-turbo: the longer the drift, the longer the boost
-      if (charge > 0.6) { player.boost = charge > 1.4 ? 1.1 : 0.6; kick(player, charge > 1.4 ? 0.25 : 0.18); pop(charge > 1.4 ? "SUPER TURBO!" : "TURBO!", null, 40); }
+      if (charge > 0.6) { player.boost = charge > 1.4 ? 1.1 : 0.6; kick(player, charge > 1.4 ? 0.25 : 0.18); pop(charge > 1.4 ? "SUPER TURBO!" : "TURBO!", null, 40); sfx.turbo(charge > 1.4); }
       if (driftPts > 20) { score += Math.round(driftPts); }
       charge = 0; driftPts = 0;
     }
@@ -895,12 +970,12 @@ canvas:focus { outline: none; }
       parts.push({ x: rearX + (Math.random() - 0.5) * 8, y: rearY + (Math.random() - 0.5) * 8, vx: -Math.sin(player.a) * 60 + (Math.random() - 0.5) * 30, vy: Math.cos(player.a) * 60 + (Math.random() - 0.5) * 30, life: 22, max: 22, cols: FIRE, big: true });
     }
     if (keys.up && speed < 40 && t % 3 === 0) burst(rearX, rearY, 1, SMOKE, 25);
-    PADS.forEach((p) => { if (Math.hypot(player.x - p.x, player.y - p.y) < 16 && player.boost < 0.5) { player.boost = 0.9; kick(player, 0.22); pop("BOOST!", null, 30); shake = 3; } });
-    if (!carrying && Math.hypot(player.x - floppy.x, player.y - floppy.y) < 20) { carrying = true; timeLeft += 5; pop("CVE PATCH GRABBED!", "TAKE IT TO HQ", 90); burst(floppy.x, floppy.y, 16, ["#fff2d0", "#6ac8f0", "#4a6ad0"], 90); }
+    PADS.forEach((p) => { if (Math.hypot(player.x - p.x, player.y - p.y) < 16 && player.boost < 0.5) { player.boost = 0.9; kick(player, 0.22); pop("BOOST!", null, 30); shake = 3; sfx.boost(); } });
+    if (!carrying && Math.hypot(player.x - floppy.x, player.y - floppy.y) < 20) { carrying = true; timeLeft += 5; pop("CVE PATCH GRABBED!", "TAKE IT TO HQ", 90); sfx.pickup(); burst(floppy.x, floppy.y, 16, ["#fff2d0", "#6ac8f0", "#4a6ad0"], 90); }
     if (carrying && Math.hypot(player.x - HQ.x, player.y - HQ.y) < 22) {
       markFlash = 50;
       carrying = false; deliveries++; score += 1000 * stars(); timeLeft += 25;
-      pop("MISSION PASSED!", "RESPECT + / TIME +25", 110);
+      pop("MISSION PASSED!", "RESPECT + / TIME +25", 110); sfx.passed();
       burst(player.x, player.y, 30, SPARK, 140); placeFloppy(); spawnCops();
     }
     let touching = false;
@@ -920,7 +995,7 @@ canvas:focus { outline: none; }
       if (c.rev > 0) { c.rev -= dt; hit = stepCar(c, { down: true, left: diff > 0, right: diff < 0 }, dt); }
       else hit = stepCar(c, { up: true, left: diff < -0.06, right: diff > 0.06, hb: Math.abs(diff) > 1.0 && cs > VMAX * 0.55 }, dt);
       // a cop that slams into a wall near you is a takedown; far away it just wrecks
-      if (hit > VMAX * 0.75 && !c.tank) { c.wreck = 4; burst(c.x, c.y, 20, FIRE, 120, 25); if (d0 < 140) { score += 500; pop("TAKEDOWN!", "+500", 60); shake = 6; } return; }
+      if (hit > VMAX * 0.75 && !c.tank) { c.wreck = 4; burst(c.x, c.y, 20, FIRE, 120, 25); if (d0 < 140) { score += 500; pop("TAKEDOWN!", "+500", 60); shake = 6; sfx.takedown(); } else if (d0 < 260) sfx.crash(0.4); return; }
       c.stuck = cs < 15 ? c.stuck + dt : 0;
       if (c.stuck > 0.6) { c.rev = 0.5; c.stuck = 0; }
       const dx = c.x - player.x, dy = c.y - player.y, dist2 = Math.hypot(dx, dy);
@@ -929,7 +1004,7 @@ canvas:focus { outline: none; }
         const nx = dx / (dist2 || 1), ny = dy / (dist2 || 1), push = (20 - dist2) / 2;
         c.x += nx * push; c.y += ny * push; player.x -= nx * push; player.y -= ny * push;
         const rel = (player.vx - c.vx) * nx + (player.vy - c.vy) * ny;
-        if (rel > 0) { player.vx -= nx * rel * 1.2; player.vy -= ny * rel * 1.2; c.vx += nx * rel * 1.2; c.vy += ny * rel * 1.2; if (rel > 60) { shake = 5; burst(player.x + dx / 2, player.y + dy / 2, 8, SPARK, 100); } }
+        if (rel > 0) { player.vx -= nx * rel * 1.2; player.vy -= ny * rel * 1.2; c.vx += nx * rel * 1.2; c.vy += ny * rel * 1.2; if (rel > 60) { shake = 5; burst(player.x + dx / 2, player.y + dy / 2, 8, SPARK, 100); sfx.crash(0.6); } }
         touching = true;
       }
       cops.forEach((o, oi) => { if (oi <= ci || o.wreck > 0) return; const ex = o.x - c.x, ey = o.y - c.y, e = Math.hypot(ex, ey); if (e < 20 && e > 0) { o.x += ex / e * (20 - e) / 2; o.y += ey / e * (20 - e) / 2; c.x -= ex / e * (20 - e) / 2; c.y -= ey / e * (20 - e) / 2; } });
@@ -937,7 +1012,7 @@ canvas:focus { outline: none; }
     if (dying) return;
     // they catch you if they stay in contact while you are slow; breaking free takes time
     bustT = touching && speed < VMAX * 0.4 ? bustT + dt : Math.max(0, bustT - dt * 0.5);
-    if (bustT > 1.2 || timeLeft <= 0) { endReason = timeLeft <= 0 ? "TIME UP" : "BUSTED"; timeLeft = Math.max(0, timeLeft); banner = null; go("over"); }
+    if (bustT > 1.2 || timeLeft <= 0) { endReason = timeLeft <= 0 ? "TIME UP" : "BUSTED"; timeLeft = Math.max(0, timeLeft); banner = null; go("over"); sfx.busted(); audioFrame(0, false); }
     parts.forEach((p) => { p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.92; p.vy *= 0.92; p.life--; });
     for (let i = parts.length - 1; i >= 0; i--) if (parts[i].life <= 0) parts.splice(i, 1);
     if (banner && --banner.t <= 0) banner = null;

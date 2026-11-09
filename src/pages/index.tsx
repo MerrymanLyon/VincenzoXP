@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import BootScreen from "components/BootScreen/BootScreen";
-import BiosScreen, { isTouchOnly } from "components/BiosScreen/BiosScreen";
+import BiosScreen from "components/BiosScreen/BiosScreen";
 import StartBar from "components/StartBar/StartBar";
 import DesktopIcon from "components/DesktopIcon/DesktopIcon";
 import WinForm from "components/WinForm/WinForm";
@@ -32,6 +32,9 @@ import { AppDirectory } from "@/appData";
 type Stage = "BOOT" | "DESKTOP_FLASH" | "BIOS" | "DESKTOP";
 
 const CVE_TITLE = "System Error - CVE Breach";
+// Le due finestre sopra il BIOS: sono WinForm veri come quelli del desktop (solo il pulsante di chiusura)
+const THREAT_TITLE = "System Error - Multiple Threats";
+const ARCADE_TITLE = "Threat Resolver.exe";
 
 // Dimensioni stimate del pop-up CVE (WinForm in modalità prompt)
 const POPUP_WIDTH = 450;
@@ -48,14 +51,40 @@ const cvePopupCss = `
     width: min(450px, calc(100vw - 16px)) !important;
     pointer-events: auto;
   }
+  .bios-win { position: fixed; inset: 0; pointer-events: none; }
+  .bios-win.dim { background: rgba(0, 0, 40, 0.35); pointer-events: auto; }
+  .bios-win > div { pointer-events: auto; }
+  .bios-threat > div {
+    width: min(450px, calc(100vw - 16px)) !important;
+    left: calc(50% - min(225px, 50vw - 8px)) !important;
+    top: calc(50% - 130px) !important;
+    bottom: auto !important;
+  }
+  .bios-arcade > div {
+    display: flex !important;
+    flex-direction: column;
+    width: min(860px, 96vw) !important;
+    height: min(640px, 92vh) !important;
+    left: calc(50% - min(430px, 48vw)) !important;
+    top: calc(50% - min(320px, 46vh)) !important;
+    bottom: auto !important;
+  }
+  .bios-arcade > div > div:last-child { flex: 1; height: auto; min-height: 0; }
+  .bios-arcade iframe { border: 0; width: 100%; height: 100%; flex: 1; display: block; background: #000; }
+  @media (max-width: 699px) {
+    .bios-arcade > div {
+      width: 100vw !important;
+      height: 100dvh !important;
+      left: 0 !important;
+      top: 0 !important;
+    }
+  }
 `;
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("BOOT");
   // la sala giochi (o un gioco preciso), aperta in una finestra sopra il BIOS
   const [gameOpen, setGameOpen] = useState<string | null>(null);
-  // la finestra "minacce rilevate" che compare sopra il BIOS
-  const [threatOpen, setThreatOpen] = useState(false);
   // Posizione casuale (in px) di ogni pop-up
   const [positions, setPositions] = useState<Record<number, { x: number; y: number }>>({});
 
@@ -64,6 +93,12 @@ export default function Home() {
   const isCveTab = (tab: Tab) => tab.program === App.ERROR && tab.title === CVE_TITLE;
   const cveTabs = Tabs.filter(isCveTab);
   const prevCveIds = useRef<number[]>([]);
+  const isBiosTab = (tab: Tab) => tab.program === App.ERROR && (tab.title === THREAT_TITLE || tab.title === ARCADE_TITLE);
+  const threatTab = Tabs.find((tab) => tab.program === App.ERROR && tab.title === THREAT_TITLE);
+  const arcadeTab = Tabs.find((tab) => tab.program === App.ERROR && tab.title === ARCADE_TITLE);
+  // finestre del BIOS chiuse da noi (non dalla X), per non scambiarle per una scelta dell'utente
+  const silentClose = useRef<Set<number>>(new Set());
+  const prevBiosTabs = useRef<{ threat?: number; arcade?: number }>({});
 
   // Transizione dal Desktop al BIOS dopo 1 secondo di flash
   useEffect(() => {
@@ -127,10 +162,49 @@ export default function Home() {
     window.open(encodeURI("./Copia di CV-Reina-2025_ENG_noport.pdf"));
   };
 
-  // Quando l'utente esce dal BIOS
+  const biosTab = (title: string): Tab => ({
+    id: Date.now() + Math.floor(Math.random() * 1000),
+    title,
+    message: "",
+    Icon: errorIcon,
+    isMinimized: false,
+    zIndex: 0,
+    program: App.ERROR,
+    prompt: true,
+    backBtnActive: false,
+  });
+
+  const closeBiosTabs = () => {
+    store.getState().tab.tray.filter(isBiosTab).forEach((tab) => {
+      silentClose.current.add(tab.id);
+      store.dispatch(removeTab({ id: tab.id }));
+    });
+  };
+
+  const openThreat = () => {
+    closeBiosTabs();
+    setGameOpen(null);
+    store.dispatch(addTab(biosTab(THREAT_TITLE)));
+  };
+
+  const openArcade = (src: string) => {
+    closeBiosTabs();
+    setGameOpen(src);
+    store.dispatch(addTab(biosTab(ARCADE_TITLE)));
+  };
+
+  // Back to desktop (o la X della finestra delle minacce)
   const handleDismissBios = () => {
+    closeBiosTabs();
+    setGameOpen(null);
     setStage("DESKTOP");
     spawnCveErrorTab();
+  };
+
+  // Resolve threats sulla finestra CVE del desktop: si torna al BIOS e alla scelta dei minigiochi
+  const handleRestartBios = () => {
+    setStage("BIOS");
+    store.getState().tab.tray.filter(isCveTab).forEach((tab) => store.dispatch(removeTab({ id: tab.id })));
   };
 
   // Link segreti: #aezakmi apre San Tufellos, #zeroday il duello, #arcade la sala giochi; saltano il boot
@@ -139,36 +213,29 @@ export default function Home() {
     const target = games[window.location.hash.toLowerCase()];
     if (target) {
       setStage("BIOS");
-      setGameOpen(target);
+      openArcade(target);
     }
   }, []);
 
-  // Qualche secondo dopo il BIOS compare la finestra delle minacce
+  // Qualche secondo dopo il BIOS compare la finestra delle minacce (se non è già aperta una delle due)
   useEffect(() => {
-    if (stage !== "BIOS" || gameOpen) return;
-    const timer = setTimeout(() => setThreatOpen(true), 2600);
+    if (stage !== "BIOS") return;
+    const timer = setTimeout(() => {
+      if (!store.getState().tab.tray.some(isBiosTab)) openThreat();
+    }, 2600);
     return () => clearTimeout(timer);
-  }, [stage, gameOpen]);
+  }, [stage]);
 
-  // Il BIOS si chiude con Invio/Esc (le lettere servono per il trucco) o con un clic/tap fuori dai dispositivi solo touch;
-  // sui dispositivi solo touch si sceglie dalla finestra delle minacce
+  // La X delle finestre del BIOS: minacce → desktop, sala giochi → di nuovo la scelta
   useEffect(() => {
-    if (stage !== "BIOS" || gameOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === "Escape") handleDismissBios();
-    };
-    const onClick = (e: MouseEvent) => {
-      if (isTouchOnly()) return;
-      if ((e.target as HTMLElement).closest("a, button")) return;
-      handleDismissBios();
-    };
-    window.addEventListener("keydown", onKey);
-    window.addEventListener("click", onClick);
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("click", onClick);
-    };
-  }, [stage, gameOpen]);
+    const prev = prevBiosTabs.current;
+    const gone = (id?: number) => id !== undefined && !Tabs.some((tab) => tab.id === id) && !silentClose.current.delete(id);
+    if (stage === "BIOS") {
+      if (gone(prev.threat)) handleDismissBios();
+      else if (gone(prev.arcade)) openThreat();
+    }
+    prevBiosTabs.current = { threat: threatTab?.id, arcade: arcadeTab?.id };
+  }, [Tabs, stage]);
 
   // POPUP STORM: ogni finestra CVE chiusa (X della finestra o Cancel) ne fa spawnare una nuova
   useEffect(() => {
@@ -234,19 +301,22 @@ export default function Home() {
       )}
 
       {/* 3. BIOS SCREEN */}
-      {stage === "BIOS" && <BiosScreen onCheat={() => setGameOpen("/santufellos/index.html")} />}
+      {stage === "BIOS" && <BiosScreen />}
 
-      {/* 3a. MINACCE RILEVATE: stessa finestra di errore del desktop, con due scelte */}
-      {stage === "BIOS" && threatOpen && !gameOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 100000, display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
-          <div className="window" style={{ width: "min(430px, 100%)" }}>
-            <div className="title-bar">
-              <div className="title-bar-text">System Error - Multiple Threats</div>
-              <div className="title-bar-controls">
-                <button aria-label="Close" onClick={handleDismissBios} />
-              </div>
-            </div>
-            <div className="window-body" style={{ padding: "12px", fontSize: "12px", fontFamily: "Tahoma, sans-serif" }}>
+      {/* 3a. MINACCE RILEVATE: lo stesso WinForm della finestra di errore del desktop, con due scelte */}
+      {stage === "BIOS" && <style>{cvePopupCss}</style>}
+      {stage === "BIOS" && threatTab && (
+        <div className="bios-win bios-threat" style={{ zIndex: 100000 }}>
+          <WinForm
+            id={threatTab.id}
+            title={threatTab.title}
+            message=""
+            icon={threatTab.Icon}
+            zIndex={threatTab.zIndex}
+            programType={threatTab.program}
+            prompt={true}
+          >
+            <div style={{ padding: "12px", fontSize: "12px", fontFamily: "Tahoma, sans-serif" }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "16px" }}>
                 <img src={errorIcon.src} alt="Error" style={{ width: "32px", height: "32px" }} />
                 <div>
@@ -259,59 +329,41 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "16px", flexWrap: "wrap" }}>
                 <button className="xp-button" onClick={handleDismissBios} style={{ padding: "4px 10px" }}>
                   Back to desktop
                 </button>
                 <button
                   className="xp-button"
-                  onClick={() => { setThreatOpen(false); setGameOpen("/arcade/index.html"); }}
+                  onClick={() => openArcade("/arcade/index.html")}
                   style={{ fontWeight: "bold", padding: "4px 12px" }}
                 >
                   Resolve threats
                 </button>
               </div>
             </div>
-          </div>
+          </WinForm>
         </div>
       )}
 
-      {/* 3b. SALA GIOCHI: finestra XP sopra il BIOS, a tutto schermo sul telefono */}
-      {stage === "BIOS" && gameOpen && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 100000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "rgba(0, 0, 40, 0.35)",
-          }}
-        >
-          <div
-            className="window"
-            style={
-              typeof window !== "undefined" && window.innerWidth < 700
-                ? { width: "100vw", height: "100dvh", display: "flex", flexDirection: "column", margin: 0 }
-                : { width: "min(860px, 96vw)", height: "min(620px, 90vh)", display: "flex", flexDirection: "column" }
-            }
+      {/* 3b. SALA GIOCHI: WinForm sopra il BIOS, a tutto schermo sul telefono */}
+      {stage === "BIOS" && arcadeTab && gameOpen && (
+        <div className="bios-win bios-arcade dim" style={{ zIndex: 100000 }}>
+          <WinForm
+            id={arcadeTab.id}
+            title={arcadeTab.title}
+            message=""
+            icon={arcadeTab.Icon}
+            zIndex={arcadeTab.zIndex}
+            programType={arcadeTab.program}
+            prompt={true}
           >
-            <div className="title-bar">
-              <div className="title-bar-text">Threat Resolver.exe</div>
-              <div className="title-bar-controls">
-                <button aria-label="Close" onClick={() => setGameOpen(null)} />
-              </div>
-            </div>
-            <div className="window-body" style={{ flex: 1, margin: 0, padding: 0, display: "flex", minHeight: 0 }}>
-              <iframe
-                src={gameOpen}
-                title="Arcade"
-                style={{ border: 0, width: "100%", height: "100%", flex: 1, display: "block" }}
-                onLoad={(e) => (e.target as HTMLIFrameElement).contentWindow?.focus()}
-              />
-            </div>
-          </div>
+            <iframe
+              src={gameOpen}
+              title="Arcade"
+              onLoad={(e) => (e.target as HTMLIFrameElement).contentWindow?.focus()}
+            />
+          </WinForm>
         </div>
       )}
 
@@ -333,7 +385,7 @@ export default function Home() {
 
             {/* Finestre normali del sito */}
             {Tabs.map((tab) => {
-              if (tab.isMinimized || isCveTab(tab)) return <React.Fragment key={tab.id}></React.Fragment>;
+              if (tab.isMinimized || isCveTab(tab) || isBiosTab(tab)) return <React.Fragment key={tab.id}></React.Fragment>;
               return (
                 <WinForm
                   key={tab.id}
@@ -394,7 +446,7 @@ export default function Home() {
                     programType={tab.program}
                     prompt={tab.prompt}
                   >
-                    <CveError onClose={() => store.dispatch(removeTab({ id: tab.id }))} />
+                    <CveError onClose={() => store.dispatch(removeTab({ id: tab.id }))} onResolve={handleRestartBios} />
                   </WinForm>
                 </div>
               );

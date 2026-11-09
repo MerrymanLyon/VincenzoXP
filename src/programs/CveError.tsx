@@ -3,13 +3,10 @@ import errorIcon from "../../assets/dialog/error.png";
 
 interface CveErrorProps {
   onClose?: () => void;
+  onResolve?: () => void;
 }
 
-export default function CveError({ onClose }: CveErrorProps) {
-  const handleOpenLinkedin = () => {
-    window.open("https://www.linkedin.com/in/vincenzo-reina/", "_blank", "noreferrer");
-  };
-
+export default function CveError({ onClose, onResolve }: CveErrorProps) {
   return (
     <div style={{ padding: "12px", fontSize: "12px", fontFamily: "Tahoma, sans-serif" }}>
       <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "16px" }}>
@@ -42,10 +39,10 @@ export default function CveError({ onClose }: CveErrorProps) {
         </button>
         <button
           className="xp-button"
-          onClick={handleOpenLinkedin}
+          onClick={onResolve}
           style={{ fontWeight: "bold", padding: "4px 12px" }}
         >
-          Resolve via LinkedIn
+          Resolve threats
         </button>
       </div>
     </div>
