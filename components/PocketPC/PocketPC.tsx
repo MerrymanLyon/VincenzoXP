@@ -409,12 +409,51 @@ const PocketPC: React.FC<PocketPCProps> = ({ onSwitchToDesktop }) => {
               To launch vincenzoxp.com beyond a standard portfolio reveal, I authored and directed a cinematic branded video short. By merging retro XP aesthetics with high-stakes narrative storytelling, the short film translated a personal brand strategy into an engaging visual experience that drove record engagement across executive stakeholders and digital communities.
             </div>
             <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", marginBottom: "8px" }}>
-              <Image
-                src="/EXEIN-2.png"
+              <img
+                src="/638cb718-1ba6-48bf-bf6a-69bc70eac9aa.jpeg"
                 alt="Branded Video Short Preview"
-                width={300}
-                height={168}
-                style={{ borderRadius: "4px", border: "1px solid #7f9db9", objectFit: "cover" }}
+                style={{ width: "100%", maxWidth: "300px", height: "auto", borderRadius: "4px", border: "1px solid #7f9db9" }}
+              />
+            </div>
+          </div>
+
+          <div className={styles.modalRow}>
+            <div className={styles.cardTitle}>
+              From One Film to an Editorial Series
+            </div>
+            <div className={styles.cardDesc}>
+              The launch film became the pilot of a recurring LinkedIn editorial strategy built on AI-generated video content. Its protagonist is my avatar, reimagined as a handmade rag puppet animated in a stop-motion style: a recognisable recurring character that gives every episode the same warm, tactile signature and makes technical topics approachable. Instead of one-off posts, the puppet turns my feed into a series with a cast, a tone of voice and a visual identity that audiences learn to recognise at a glance.
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", marginBottom: "8px" }}>
+              <img
+                src="/IMG_0721.png"
+                alt="LinkedIn Launch Preview"
+                style={{ width: "100%", maxWidth: "300px", height: "auto", borderRadius: "4px", border: "1px solid #7f9db9" }}
+              />
+            </div>
+          </div>
+
+          <div className={styles.modalRow}>
+            <div className={styles.cardTitle}>
+              Arcade Games: Built with Claude Code
+            </div>
+            <div className={styles.cardDesc}>
+              The site boots, then gets &ldquo;hacked&rdquo;: the BIOS reports a breach, and resolving the threats opens an arcade with two original minigames. <strong>San Tufellos</strong> is a top-down car chase through a pixel-art version of Rome&apos;s Tufello neighbourhood; <strong>The Good, the Bad &amp; the Zero-Day</strong> is a three-way spaghetti-western standoff where a red crow is the signal to draw.
+              <div className={styles.cardBullet}>
+                Creative Direction: hacker culture (CVEs, zero-days, the AEZAKMI cheat code) meets gamification (high scores with initials, CRT screens, INSERT COIN), videogame grammar (GTA-style missions and wanted stars) and cinema (Sergio Leone&apos;s close-ups on the eyes before the duel).
+              </div>
+              <div className={styles.cardBullet}>
+                Human-AI Collaboration: I led as creative director and product owner, setting concept, references, art direction and game feel; Claude Code engineered the games, generating pixel art and sound procedurally and testing every build on desktop and phone. Moodboards first, then playable builds reviewed round after round.
+              </div>
+              <div className={styles.cardBullet}>
+                Under the Hood: standalone HTML5 canvas, no engine and no asset files, synthesised Web Audio sound, 60 fps, keyboard and multi-touch controls in both orientations.
+              </div>
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", marginBottom: "8px" }}>
+              <img
+                src="/whyxp/zeroday.png"
+                alt="The Good, the Bad & the Zero-Day"
+                style={{ width: "100%", maxWidth: "300px", height: "auto", borderRadius: "4px", border: "1px solid #7f9db9" }}
               />
             </div>
           </div>

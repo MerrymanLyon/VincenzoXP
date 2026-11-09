@@ -73,6 +73,8 @@ const WinForm = (props: {
     <Draggable
       nodeRef={nodeRef}
       handle=".titlebar-drag-handle"
+      // sui touch il trascinamento annullerebbe il tap: i pulsanti della barra non avviano il drag
+      cancel={`.${styles.titlecontrols}`}
       disabled={isMaximized}
       position={isMaximized ? { x: 0, y: 0 } : position}
       onStop={handleDrag}

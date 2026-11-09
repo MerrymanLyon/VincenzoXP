@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import BootScreen from "components/BootScreen/BootScreen";
 import BiosScreen from "components/BiosScreen/BiosScreen";
+import PocketPC from "components/PocketPC/PocketPC";
+import RotateScreen from "components/RotateScreen/RotateScreen";
 import StartBar from "components/StartBar/StartBar";
 import DesktopIcon from "components/DesktopIcon/DesktopIcon";
 import WinForm from "components/WinForm/WinForm";
@@ -29,7 +31,7 @@ import { useSelector } from "react-redux";
 import { App, RootState, Tab } from "@/types";
 import { AppDirectory } from "@/appData";
 
-type Stage = "BOOT" | "DESKTOP_FLASH" | "BIOS" | "DESKTOP";
+type Stage = "BOOT" | "DESKTOP_FLASH" | "BIOS" | "POCKET" | "ROTATE" | "DESKTOP";
 
 const CVE_TITLE = "System Error - CVE Breach";
 // Le due finestre sopra il BIOS: sono WinForm veri come quelli del desktop (solo il pulsante di chiusura)
@@ -85,6 +87,9 @@ export default function Home() {
   const [stage, setStage] = useState<Stage>("BOOT");
   // la sala giochi (o un gioco preciso), aperta in una finestra sopra il BIOS
   const [gameOpen, setGameOpen] = useState<string | null>(null);
+  // sul telefono il "desktop" è la versione Pocket PC; il desktop XP vero si apre dal suo pulsante in basso
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [forceDesktop, setForceDesktop] = useState(false);
   // Posizione casuale (in px) di ogni pop-up
   const [positions, setPositions] = useState<Record<number, { x: number; y: number }>>({});
 
@@ -99,6 +104,13 @@ export default function Home() {
   // finestre del BIOS chiuse da noi (non dalla X), per non scambiarle per una scelta dell'utente
   const silentClose = useRef<Set<number>>(new Set());
   const prevBiosTabs = useRef<{ threat?: number; arcade?: number }>({});
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobileView(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Transizione dal Desktop al BIOS dopo 1 secondo di flash
   useEffect(() => {
@@ -197,6 +209,17 @@ export default function Home() {
   const handleDismissBios = () => {
     closeBiosTabs();
     setGameOpen(null);
+    if (window.innerWidth <= 768 && !forceDesktop) {
+      setStage("POCKET");
+      return;
+    }
+    setStage("DESKTOP");
+    spawnCveErrorTab();
+  };
+
+  // Dal Pocket PC: schermata che invita a ruotare il telefono, poi il desktop XP vero
+  const handleRotateComplete = () => {
+    setForceDesktop(true);
     setStage("DESKTOP");
     spawnCveErrorTab();
   };
@@ -367,6 +390,12 @@ export default function Home() {
         </div>
       )}
 
+      {/* 3c. VERSIONE MOBILE: Pocket PC, e dal suo pulsante il passaggio al desktop vero */}
+      {stage === "POCKET" && <PocketPC onSwitchToDesktop={() => setStage("ROTATE")} />}
+      {stage === "ROTATE" && (
+        <RotateScreen durationMs={10000} onComplete={handleRotateComplete} onBackToPocketPC={() => setStage("POCKET")} />
+      )}
+
       {/* 4. DESKTOP FUNZIONANTE + POPUP STORM CVE */}
       {stage === "DESKTOP" && (
         <main className={styles.main}>
@@ -453,7 +482,7 @@ export default function Home() {
             })}
           </div>
 
-          <StartBar disabled={false} />
+          <StartBar disabled={isMobileView && forceDesktop} />
         </main>
       )}
     </>
